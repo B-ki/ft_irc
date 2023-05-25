@@ -1,0 +1,12 @@
+bin/
+**/.DS_Store
+a.out
+**/*.o
+tags
+ircserver
+compile_commands.json
+cube3d
+.cache
+.env
+.idea
+.vscode
