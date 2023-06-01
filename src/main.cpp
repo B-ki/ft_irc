@@ -1,7 +1,7 @@
 #include <iostream>
 #include "error.h"
 
-int	main(void)
+int	main()
 {
 	std::cout << "Bonjour" << std::endl;
 	return 0;

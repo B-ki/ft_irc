@@ -130,10 +130,8 @@ clean:
 	@echo "$(PROJECT): $(RED)Supressing object files$(RESET)"
 	@rm -rf $(OBJ_DIR)
 
-check:
-	@clang-tidy src/**.c -- $(INCLUDE) && echo "$(BLUE)clang-tidy$(RESET): $(GREEN)Passed$(RESET)" || echo "$(BLUE)clang-tidy$(RESET): $(RED)Failed$(RESET)"
-	@cppcheck -q src $(INCLUDE) --error-exitcode=2 && echo "$(BLUE)cppcheck$(RESET): $(GREEN)Passed$(RESET)" || echo "$(BLUE)cppcheck$(RESET): $(RED)Failed$(RESET)"
-	@flawfinder -Q src && echo "$(BLUE)flawfinder$(RESET): $(GREEN)Passed$(RESET)" || echo "$(BLUE)flawfinder$(RESET): $(RED)Failed$(RESET)"
+lint:
+	@clang-tidy src/*.cpp src/*/*.cpp incl/*.h
 
 fclean:	clean
 	@echo "$(PROJECT): $(RED)Supressing program file$(RESET)"

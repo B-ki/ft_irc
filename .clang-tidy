@@ -1,0 +1,15 @@
+---
+Checks: "-*,
+        google-*,
+        modernize-*,
+        readability-*,
+        cppcoreguidelines-*,
+        cert*,
+        misc*,
+        perf*,
+        -cert-err58-cpp,
+        -readability-braces-around-statements
+"
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     none
