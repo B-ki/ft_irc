@@ -13,9 +13,9 @@ bool	launch_test(Test* test, Config& config)
 	return (test->exec(config));
 }
 
-void	run_tests(std::vector<Test*> tests, Config& config)
+int	run_tests(std::vector<Test*> tests, Config& config)
 {
-	uint		i, failed;
+	uint		i, failed, ret;
 	double		total_time;
 	Test*		test;
 
@@ -42,8 +42,11 @@ void	run_tests(std::vector<Test*> tests, Config& config)
 	it = tests.begin();
 	for (; it != tests.end(); it++) {
 		test = *it;
-		if (test->isFailed())
+		if (test->isFailed()) {
 			test->print_banner();
+      ret = 1;
+    }
 		delete test;
 	}
+  return ret;
 }

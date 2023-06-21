@@ -18,6 +18,6 @@
     __assert_str_rtn(s1, s2, __FILE__, __func__, __LINE__) : \
     (void)0)
 
-void	run_tests(std::vector<Test*> tests, Config& config);
+int   run_tests(std::vector<Test*> tests, Config& config);
 void 	__assert_str_rtn(const char *s1, const char *s2, const char *file,
                         const char *function, int line);

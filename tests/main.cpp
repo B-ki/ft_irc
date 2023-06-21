@@ -27,6 +27,5 @@ int	main(void)
     tests.push_back(new Test("fake_test", &fake_test));
     tests.push_back(new Test("utils::min", &test_min));
     tests.push_back(new Test("test_bki", &test_bki));
-    run_tests(tests, config);
-    return (0);
+    return run_tests(tests, config);
 }
