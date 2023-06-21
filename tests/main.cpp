@@ -15,7 +15,7 @@ void    test_min(void)
 
 void test_bki(void)
 {
-	assert(strcmp("ab", "abc") == 0);
+	assert(strcmp("ab", "abcd") == 0);
 }
 
 int	main(void)
