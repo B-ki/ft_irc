@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include <vector>
 #include <string>
+#include <string.h>
 #include <cassert>
 
 #include "core/Test.h"
