@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:10:19 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/22 18:47:31 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/06/22 18:49:52 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,3 +51,5 @@ t_parse_return parser(std::string strToParse, t_message *messageParsed)
 
 	return (PARSING_SUCCESS);
 }
+
+###  https://github.com/osslate/irc-message/blob/master/index.js
