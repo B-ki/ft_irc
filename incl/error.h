@@ -23,7 +23,7 @@ void	log(e_log_type type, std::string msg, std::string function, int line);
 # ifdef DEBUG_MODE
 #  define LOG(type, msg) (log(type, msg, __FILE__, __LINE__))
 # else
-#  define LOG(type, msg) (NULL)
+#  define LOG(type, msg) ((void)NULL)
 # endif
 
 

@@ -13,6 +13,6 @@
       - name: checkout repo
         uses: actions/checkout@v2
       - name: build application
-        run: make FDEBUG=true
+        run: make
       - name: test application
         run: make test FDEBUG=true
