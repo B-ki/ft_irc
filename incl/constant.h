@@ -21,7 +21,8 @@ typedef enum e_parse_return
 {
 	PARSING_SUCCESS = 0,
 	PARSING_EMPTY_MESSAGE,
-	PARSING_GRAMMAR_ERROR
+	PARSING_GRAMMAR_ERROR,
+	PARSING_EXCEPT_ERROR
 }	t_parse_return;
 
 #endif
