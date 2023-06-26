@@ -54,6 +54,8 @@ H_DIR		= incl
 
 ### SOURCE FILES ###
 SRCS	=	main.cpp \
+			server/Connection.cpp \
+			server/Server.cpp \
 			utils/log.cpp
 
 T_SRCS	=	tests/main.cpp \
