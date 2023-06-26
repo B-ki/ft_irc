@@ -6,12 +6,14 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/23 19:11:18 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/06/26 18:33:56 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Message.hpp"
 #include "constant.h"
+#include <exception>
+#include <utility>
 
 Message::Message(void) : raw(), tags(), prefix(), parameters()
 {
@@ -42,47 +44,77 @@ Message & Message::operator=(Message const & rhs)
 	return *this;
 }
 		
-std::string Message::getRaw(void) const
+std::string Message::get_raw(void) const
 {
 	return this->raw;
 }
 
-std::map<std::string, std::string> Message::getTags(void) const
+std::map<std::string, std::string> Message::get_tags(void) const
 {
 	return this->tags;
 }
 
-std::string Message::getPrefix(void) const
+std::string Message::get_prefix(void) const
 {
 	return this->prefix;
 }
 
-t_cmd_type Message::getCmd(void) const
+t_cmd_type Message::get_cmd(void) const
 {
 	return this->cmd;
 }
 
-std::vector<std::string> Message::getParameters(void) const
+std::vector<std::string> Message::get_parameters(void) const
 {
 	return this->parameters;
 }
 
-t_parse_return Message::addRaw(std::string raw)
+t_parse_return Message::add_raw(std::string raw)
 {
+	try {
+		this->raw = raw;
+	} catch (std::exception &e) {
+		return PARSING_EXCEPT_ERROR;
+	}
+	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::addTag(std::string tag)
+t_parse_return Message::add_tag(std::string key, std::string value)
 {
+	try {
+		this->tags.insert(std::make_pair(key, value));
+	} catch (std::exception &e) {
+		return PARSING_EXCEPT_ERROR;
+	}
+	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::addPrefix(std::string prefix)
+t_parse_return Message::add_prefix(std::string prefix)
 {
+	this->prefix = prefix;
+	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::addCmd(t_cmd_type cmd)
+t_parse_return Message::add_cmd(std::string cmd_str)
 {
+	const std::string commands[12] = {"pass", "nick", "user", "join", "part", "leave", "privmsg", "quit", "kick", "invite", "topic", "mode"};
+	for (int i = 0; i < 12; i++)
+	{
+		if (commands[i] == cmd_str)
+		{
+			this->cmd = static_cast<t_cmd_type>(i);
+			return PARSING_SUCCESS;
+		}
+	}
+	return PARSING_GRAMMAR_ERROR;
 }
 
-t_parse_return Message::addParameter(std::string parameter)
+t_parse_return Message::add_parameter(std::string parameter)
 {
+	try {
+		this->parameters.push_back(parameter);
+	} catch (std::exception &e) {
+		return PARSING_EXCEPT_ERROR;
+	}
+	return PARSING_SUCCESS;
 }
