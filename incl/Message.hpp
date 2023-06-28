@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/26 18:34:22 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/06/28 12:37:08 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <map>
 # include <vector>
 # include <algorithm>
+# include <iostream>
 
 class Message
 {
@@ -40,6 +41,12 @@ class Message
 		t_parse_return add_prefix(std::string prefix);
 		t_parse_return add_cmd(std::string cmd_str);
 		t_parse_return add_parameter(std::string parameter);
+
+		void print_message(void);
+		void clear(void);
+		t_parse_return parse_tags(std::string all_tags);
+		t_parse_return parse_normal_parameters(std::string normal_params);
+		t_parse_return parse_raw_string(std::string str_to_parse);
 
 	private:
 		std::string 						raw;
