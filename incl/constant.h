@@ -14,7 +14,8 @@ typedef enum e_cmd_type
 	KICK,
 	INVITE,
 	TOPIC,
-	MODE
+	MODE,
+	NOTHING
 }	t_cmd_type;
 
 typedef enum e_parse_return
