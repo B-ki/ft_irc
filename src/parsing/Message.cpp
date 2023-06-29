@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/30 13:12:07 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/06/29 19:02:46 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ Message::Message(std::string)
 Message::Message(Message const & src) : raw(src.raw), tags(src.tags), prefix(src.prefix),
 	cmd(src.cmd), parameters(src.parameters)
 {
+	
 }
 
 Message::~Message(void) {}
@@ -323,6 +324,7 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 	t_parse_return ret = parse_normal_parameters(all_normal_params);
 	if (ret != PARSING_SUCCESS)
 		return (ret);
+
 
 	// else :
 	std::string trailing_param(str_to_parse.begin() + colon_pos + 1, str_to_parse.end());
