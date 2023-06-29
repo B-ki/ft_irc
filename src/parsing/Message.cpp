@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/28 17:28:04 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/06/29 19:02:46 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ Message::Message(std::string)
 Message::Message(Message const & src) : raw(src.raw), tags(src.tags), prefix(src.prefix),
 	cmd(src.cmd), parameters(src.parameters)
 {
+	
 }
 
 Message::~Message(void) {}
@@ -325,6 +326,7 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 			return (PARSING_GRAMMAR_ERROR);
 			*/
 	}
+
 
 	// else :
 	DEBUG("Trailing parameter");
