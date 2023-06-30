@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/30 13:13:38 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/06/30 15:34:53 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ t_parse_return Message::add_prefix(std::string prefix)
 
 t_parse_return Message::add_cmd(std::string cmd_str)
 {
+	DEBUG("add_cmd(" << cmd_str << ")");
 	const std::string commands[12] = {"PASS", "NICK", "USER", "JOIN", "PART", "LEAVE", "PRIVMSG", "QUIT", "KICK", "INVITE", "TOPIC", "MODE"};
 	for (int i = 0; i < 12; i++)
 	{
@@ -109,6 +110,7 @@ t_parse_return Message::add_cmd(std::string cmd_str)
 
 t_parse_return Message::add_parameter(std::string parameter)
 {
+	DEBUG("add param : [" << parameter << "]");
 	try {
 		this->parameters.push_back(parameter);
 	} catch (std::exception &e) {
@@ -119,18 +121,20 @@ t_parse_return Message::add_parameter(std::string parameter)
 
 void Message::print_message(void)
 {
+	std::cout << "---------------" << std::endl;
 	std::cout << "-- MESSAGE --" << std::endl;
-	std::cout << "Raw : " << this->raw << std::endl;
+	std::cout << "Raw : [" << this->raw << "]" << std::endl;
 	std::cout << "Tags :"  << std::endl;
 	std::map<std::string, std::string>::iterator it;
 	for (it = this->tags.begin(); it != this->tags.end(); it++)
-		std::cout << (*it).first << " = " << (*it).second << std::endl;
-	std::cout << "Prefix :" << this->prefix << std::endl;
-	std::cout << "Cmd :" << this->cmd << std::endl;
+		std::cout << "[" << (*it).first << " = " << (*it).second << "]\n";
+	std::cout << "Prefix : [" << this->prefix << "]" << std::endl;
+	std::cout << "Cmd : [" << this->cmd << "]" << std::endl;
 	std::cout << "Parameters :"  << std::endl;
 	std::vector<std::string>::iterator itv;
 	for (itv = this->parameters.begin(); itv != this->parameters.end(); itv++)
-		std::cout << *itv << std::endl;
+		std::cout << "[" << *itv << "]" << std::endl;
+	std::cout << "---------------" << std::endl;
 }
 
 void Message::clear()
@@ -225,6 +229,7 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 		return (PARSING_EMPTY_MESSAGE);
 	std::string::iterator position;
 	std::string::iterator nextSpace;
+	this->add_raw(str_to_parse);
 	size_t space_pos = 0;
 	position= str_to_parse.begin();
 
@@ -278,13 +283,12 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 
 	// If something after cmd, we expect some parameters
 	// But first we parse the cmd
-	std::string cmd_str = std::string(position, position + space_pos);
+	std::string cmd_str = std::string(position, str_to_parse.begin() + space_pos);
 
 	if (this->add_cmd(cmd_str) == PARSING_GRAMMAR_ERROR)
 		return (PARSING_GRAMMAR_ERROR);
 
 	position += space_pos;
-
 
 	// Skip spaces
 	while (*(position) == ' ') {
@@ -299,36 +303,18 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 	{
 		std::string all_normal_params(position, str_to_parse.end());
 		return (parse_normal_parameters(all_normal_params));
-		/*
-		space_pos = str_to_parse.find(' ', space_pos);
-
-		// Parse all parameter except the last one
-		while (space_pos != std::string::npos) {
-			std::string param_str = std::string(position, position + space_pos);
-			if (message.add_parameter(param_str) == PARSING_GRAMMAR_ERROR)
-				return (PARSING_GRAMMAR_ERROR);
-			position += space_pos;
-			while (*position == ' ')
-				position ++;
-			space_pos = str_to_parse.find(' ', space_pos);	
-		}
-
-		// Last parameter
-		std::string param_str = std::string(position, str_to_parse.end());
-		if (message.add_parameter(param_str) == PARSING_GRAMMAR_ERROR)
-			return (PARSING_GRAMMAR_ERROR);
-			*/
 	}
-	std::string all_normal_params(position, position + colon_pos - space_pos);
+
+	// else :
+	std::string all_normal_params(position, str_to_parse.begin() + colon_pos);
 
 	t_parse_return ret = parse_normal_parameters(all_normal_params);
 	if (ret != PARSING_SUCCESS)
 		return (ret);
 
-
-	// else :
 	std::string trailing_param(str_to_parse.begin() + colon_pos + 1, str_to_parse.end());
-	if (trailing_param.empty() == false)
+	if (trailing_param.empty() == false 
+			&& trailing_param.find_first_not_of(' ') != std::string::npos)
 		ret = this->add_parameter(trailing_param);
 	return (ret);
 }
