@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/28 17:28:04 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/06/30 13:12:07 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,7 @@ std::vector<std::string> Message::get_parameters(void) const
 
 t_parse_return Message::add_raw(std::string raw)
 {
-	try {
-		this->raw = raw;
-	} catch (std::exception &e) {
-		return PARSING_EXCEPT_ERROR;
-	}
+	this->raw = raw;
 	return PARSING_SUCCESS;
 }
 
@@ -200,25 +196,26 @@ t_parse_return Message::parse_tags(std::string all_tags)
 
 t_parse_return Message::parse_normal_parameters(std::string normal_params)
 {
-	int start_index = 0;
-	int end_index = 0;
+	std::string::size_type space_pos_1 = 0; 
+	std::string::size_type space_pos_2 = 0; 
 
-	for (std::string::size_type i = 0; i < normal_params.size(); i++)
+	while (space_pos_2 < normal_params.size())
 	{
-		if (normal_params[i] == ' ')
+		space_pos_2 = normal_params.find(" ", space_pos_1);
+		if (space_pos_2 == std::string::npos)
+			space_pos_2 = normal_params.size();
+		if (*(normal_params.begin() + space_pos_1) != ' ' 
+				&& space_pos_2 - space_pos_1 > 0)
 		{
-			end_index = i;
-			std::string temp;
-			temp.append(normal_params, start_index, end_index - start_index);
-			while (normal_params[i] && normal_params[i++] == ' ')
-				end_index++;
+			if (*(normal_params.begin() + space_pos_1) == ' ')
+				space_pos_1++;
+			std::string temp = normal_params.substr(space_pos_1, space_pos_2 - space_pos_1);
 			if (this->add_parameter(temp) == PARSING_GRAMMAR_ERROR)
 				return (PARSING_GRAMMAR_ERROR);
-			start_index = end_index + 1;
 		}
+		space_pos_1 = space_pos_2 + 1;
 	}
 	return (PARSING_SUCCESS);
-
 }
 
 t_parse_return Message::parse_raw_string(std::string str_to_parse)
@@ -228,12 +225,10 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 	std::string::iterator position;
 	std::string::iterator nextSpace;
 	size_t space_pos = 0;
-	DEBUG(str_to_parse);
 	position= str_to_parse.begin();
 
 	// Check if tags are presents
 	if (*position == '@') {
-		DEBUG("Parsing tags");
 		space_pos = str_to_parse.find(' ', space_pos);
 		std::string tag_str;
 
@@ -255,7 +250,6 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 
 	// Check if prefix are presents
 	if (*position == ':') {
-		DEBUG("Parsing prefix");
 		space_pos = str_to_parse.find(' ', space_pos);
 		std::string prefix_str;
 
@@ -288,6 +282,8 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 	if (this->add_cmd(cmd_str) == PARSING_GRAMMAR_ERROR)
 		return (PARSING_GRAMMAR_ERROR);
 
+	position += space_pos;
+
 
 	// Skip spaces
 	while (*(position) == ' ') {
@@ -297,13 +293,10 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 
 	std::string::size_type colon_pos = str_to_parse.find(':', space_pos);
 
-	// all_normal_params is a string until the ':' or the end if no trailing
-	std::string all_normal_params(position, position + colon_pos);
-
 	// if no trailing parameter :
 	if (colon_pos == std::string::npos)
 	{
-		DEBUG("No trailing parameter");
+		std::string all_normal_params(position, str_to_parse.end());
 		return (parse_normal_parameters(all_normal_params));
 		/*
 		space_pos = str_to_parse.find(' ', space_pos);
@@ -325,14 +318,15 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 			return (PARSING_GRAMMAR_ERROR);
 			*/
 	}
+	std::string all_normal_params(position, position + colon_pos - space_pos);
+
+	t_parse_return ret = parse_normal_parameters(all_normal_params);
+	if (ret != PARSING_SUCCESS)
+		return (ret);
 
 	// else :
-	DEBUG("Trailing parameter");
-	DEBUG(str_to_parse);
-	DEBUG(*position);
-	DEBUG(colon_pos);
-	std::string trailing_param(position + colon_pos + 1, str_to_parse.end());
-	DEBUG("Before return");
-	return (this->add_parameter(trailing_param));
+	std::string trailing_param(str_to_parse.begin() + colon_pos + 1, str_to_parse.end());
+	if (trailing_param.empty() == false)
+		ret = this->add_parameter(trailing_param);
+	return (ret);
 }
-
