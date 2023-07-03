@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:47:06 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/30 15:08:16 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/03 16:26:22 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int parsing_test_1(void)
 
 	Message message;
 	std::cout << "Tested string is : " << tested_string << std::endl;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -71,7 +71,7 @@ int parsing_test_2(void)
 {
 	std::string tested_string("PRIVMSG * LS :multi-prefix sasl");
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -89,7 +89,7 @@ int parsing_test_3(void)
 	std::string tested_string("PRIVMSG :bla bla bla");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -105,7 +105,7 @@ int parsing_test_4(void)
 	std::string tested_string("PRIVMSG           #chan    :Hey!");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -122,7 +122,7 @@ int parsing_test_5(void)
 	std::string tested_string("PRIVMSG #chan Hey!");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -139,7 +139,7 @@ int parsing_test_6(void)
 	std::string tested_string("PRIVMSG #chan ::-)");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -156,7 +156,7 @@ int parsing_test_7(void)
 	std::string tested_string("PRIVMSG    ");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -171,7 +171,7 @@ int parsing_test_8(void)
 	std::string tested_string("  KICK        :      ");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -186,7 +186,7 @@ int parsing_test_9(void)
 	std::string tested_string(" MODE bla bla bla");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -204,7 +204,7 @@ int parsing_test_10(void)
 	std::string tested_string("       PRIVMSG     bla   bla bla  ");
 
 	Message message;
-	message.parse_raw_string(tested_string);
+	message.parse_message(tested_string);
 	std::map<std::string, std::string> expected_tags;
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
@@ -212,6 +212,25 @@ int parsing_test_10(void)
 	expected_params.push_back("bla");
 	expected_params.push_back("bla");
 	expected_params.push_back("bla");
+	expected_cmd = PRIVMSG;
+	return (parsing_test_cmd(expected_cmd, expected_params, expected_tags,
+				expected_prefix, message));
+}
+
+int parsing_test_11(void)
+{
+	std::string tested_string(":SomeOp MODE #channel +oo SomeUser :AnotherUser");
+
+	Message message;
+	message.parse_message(tested_string);
+	std::map<std::string, std::string> expected_tags;
+	std::string expected_prefix = "SomeOp";
+	t_cmd_type expected_cmd = MODE;
+	std::vector<std::string> expected_params;
+	expected_params.push_back("#channel");
+	expected_params.push_back("+oo");
+	expected_params.push_back("SomeUser");
+	expected_params.push_back("AnotherUser");
 	expected_cmd = PRIVMSG;
 	return (parsing_test_cmd(expected_cmd, expected_params, expected_tags,
 				expected_prefix, message));
@@ -230,7 +249,8 @@ void parsing_all_test(void)
 		parsing_test_7,
 		parsing_test_8,
 		parsing_test_9,
-		parsing_test_10
+		parsing_test_10,
+		parsing_test_11,
 	};
 	std::string ret_type[5] = {	"SUCCESS", "TAGS ERROR", "PREFIX ERROR", 
 		"CMD ERROR", "PARAM ERROR" };
