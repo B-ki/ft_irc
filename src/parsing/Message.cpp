@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/06/30 15:34:53 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/03 19:33:18 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 #include "constant.h"
 #include "error.h"
 #include <exception>
+#include <string>
 #include <utility>
 
-Message::Message(void) : raw(), tags(), prefix(), parameters()
+Message::Message(void) : raw(), tags(), prefix(), nick(),
+	user(), host(), parameters()
 {
 	this->cmd = NOTHING;
 }
@@ -25,13 +27,17 @@ Message::Message(std::string)
 {	
 }
 
-Message::Message(Message const & src) : raw(src.raw), tags(src.tags), prefix(src.prefix),
+Message::Message(Message const & src) : raw(src.raw), tags(src.tags), 
+	prefix(src.prefix), nick(src.nick), user(src.user), host(src.host),
 	cmd(src.cmd), parameters(src.parameters)
 {
 	
 }
 
-Message::~Message(void) {}
+Message::~Message(void) 
+{
+	this->clear();
+}
 
 Message & Message::operator=(Message const & rhs)
 {
@@ -60,6 +66,24 @@ std::string Message::get_prefix(void) const
 {
 	return this->prefix;
 }
+
+/* A voir si on garde, pas forcément besoin de parse le prefix
+ si pas de communication server to server
+std::string Message::get_nick(void) const
+{
+	return this->nick;
+}
+
+std::string Message::get_user(void) const
+{
+	return this->user;
+}
+
+std::string Message::get_host(void) const
+{
+	return this->host;
+}
+*/
 
 t_cmd_type Message::get_cmd(void) const
 {
@@ -92,6 +116,25 @@ t_parse_return Message::add_prefix(std::string prefix)
 	this->prefix = prefix;
 	return PARSING_SUCCESS;
 }
+
+/* Idem, a voir si on garde, pas forcément besoin de parse le prefix
+t_parse_return Message::add_nick(std::string nick)
+{
+	this->nick = nick;
+	return PARSING_SUCCESS;
+}
+
+t_parse_return Message::add_user(std::string user)
+{
+	this->user = user;
+	return PARSING_SUCCESS;
+}
+
+t_parse_return Message::add_host(std::string host)
+{
+	this->host = host;
+	return PARSING_SUCCESS;
+}*/
 
 t_parse_return Message::add_cmd(std::string cmd_str)
 {
@@ -142,6 +185,9 @@ void Message::clear()
 	this->raw = "";
 	this->prefix = "";
 	this->tags.clear();
+	this->nick = "";
+	this->user = "";
+	this->host = "";
 	this->cmd = NOTHING;
 	this->parameters.clear();
 }
@@ -199,6 +245,38 @@ t_parse_return Message::parse_tags(std::string all_tags)
 	return (PARSING_SUCCESS);
 }
 
+t_parse_return Message::handle_tags(std::string &str_to_parse, 
+		std::string::iterator &position, size_t &space_pos)
+{
+		space_pos = str_to_parse.find(' ', space_pos);
+		std::string tag_str;
+
+		if (space_pos != std::string::npos)
+			tag_str = std::string(position, position + space_pos);
+		else 
+			return (PARSING_GRAMMAR_ERROR);
+		t_parse_return ret = this->parse_tags(tag_str);
+		if (ret != 0)
+			return (ret);
+		position += space_pos;
+		return (PARSING_SUCCESS);
+}
+
+t_parse_return Message::handle_prefix(std::string &str_to_parse,
+		std::string::iterator &position, size_t &space_pos)
+{
+		space_pos = str_to_parse.find(' ', space_pos);
+		std::string prefix_str;
+
+		if (space_pos != std::string::npos)
+			prefix_str = std::string(position, position + space_pos);
+		else 
+			return (PARSING_GRAMMAR_ERROR);
+		this->add_prefix(prefix_str);
+		position += space_pos;
+		return (PARSING_SUCCESS);
+}
+
 t_parse_return Message::parse_normal_parameters(std::string normal_params)
 {
 	std::string::size_type space_pos_1 = 0; 
@@ -223,7 +301,16 @@ t_parse_return Message::parse_normal_parameters(std::string normal_params)
 	return (PARSING_SUCCESS);
 }
 
-t_parse_return Message::parse_raw_string(std::string str_to_parse)
+void Message::skip_space(std::string::iterator &position, size_t &space_pos)
+{
+	// Skip spaces
+	while (*(position) == ' ') {
+		position++;
+		space_pos++;
+	}
+}
+
+t_parse_return Message::parse_message(std::string str_to_parse)
 {
 	if (str_to_parse.empty())
 		return (PARSING_EMPTY_MESSAGE);
@@ -235,43 +322,21 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 
 	// Check if tags are presents
 	if (*position == '@') {
-		space_pos = str_to_parse.find(' ', space_pos);
-		std::string tag_str;
-
-		if (space_pos != std::string::npos)
-			tag_str = std::string(position, position + space_pos);
-		else 
-			return (PARSING_GRAMMAR_ERROR);
-		t_parse_return ret = this->parse_tags(tag_str);
-		if (ret != 0)
+		t_parse_return ret = handle_tags(str_to_parse, position, space_pos);
+		if (ret != PARSING_SUCCESS)
 			return (ret);
-		position += space_pos;
 	}
 
-	// Skip spaces
-	while (*(position) == ' ') {
-		position++;
-		space_pos++;
-	}
+	skip_space(position, space_pos);
 
 	// Check if prefix are presents
 	if (*position == ':') {
-		space_pos = str_to_parse.find(' ', space_pos);
-		std::string prefix_str;
-
-		if (space_pos != std::string::npos)
-			prefix_str = std::string(position, position + space_pos);
-		else 
-			return (PARSING_GRAMMAR_ERROR);
-		this->add_prefix(prefix_str);
-		position += space_pos;
+		t_parse_return ret = handle_prefix(str_to_parse, position, space_pos);
+		if (ret != PARSING_SUCCESS)
+			return (ret);
 	}
 
-	// Skip spaces
-	while (*(position) == ' ') {
-		position++;
-		space_pos++;
-	}
+	skip_space(position, space_pos);
 
 	// Check if there is nothing after the command
 	space_pos = str_to_parse.find(' ', space_pos);
@@ -290,17 +355,12 @@ t_parse_return Message::parse_raw_string(std::string str_to_parse)
 
 	position += space_pos;
 
-	// Skip spaces
-	while (*(position) == ' ') {
-		position++;
-		space_pos++;
-	}
+	skip_space(position, space_pos);
 
 	std::string::size_type colon_pos = str_to_parse.find(':', space_pos);
 
 	// if no trailing parameter :
-	if (colon_pos == std::string::npos)
-	{
+	if (colon_pos == std::string::npos)	{
 		std::string all_normal_params(position, str_to_parse.end());
 		return (parse_normal_parameters(all_normal_params));
 	}
