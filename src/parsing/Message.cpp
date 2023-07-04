@@ -138,7 +138,7 @@ t_parse_return Message::add_host(std::string host)
 
 t_parse_return Message::add_cmd(std::string cmd_str)
 {
-	DEBUG("add_cmd(" << cmd_str << ")");
+	DEBUG("add_cmd(" + cmd_str + ")");
 	const std::string commands[12] = {"PASS", "NICK", "USER", "JOIN", "PART", "LEAVE", "PRIVMSG", "QUIT", "KICK", "INVITE", "TOPIC", "MODE"};
 	for (int i = 0; i < 12; i++)
 	{
@@ -153,7 +153,7 @@ t_parse_return Message::add_cmd(std::string cmd_str)
 
 t_parse_return Message::add_parameter(std::string parameter)
 {
-	DEBUG("add param : [" << parameter << "]");
+	DEBUG("add param : [" + parameter + "]");
 	try {
 		this->_parameters.push_back(parameter);
 	} catch (std::exception &e) {
