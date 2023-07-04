@@ -261,9 +261,9 @@ void parsing_all_test(void)
 		ret = (*funcptr[i])();
 		std::cout << "Test number " << i  + 1 << " : ";
 		if (ret == 0)
-			std::cout << GREEN << ret_type[ret] << RESET << std::endl;
+			std::cout << T_GREEN << ret_type[ret] << T_RESET << std::endl;
 		else {
-			std::cout << RED << ret_type[ret] << RESET << std::endl;
+			std::cout << T_RED << ret_type[ret] << T_RESET << std::endl;
 			assert(false);
 		}
 	}

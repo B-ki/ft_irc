@@ -92,11 +92,11 @@ void	Test::print_banner(void) const
 	std::string	state;
 
 	if (this->exit_code == 0)
-		state = GREEN "PASS" RESET;
+		state = T_GREEN "PASS" T_RESET;
 	else
-		state = RED "FAIL" RESET;
+		state = T_RED "FAIL" T_RESET;
 	std::cout << std::fixed << std::setprecision(2);
-	std::cout << "        " << state << " [" << print_time(this->time) << "s]        " << BLUE + this->name + RESET;
+	std::cout << "        " << state << " [" << print_time(this->time) << "s]        " << T_BLUE + this->name + T_RESET;
 	if (WIFSIGNALED(this->status)) {
 		std::string	sig;
 		if (this->exit_code == SIGSEGV)
@@ -111,7 +111,7 @@ void	Test::print_banner(void) const
 			sig = "TIMEOUT";
 		else
 			sig = "";
-		std::cout << " " RED << sig << RESET;
+		std::cout << " " T_RED << sig << T_RESET;
 	}
 	std::cout << std::endl;
 }
@@ -136,11 +136,11 @@ void	Test::print_trace(void)
 	print_banner();
 
 	if (this->failed) {
-		std::cout << "\n" RED "--- STDOUT:" RESET "           \t\t" BLUE << this->name << RESET " " RED "---" RESET "\n";
+		std::cout << "\n" T_RED "--- STDOUT:" T_RESET "           \t\t" T_BLUE << this->name << T_RESET " " T_RED "---" T_RESET "\n";
 		print_pipe(this->stdout);
-		std::cout << "\n" RED "--- STDERR:" RESET "           \t\t" BLUE << this->name << RESET " " RED "---" RESET "\n";
+		std::cout << "\n" T_RED "--- STDERR:" T_RESET "           \t\t" T_BLUE << this->name << T_RESET " " T_RED "---" T_RESET "\n";
 		print_pipe(this->stderr);
-		std::cout << "\n" RED "---" RESET "\n";
+		std::cout << "\n" T_RED "---" T_RESET "\n";
 	}
 
 	close(this->stderr);
