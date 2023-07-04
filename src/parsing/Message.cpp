@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/03 19:33:18 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/04 14:10:28 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 #include <string>
 #include <utility>
 
-Message::Message(void) : raw(), tags(), prefix(), nick(),
-	user(), host(), parameters()
+Message::Message(void) : _raw(), _tags(), _prefix(), _nick(),
+	_user(), _host(), _parameters()
 {
-	this->cmd = NOTHING;
+	this->_cmd = NOTHING;
 }
 
 Message::Message(std::string)
 {	
 }
 
-Message::Message(Message const & src) : raw(src.raw), tags(src.tags), 
-	prefix(src.prefix), nick(src.nick), user(src.user), host(src.host),
-	cmd(src.cmd), parameters(src.parameters)
+Message::Message(Message const & src) : _raw(src._raw), _tags(src._tags), 
+	_prefix(src._prefix), _nick(src._nick), _user(src._user), _host(src._host),
+	_cmd(src._cmd), _parameters(src._parameters)
 {
 	
 }
@@ -43,28 +43,28 @@ Message & Message::operator=(Message const & rhs)
 {
 	if (this != &rhs)
 	{
-		this->raw = rhs.raw;
-		this->tags = rhs.tags;
-		this->prefix = rhs.prefix;
-		this->cmd = rhs.cmd;
-		this->parameters = rhs.parameters;
+		this->_raw = rhs._raw;
+		this->_tags = rhs._tags;
+		this->_prefix = rhs._prefix;
+		this->_cmd = rhs._cmd;
+		this->_parameters = rhs._parameters;
 	}
 	return *this;
 }
 		
 std::string Message::get_raw(void) const
 {
-	return this->raw;
+	return this->_raw;
 }
 
 std::map<std::string, std::string> Message::get_tags(void) const
 {
-	return this->tags;
+	return this->_tags;
 }
 
 std::string Message::get_prefix(void) const
 {
-	return this->prefix;
+	return this->_prefix;
 }
 
 /* A voir si on garde, pas forcément besoin de parse le prefix
@@ -87,24 +87,24 @@ std::string Message::get_host(void) const
 
 t_cmd_type Message::get_cmd(void) const
 {
-	return this->cmd;
+	return this->_cmd;
 }
 
 std::vector<std::string> Message::get_parameters(void) const
 {
-	return this->parameters;
+	return this->_parameters;
 }
 
 t_parse_return Message::add_raw(std::string raw)
 {
-	this->raw = raw;
+	this->_raw = raw;
 	return PARSING_SUCCESS;
 }
 
 t_parse_return Message::add_tag(std::string key, std::string value)
 {
 	try {
-		this->tags.insert(std::make_pair(key, value));
+		this->_tags.insert(std::make_pair(key, value));
 	} catch (std::exception &e) {
 		return PARSING_EXCEPT_ERROR;
 	}
@@ -113,7 +113,7 @@ t_parse_return Message::add_tag(std::string key, std::string value)
 
 t_parse_return Message::add_prefix(std::string prefix)
 {
-	this->prefix = prefix;
+	this->_prefix = prefix;
 	return PARSING_SUCCESS;
 }
 
@@ -144,7 +144,7 @@ t_parse_return Message::add_cmd(std::string cmd_str)
 	{
 		if (commands[i] == cmd_str)
 		{
-			this->cmd = static_cast<t_cmd_type>(i);
+			this->_cmd = static_cast<t_cmd_type>(i);
 			return PARSING_SUCCESS;
 		}
 	}
@@ -155,7 +155,7 @@ t_parse_return Message::add_parameter(std::string parameter)
 {
 	DEBUG("add param : [" << parameter << "]");
 	try {
-		this->parameters.push_back(parameter);
+		this->_parameters.push_back(parameter);
 	} catch (std::exception &e) {
 		return PARSING_EXCEPT_ERROR;
 	}
@@ -166,30 +166,30 @@ void Message::print_message(void)
 {
 	std::cout << "---------------" << std::endl;
 	std::cout << "-- MESSAGE --" << std::endl;
-	std::cout << "Raw : [" << this->raw << "]" << std::endl;
+	std::cout << "Raw : [" << this->_raw << "]" << std::endl;
 	std::cout << "Tags :"  << std::endl;
 	std::map<std::string, std::string>::iterator it;
-	for (it = this->tags.begin(); it != this->tags.end(); it++)
+	for (it = this->_tags.begin(); it != this->_tags.end(); it++)
 		std::cout << "[" << (*it).first << " = " << (*it).second << "]\n";
-	std::cout << "Prefix : [" << this->prefix << "]" << std::endl;
-	std::cout << "Cmd : [" << this->cmd << "]" << std::endl;
+	std::cout << "Prefix : [" << this->_prefix << "]" << std::endl;
+	std::cout << "Cmd : [" << this->_cmd << "]" << std::endl;
 	std::cout << "Parameters :"  << std::endl;
 	std::vector<std::string>::iterator itv;
-	for (itv = this->parameters.begin(); itv != this->parameters.end(); itv++)
+	for (itv = this->_parameters.begin(); itv != this->_parameters.end(); itv++)
 		std::cout << "[" << *itv << "]" << std::endl;
 	std::cout << "---------------" << std::endl;
 }
 
 void Message::clear()
 {
-	this->raw = "";
-	this->prefix = "";
-	this->tags.clear();
-	this->nick = "";
-	this->user = "";
-	this->host = "";
-	this->cmd = NOTHING;
-	this->parameters.clear();
+	this->_raw = "";
+	this->_prefix = "";
+	this->_tags.clear();
+	this->_nick = "";
+	this->_user = "";
+	this->_host = "";
+	this->_cmd = NOTHING;
+	this->_parameters.clear();
 }
 
 std::pair<std::string, std::string> get_key_value_tag(std::string tag)

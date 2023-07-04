@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/03 19:32:29 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/04 14:09:10 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ class Message
 		t_parse_return parse_message(std::string str_to_parse);
 
 	private:
-		std::string 						raw;
-		std::map<std::string, std::string> 	tags;
-		std::string 						prefix;
-		std::string 						nick;
-		std::string 						user;
-		std::string 						host;
-		t_cmd_type 							cmd;
-		std::vector<std::string> 			parameters;
+		std::string 						_raw;
+		std::map<std::string, std::string> 	_tags;
+		std::string 						_prefix;
+		std::string 						_nick;
+		std::string 						_user;
+		std::string 						_host;
+		t_cmd_type 							_cmd;
+		std::vector<std::string> 			_parameters;
 
 		t_parse_return parse_tags(std::string all_tags);
 		t_parse_return handle_tags(std::string &str_to_parse, 
