@@ -38,7 +38,8 @@ int	main(int ac, char** av)
 
 	memset(&my_addr, 0, sizeof(my_addr));
 	my_addr.sin_family = AF_INET;
-	inet_pton(AF_INET, ipAddress.c_str(), &my_addr.sin_addr); 
+	my_addr.sin_addr.s_addr = htons(INADDR_ANY);
+	//inet_pton(AF_INET, ipAddress.c_str(), &my_addr.sin_addr); 
 	my_addr.sin_port = htons(port);
 
 	if (bind(sock_fd, (struct sockaddr *) &my_addr, sizeof(my_addr)) == -1)	{
@@ -55,6 +56,7 @@ int	main(int ac, char** av)
 	
 	socklen_t clientSize = sizeof(client);
 	
+	std::cout << "Waiting for a connection ...\n";
 	int client_fd = accept(sock_fd, (struct sockaddr *) &client, &clientSize);
 	if (client_fd == 1) {
 		std::cout << "Failed to create client fd. " << strerror(errno) << std::endl;
@@ -68,12 +70,13 @@ int	main(int ac, char** av)
 		strcpy(buffer, "Server connected...\n");
 		send(client_fd, buffer, buffsize, 0);
 
-		std::cout << "Conencted with client..." << std::endl;
+		std::cout << "Connected with client..." << std::endl;
 		std::cout << "Enter # to end the connection" << std::endl;
 		std::cout << "Client: ";
 		do {
+			memset(buffer, 0, buffsize);
 			recv(client_fd, buffer, buffsize, 0);
-			std::cout << "buffer" << " ";
+			std::cout << buffer;
 			if (*buffer == '#')
 			{
 				*buffer = '*';
@@ -84,6 +87,7 @@ int	main(int ac, char** av)
 		do {
 			std::cout << "\nServer: ";
 			do {
+				memset(buffer, 0, buffsize);
 				std::cin >> buffer;
 				send(client_fd, buffer, buffsize, 0);
 				if (*buffer == '#')
@@ -96,8 +100,9 @@ int	main(int ac, char** av)
 
 			std::cout << "Client: ";
 			do {
+				memset(buffer, 0, buffsize);
 				recv(client_fd, buffer, buffsize, 0);
-				std::cout << "buffer" << " ";
+				std::cout << "Client: " << buffer;
 				if (*buffer == '#')
 				{
 					*buffer = '*';
