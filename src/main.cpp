@@ -1,122 +1,84 @@
-#include <asm-generic/socket.h>
 #include <iostream>
-#include "error.h"
-#include <sys/socket.h>
-#include <cstring>
 #include <netinet/in.h>
-#include <string.h>
-#include <errno.h>
-#include <unistd.h>
+#include <string>
+#include <numeric>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include "error.h"
+#include "server/Server.h"
 #include <arpa/inet.h>
+#include <unistd.h>
 #include <stdlib.h>
+#include <cstring>
 
-int	main(int ac, char** av)
+#define MAX_CONNEXIONS 10
+
+void	start_server(std::string port)
 {
-	(void)ac;
-	(void)av;
-	std::cout << "Bonjour" << std::endl;
-	std::string ipAddress = "127.0.0.1";
-	int port = 5000;
-	int buffsize = 1024;
-	char buffer[buffsize];
+	int					sockfd;
+	int					yes=1;
+	struct addrinfo		hints;
+	struct addrinfo*	servinfo;
+	void*							addr;
+	char							ipstr[INET6_ADDRSTRLEN];
 
-	int sock_fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock_fd == -1) {
-		std::cout << "Failed to create socket fd. " << strerror(errno) << std::endl;
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = AI_PASSIVE;
+
+	if (getaddrinfo(NULL, port.c_str(), &hints, &servinfo) != 0) {
+		ERROR("can't get addr infos");
+		exit(2);
 	}
 
-	std::cout << "Creating socket on fd = " << sock_fd << std::endl;
-
-	int opt = 1;
-
-	if (setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1) {
-		std::cout << "Failed to set REUSEADDR option. " << strerror(errno) << std::endl;
-		return 1;
+	sockfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
+	if (sockfd == -1) {
+		ERROR("can't create the socket FD");
+		exit(3);
 	}
 
-	struct sockaddr_in my_addr;
-
-	memset(&my_addr, 0, sizeof(my_addr));
-	my_addr.sin_family = AF_INET;
-	my_addr.sin_addr.s_addr = htons(INADDR_ANY);
-	//inet_pton(AF_INET, ipAddress.c_str(), &my_addr.sin_addr); 
-	my_addr.sin_port = htons(port);
-
-	if (bind(sock_fd, (struct sockaddr *) &my_addr, sizeof(my_addr)) == -1)	{
-		std::cout << "Could not bind sock_fd. " << strerror(errno) << std::endl;
-		return 1;
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+		ERROR("can't set socket options");
+		exit(4);
 	}
 
-	std::cout << "Listening with protocol TCP on port " << port << std::endl;
-
-	if (listen(sock_fd, SOMAXCONN) == -1)
-		return 1;
-
-	struct sockaddr_in client;
-	
-	socklen_t clientSize = sizeof(client);
-	
-	std::cout << "Waiting for a connection ...\n";
-	int client_fd = accept(sock_fd, (struct sockaddr *) &client, &clientSize);
-	if (client_fd == 1) {
-		std::cout << "Failed to create client fd. " << strerror(errno) << std::endl;
+	if (bind(sockfd, servinfo->ai_addr, servinfo->ai_addrlen) == -1) {
+		ERROR("can't bind the socket");
+		exit(5);
 	}
 
-	bool isExit = false;
-	memset(buffer, 0, buffsize);
+	if (listen(sockfd, MAX_CONNEXIONS) == -1) {
+		ERROR("can't listen to the specified port " + port);
+		exit(6);
+	}
 
-	while (client_fd > 0)
-	{
-		strcpy(buffer, "Server connected...\n");
-		send(client_fd, buffer, buffsize, 0);
+	struct sockaddr_in*	ipv4 = (struct sockaddr_in *)servinfo->ai_addr;
+	addr = &(ipv4->sin_addr);
+	inet_ntop(servinfo->ai_family, addr, ipstr, sizeof(ipstr));
 
-		std::cout << "Connected with client..." << std::endl;
-		std::cout << "Enter # to end the connection" << std::endl;
-		std::cout << "Client: ";
-		do {
-			memset(buffer, 0, buffsize);
-			recv(client_fd, buffer, buffsize, 0);
-			std::cout << buffer;
-			if (*buffer == '#')
-			{
-				*buffer = '*';
-				isExit = true;
-			}
-		} while (*buffer != '*');
+	std::cout << "Server in now waiting for connections on: " << ipstr << ":" << port << std::endl;
+	freeaddrinfo(servinfo);
+	close(sockfd);
+	INFO("Releasing the socket");
+}
 
-		do {
-			std::cout << "\nServer: ";
-			do {
-				memset(buffer, 0, buffsize);
-				std::cin >> buffer;
-				send(client_fd, buffer, buffsize, 0);
-				if (*buffer == '#')
-				{
-					send(client_fd, buffer, buffsize, 0);
-					*buffer = '*';
-					isExit = true;
-				}
-			} while (*buffer != '*');
+void	usage(std::string prog_name)
+{
+	std::cerr << "Usage: " << prog_name << " <port> <password>\n";
+}
 
-			std::cout << "Client: ";
-			do {
-				memset(buffer, 0, buffsize);
-				recv(client_fd, buffer, buffsize, 0);
-				std::cout << "Client: " << buffer;
-				if (*buffer == '#')
-				{
-					*buffer = '*';
-					isExit = true;
-				}
-			} while (*buffer != '*');
-		} while (isExit == false);
-		std::cout << "\n\n=> Connection terminated with IP " << inet_ntoa(client.sin_addr);
-		close(client_fd);
-		isExit = false;
+int	main(int ac, char **av)
+{
+	start_server("6667");
+	Server	server;
+
+	if (ac != 3) {
+		usage(av[0]);
 		exit(1);
 	}
 
-	close(sock_fd);	
-	std::cout << "Au revoir" << std::endl;
+	server = Server(av[1], av[2]);
 	return 0;
 }

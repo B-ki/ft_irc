@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/04 14:10:28 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/06 15:07:06 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ t_parse_return Message::add_host(std::string host)
 
 t_parse_return Message::add_cmd(std::string cmd_str)
 {
-	DEBUG("add_cmd(" << cmd_str << ")");
 	const std::string commands[12] = {"PASS", "NICK", "USER", "JOIN", "PART", "LEAVE", "PRIVMSG", "QUIT", "KICK", "INVITE", "TOPIC", "MODE"};
 	for (int i = 0; i < 12; i++)
 	{
@@ -153,7 +152,6 @@ t_parse_return Message::add_cmd(std::string cmd_str)
 
 t_parse_return Message::add_parameter(std::string parameter)
 {
-	DEBUG("add param : [" << parameter << "]");
 	try {
 		this->_parameters.push_back(parameter);
 	} catch (std::exception &e) {
