@@ -71,14 +71,19 @@ void	usage(std::string prog_name)
 
 int	main(int ac, char **av)
 {
-	start_server("6667");
-	Server	server;
+	//Server	server;
 
 	if (ac != 3) {
 		usage(av[0]);
 		exit(1);
 	}
 
-	server = Server(av[1], av[2]);
+	Server server = Server(av[1], av[2]);
+	server.start();
+	std::cout << server._started << std::endl;
+	while(server._started)
+	{
+		server.loop();
+	}
 	return 0;
 }

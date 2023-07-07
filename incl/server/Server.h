@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/06 19:56:48 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/07 16:38:40 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,20 @@
 # include <string>
 # include <sys/socket.h>
 # include <sys/types.h>
+# include <arpa/inet.h>
+# include <poll.h>
 # include <netdb.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include "error.h"
+# include <vector>
+# include <map>
+# include "Client.h"
+
 
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
+# define MAX_CONNEXIONS 10
 
 class	Server {
 	public:
@@ -38,16 +45,23 @@ class	Server {
 		// -- Public Functions --
 		int	start();
 		int	stop();
+		int loop();
+		int addClient(Client* client);
+		int deleteClient(Client* client);
+
+		// --- Public attributes ---
+		bool				_started;
 
 	private:
 		// -- Private attributes --
-		bool				_started;
-		int					_sockfd;
-		std::string			_port;
-		std::string			_password;
-		std::string			_ip_version;
-		struct addrinfo		_hints;
-		struct addrinfo*	_servinfo;
+		int						_sockfd;
+		std::string				_port;
+		std::string				_password;
+		std::string				_ip_version;
+		struct addrinfo			_hints;
+		struct addrinfo*		_servinfo;
+		std::vector<pollfd> 	_client_pfd_list;
+		std::map<int, Client*> 	_client_list;
 };
 
 #endif
