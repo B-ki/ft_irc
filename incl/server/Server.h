@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/07 16:38:40 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/10 22:49:55 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
 # define MAX_CONNEXIONS 10
+# define BUFFER_SIZE 1024
 
 class	Server {
 	public:
@@ -47,7 +48,7 @@ class	Server {
 		int	stop();
 		int loop();
 		int addClient(Client* client);
-		int deleteClient(Client* client);
+		int deleteClient(std::vector<pollfd>::iterator it);
 
 		// --- Public attributes ---
 		bool				_started;
@@ -62,6 +63,7 @@ class	Server {
 		struct addrinfo*		_servinfo;
 		std::vector<pollfd> 	_client_pfd_list;
 		std::map<int, Client*> 	_client_list;
+		char 					_buffer[BUFFER_SIZE];
 };
 
 #endif

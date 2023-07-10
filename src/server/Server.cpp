@@ -6,12 +6,15 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/07 17:06:35 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/10 23:20:23 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server/Server.h"
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #include <string.h>
+#include <sys/socket.h>
 #include <utility>
 
 Server::Server() : _started(false), _sockfd(-1), _port(DEFAULT_PORT),
@@ -121,6 +124,7 @@ int Server::start()
 	server_pfd.fd = _sockfd;
 
 	_client_pfd_list.insert(_client_pfd_list.begin(), server_pfd);
+	std::cout << "Server socket " << _sockfd << " added to _client_pfd_list\n";
 	// We need to initialize the vector _client_fd_list or poll won't work
 
 	std::cout << "Server in now waiting for connections on: ";
@@ -131,38 +135,92 @@ int Server::start()
 int Server::loop()
 {
 	int ret_poll = 0;
-	DEBUG("Before poll");
+	//DEBUG("Before poll");
 	ret_poll = poll(&_client_pfd_list[0], _client_pfd_list.size(), -1);
-	DEBUG("After poll");
+	//DEBUG("After poll");
 	if (ret_poll < 0) {
 		ERROR("poll error");
 		return 0;
 	}
-	int i = 0;
+	int listener = _client_pfd_list.begin()->fd;
 	for (std::vector<pollfd>::iterator it = _client_pfd_list.begin();
 			it != _client_pfd_list.end(); it++)
 	{
-		std::cout << i++;
-		if ((*it).revents & POLLIN) {
-			addClient(new Client((*it).fd));
-			std::cout << "POLLIN\n";
+		if (it->revents & POLLIN) {
+			if (it->fd == listener) {
+				DEBUG("New connection on the server");
+				if (addClient(new Client()) != 0) {
+					ERROR("Can't add client");
+					return 1;
+				}
+			} else {
+				DEBUG("Not the listener, so we have a client");
+				int nbytes = recv(it->fd, _buffer, BUFFER_SIZE, 0);
+				if (nbytes <= 0) {
+					if (nbytes == 0) 
+						deleteClient(it);
+					else {
+						ERROR("Error recv");
+						return 2;
+					}
+				} else {
+					for (std::vector<pollfd>::iterator it2 = _client_pfd_list.begin();
+							it2 != _client_pfd_list.end();
+							it2++)
+					{
+						if (it2->fd != listener && it2->fd != it->fd) {
+							if (send(it2->fd, _buffer, nbytes, 0) == -1) {
+								ERROR("Error send");
+								return 3;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
-	std::cout << std::endl;
 	return 0;
 }
 
 int Server::addClient(Client* client)
 {
-	_client_list.insert(std::make_pair(client->getFd(), client));
-	std::cout << "Adding new client fd = " << client->getFd() << std::endl;
+	struct sockaddr* ptr = (struct sockaddr *)client->getStorageAddr();
+	int client_fd = accept(_sockfd, ptr, client->getAddrLen()); 
+	if (client_fd == -1) {
+		ERROR("accept error, client deleted");
+		delete client;
+		return 1;
+	}
+
+	// Adding the new client to the Client list
+	client->setFd(client_fd);
+	client->setIPAddr();
+	_client_list.insert(std::make_pair(client_fd, client));
+
+	// Adding the new client to the poll_fds_list
+	pollfd new_client;
+	new_client.fd = client_fd;
+	new_client.events = POLLIN;
+	_client_pfd_list.push_back(new_client);
+
+	// Printing
+	if (client->getStorageAddr()->ss_family == AF_INET ||
+			client->getStorageAddr()->ss_family == AF_INET6) {
+		std::cout << "Adding new client fd : " << client->getFd();
+		std::cout << ", IP : " << client->getIP() << std::endl;
+	}
 	return 0;
 }
 
-int Server::deleteClient(Client* client)
+int Server::deleteClient(std::vector<pollfd>::iterator it)
 {
+	int client_fd = it->fd;
+	Client* client = _client_list.find(client_fd)->second; 
+	std::cout << "Removing client fd : " << client_fd; 
+	std::cout << ", IP : " << client->getIP() << std::endl;
 	_client_list.erase(client->getFd());
-	std::cout << "Removing client fd = " << client->getFd() << std::endl;
+	_client_pfd_list.erase(it);
+	close(client_fd);
 	delete client;
 	return 0;
 }

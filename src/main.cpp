@@ -80,7 +80,8 @@ int	main(int ac, char **av)
 
 	Server server = Server(av[1], av[2]);
 	server.start();
-	std::cout << server._started << std::endl;
+	if (server._started)
+		std::cout << "Server started." << std::endl;
 	while(server._started)
 	{
 		server.loop();
