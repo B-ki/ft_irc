@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/10 23:20:23 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/11 18:14:22 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int Server::start()
 
 	pollfd server_pfd;
 	server_pfd.fd = _sockfd;
+	server_pfd.events = POLLIN;
 
 	_client_pfd_list.insert(_client_pfd_list.begin(), server_pfd);
 	std::cout << "Server socket " << _sockfd << " added to _client_pfd_list\n";
@@ -135,30 +136,25 @@ int Server::start()
 int Server::loop()
 {
 	int ret_poll = 0;
-	//DEBUG("Before poll");
 	ret_poll = poll(&_client_pfd_list[0], _client_pfd_list.size(), -1);
-	//DEBUG("After poll");
 	if (ret_poll < 0) {
 		ERROR("poll error");
 		return 0;
 	}
 	int listener = _client_pfd_list.begin()->fd;
-	for (std::vector<pollfd>::iterator it = _client_pfd_list.begin();
-			it != _client_pfd_list.end(); it++)
+	for(size_t i = 0; i < _client_pfd_list.size(); i++)
 	{
-		if (it->revents & POLLIN) {
-			if (it->fd == listener) {
-				DEBUG("New connection on the server");
+		if (_client_pfd_list[i].revents & POLLIN) {
+			if (_client_pfd_list[i].fd == listener) {
 				if (addClient(new Client()) != 0) {
 					ERROR("Can't add client");
 					return 1;
 				}
 			} else {
-				DEBUG("Not the listener, so we have a client");
-				int nbytes = recv(it->fd, _buffer, BUFFER_SIZE, 0);
+				int nbytes = recv(_client_pfd_list[i].fd, _buffer, BUFFER_SIZE, 0);
 				if (nbytes <= 0) {
 					if (nbytes == 0) 
-						deleteClient(it);
+						deleteClient(&_client_pfd_list[i]);
 					else {
 						ERROR("Error recv");
 						return 2;
@@ -168,7 +164,7 @@ int Server::loop()
 							it2 != _client_pfd_list.end();
 							it2++)
 					{
-						if (it2->fd != listener && it2->fd != it->fd) {
+						if (it2->fd != listener && it2->fd != _client_pfd_list[i].fd) {
 							if (send(it2->fd, _buffer, nbytes, 0) == -1) {
 								ERROR("Error send");
 								return 3;
@@ -209,12 +205,14 @@ int Server::addClient(Client* client)
 		std::cout << "Adding new client fd : " << client->getFd();
 		std::cout << ", IP : " << client->getIP() << std::endl;
 	}
+	printClient();
 	return 0;
 }
 
-int Server::deleteClient(std::vector<pollfd>::iterator it)
+int Server::deleteClient(struct pollfd* ptr)
 {
-	int client_fd = it->fd;
+	int client_fd = ptr->fd;
+	std::vector<pollfd>::iterator it(ptr); 
 	Client* client = _client_list.find(client_fd)->second; 
 	std::cout << "Removing client fd : " << client_fd; 
 	std::cout << ", IP : " << client->getIP() << std::endl;
@@ -222,5 +220,25 @@ int Server::deleteClient(std::vector<pollfd>::iterator it)
 	_client_pfd_list.erase(it);
 	close(client_fd);
 	delete client;
+	printClient();
 	return 0;
+}
+
+void Server::printClient()
+{
+	std::cout << std::endl;
+	std::cout << std::setw(25) << std::setfill(' ');
+	std::cout << std::string(26, '-') << "\n";
+	std::cout << std::setw(25) << std::setfill(' ') << std::left << "|     CLIENT LIST";
+	std::cout << "|\n";
+	std::cout << std::string(26, '-') << "\n";
+	std::cout << std::setw(22) << std::setfill(' ') << std::left << "| Listener : " << _client_pfd_list[0].fd;
+	std::cout << "  |\n";
+	std::cout << std::string(26, '-') << "\n";
+	for (size_t i = 1; i < _client_pfd_list.size(); i++) {
+		std::cout << std::setw(22) << std::setfill(' ') << std::left << "| Client : " << _client_pfd_list[i].fd;
+		std::cout << "  |\n";
+		std::cout << std::string(26, '-') << "\n";
+	}
+	std::cout << std::endl;
 }

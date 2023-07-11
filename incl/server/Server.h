@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/10 22:49:55 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/11 17:53:29 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@
 # include <vector>
 # include <map>
 # include "Client.h"
+# include <iomanip>
 
 
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
 # define MAX_CONNEXIONS 10
-# define BUFFER_SIZE 1024
+# define BUFFER_SIZE 8
 
 class	Server {
 	public:
@@ -48,7 +49,8 @@ class	Server {
 		int	stop();
 		int loop();
 		int addClient(Client* client);
-		int deleteClient(std::vector<pollfd>::iterator it);
+		int deleteClient(struct pollfd* ptr);
+		void printClient();
 
 		// --- Public attributes ---
 		bool				_started;
