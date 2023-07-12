@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/11 17:53:29 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/12 19:23:13 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SERVER_H
 
 # include <string>
+# include <string.h>
 # include <sys/socket.h>
 # include <sys/types.h>
 # include <arpa/inet.h>
@@ -26,12 +27,13 @@
 # include <map>
 # include "Client.h"
 # include <iomanip>
+# include "Message.h"
 
 
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
 # define MAX_CONNEXIONS 10
-# define BUFFER_SIZE 8
+# define BUFFER_SIZE 512
 
 class	Server {
 	public:
@@ -48,12 +50,16 @@ class	Server {
 		int	start();
 		int	stop();
 		int loop();
-		int addClient(Client* client);
-		int deleteClient(struct pollfd* ptr);
-		void printClient();
+		int create_client();
+		int delete_client(struct pollfd* ptr);
+		void print_client();
+		void process_buffer();
+		Client& get_client(const int fd);
+		Client& get_client(std::string nick);
+		int execute_cmd(const Message& msg);
 
 		// --- Public attributes ---
-		bool				_started;
+		bool					_started;
 
 	private:
 		// -- Private attributes --
@@ -64,7 +70,7 @@ class	Server {
 		struct addrinfo			_hints;
 		struct addrinfo*		_servinfo;
 		std::vector<pollfd> 	_client_pfd_list;
-		std::map<int, Client*> 	_client_list;
+		std::map<int, Client> 	_client_list;
 		char 					_buffer[BUFFER_SIZE];
 };
 

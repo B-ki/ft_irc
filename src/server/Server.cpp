@@ -6,11 +6,12 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/11 18:14:22 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/12 19:33:10 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server/Server.h"
+#include "color.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <string.h>
@@ -70,11 +71,6 @@ Server::~Server()
 {
 	this->stop();
 	freeaddrinfo(_servinfo);
-	for(std::map<int, Client*>::iterator it = _client_list.begin(); 
-			it != _client_list.end(); it++)
-	{
-		delete (*it).second;
-	}
 	INFO("Destroying server");
 }
 
@@ -145,16 +141,18 @@ int Server::loop()
 	for(size_t i = 0; i < _client_pfd_list.size(); i++)
 	{
 		if (_client_pfd_list[i].revents & POLLIN) {
+			std::cout << "POLLIN from fd = " << _client_pfd_list[i].fd << std::endl;
 			if (_client_pfd_list[i].fd == listener) {
-				if (addClient(new Client()) != 0) {
+				if (create_client() != 0) {
 					ERROR("Can't add client");
 					return 1;
 				}
 			} else {
 				int nbytes = recv(_client_pfd_list[i].fd, _buffer, BUFFER_SIZE, 0);
-				if (nbytes <= 0) {
+				std::cout << GREEN << "nbytes = " << RESET << nbytes << std::endl;
+				if (nbytes <= 0 || nbytes >= BUFFER_SIZE) {
 					if (nbytes == 0) 
-						deleteClient(&_client_pfd_list[i]);
+						delete_client(&_client_pfd_list[i]);
 					else {
 						ERROR("Error recv");
 						return 2;
@@ -172,25 +170,27 @@ int Server::loop()
 						}
 					}
 				}
+				// process buffer
+					
 			}
 		}
 	}
 	return 0;
 }
 
-int Server::addClient(Client* client)
+int Server::create_client()
 {
-	struct sockaddr* ptr = (struct sockaddr *)client->getStorageAddr();
-	int client_fd = accept(_sockfd, ptr, client->getAddrLen()); 
+	Client client;
+	struct sockaddr* ptr = (struct sockaddr *)client.get_storage_addr();
+	int client_fd = accept(_sockfd, ptr, client.get_addr_len()); 
 	if (client_fd == -1) {
 		ERROR("accept error, client deleted");
-		delete client;
 		return 1;
 	}
 
 	// Adding the new client to the Client list
-	client->setFd(client_fd);
-	client->setIPAddr();
+	client.set_fd(client_fd);
+	client.set_IP();
 	_client_list.insert(std::make_pair(client_fd, client));
 
 	// Adding the new client to the poll_fds_list
@@ -200,31 +200,30 @@ int Server::addClient(Client* client)
 	_client_pfd_list.push_back(new_client);
 
 	// Printing
-	if (client->getStorageAddr()->ss_family == AF_INET ||
-			client->getStorageAddr()->ss_family == AF_INET6) {
-		std::cout << "Adding new client fd : " << client->getFd();
-		std::cout << ", IP : " << client->getIP() << std::endl;
+	if (client.get_storage_addr()->ss_family == AF_INET ||
+			client.get_storage_addr()->ss_family == AF_INET6) {
+		std::cout << "Adding new client fd : " << client.get_fd();
+		std::cout << ", IP : " << client.get_IP() << std::endl;
 	}
-	printClient();
+	print_client();
 	return 0;
 }
 
-int Server::deleteClient(struct pollfd* ptr)
+int Server::delete_client(struct pollfd* ptr)
 {
 	int client_fd = ptr->fd;
 	std::vector<pollfd>::iterator it(ptr); 
-	Client* client = _client_list.find(client_fd)->second; 
+	Client& client = _client_list.find(client_fd)->second; 
 	std::cout << "Removing client fd : " << client_fd; 
-	std::cout << ", IP : " << client->getIP() << std::endl;
-	_client_list.erase(client->getFd());
+	std::cout << ", IP : " << client.get_IP() << std::endl;
+	_client_list.erase(client.get_fd());
 	_client_pfd_list.erase(it);
 	close(client_fd);
-	delete client;
-	printClient();
+	print_client();
 	return 0;
 }
 
-void Server::printClient()
+void Server::print_client()
 {
 	std::cout << std::endl;
 	std::cout << std::setw(25) << std::setfill(' ');
@@ -242,3 +241,62 @@ void Server::printClient()
 	}
 	std::cout << std::endl;
 }
+
+void Server::process_buffer()
+{
+	std::string raw(_buffer);
+	Message msg(raw);
+}
+
+int Server::execute_cmd(const Message& msg)
+{
+	switch (msg.get_cmd()) {
+		case PASS:
+			break;
+		case NICK:
+			break;
+		case USER:
+			break;
+		case JOIN:
+			break;
+		case PART:
+			break;
+		case LEAVE:
+			break;
+		case PRIVMSG:
+			break;
+		case QUIT:
+			break;
+		case KICK:
+			break;
+		case INVITE:
+			break;
+		case TOPIC:
+			break;
+		case MODE:
+			break;
+		case NOTHING:
+			break;
+	}
+	
+	return 0;
+}
+
+Client& Server::get_client(int const fd) 
+{
+	return (*_client_list.find(fd)).second;
+}
+
+Client& Server::get_client(std::string const nick) 
+{
+	for (std::map<int, Client>::iterator it = _client_list.begin();
+			it != _client_list.end(); it++)
+	{
+		if ((*it).second.get_nick() == nick)
+			return (*it).second;
+	}
+	// Throw exception if fail -> Check required for every command using nick namme
+	// Ex : PRIVMSG John blablabla -> check first if John exist or not
+	return (*_client_list.begin()).second;
+}
+

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Message.cpp                                        :+:      :+:    :+:   */
+/*   Command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/06 15:07:06 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/12 17:53:37 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Message.hpp"
+#include "Message.h"
 #include "constant.h"
 #include "error.h"
 #include <exception>
@@ -69,17 +69,17 @@ std::string Message::get_prefix(void) const
 
 /* A voir si on garde, pas forcément besoin de parse le prefix
  si pas de communication server to server
-std::string Message::get_nick(void) const
+std::string Command::get_nick(void) const
 {
 	return this->nick;
 }
 
-std::string Message::get_user(void) const
+std::string Command::get_user(void) const
 {
 	return this->user;
 }
 
-std::string Message::get_host(void) const
+std::string Command::get_host(void) const
 {
 	return this->host;
 }
@@ -118,19 +118,19 @@ t_parse_return Message::add_prefix(std::string prefix)
 }
 
 /* Idem, a voir si on garde, pas forcément besoin de parse le prefix
-t_parse_return Message::add_nick(std::string nick)
+t_parse_return Command::add_nick(std::string nick)
 {
 	this->nick = nick;
 	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::add_user(std::string user)
+t_parse_return Command::add_user(std::string user)
 {
 	this->user = user;
 	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::add_host(std::string host)
+t_parse_return Command::add_host(std::string host)
 {
 	this->host = host;
 	return PARSING_SUCCESS;
