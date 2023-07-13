@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/12 19:33:10 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/13 12:11:17 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int Server::start()
 	pollfd server_pfd;
 	server_pfd.fd = _sockfd;
 	server_pfd.events = POLLIN;
+	server_pfd.revents = 0;
 
 	_client_pfd_list.insert(_client_pfd_list.begin(), server_pfd);
 	std::cout << "Server socket " << _sockfd << " added to _client_pfd_list\n";
@@ -141,14 +142,16 @@ int Server::loop()
 	for(size_t i = 0; i < _client_pfd_list.size(); i++)
 	{
 		if (_client_pfd_list[i].revents & POLLIN) {
-			std::cout << "POLLIN from fd = " << _client_pfd_list[i].fd << std::endl;
-			if (_client_pfd_list[i].fd == listener) {
+			int fd = _client_pfd_list[i].fd;
+			std::cout << "POLLIN from fd = " << fd << std::endl;
+			if (fd == listener) { 
 				if (create_client() != 0) {
 					ERROR("Can't add client");
 					return 1;
 				}
-			} else {
-				int nbytes = recv(_client_pfd_list[i].fd, _buffer, BUFFER_SIZE, 0);
+			} else { // Create function to handle message
+				int nbytes = recv(fd, _buffer, BUFFER_SIZE, 0);
+				//int nbytes = get_client(fd).get_buffer().receive(fd);
 				std::cout << GREEN << "nbytes = " << RESET << nbytes << std::endl;
 				if (nbytes <= 0 || nbytes >= BUFFER_SIZE) {
 					if (nbytes == 0) 
@@ -162,7 +165,7 @@ int Server::loop()
 							it2 != _client_pfd_list.end();
 							it2++)
 					{
-						if (it2->fd != listener && it2->fd != _client_pfd_list[i].fd) {
+						if (it2->fd != listener && it2->fd != fd) {
 							if (send(it2->fd, _buffer, nbytes, 0) == -1) {
 								ERROR("Error send");
 								return 3;
@@ -170,8 +173,7 @@ int Server::loop()
 						}
 					}
 				}
-				// process buffer
-					
+				// process buffer			
 			}
 		}
 	}
@@ -268,6 +270,7 @@ int Server::execute_cmd(const Message& msg)
 		case QUIT:
 			break;
 		case KICK:
+			//get_channel(param_channel).kick(get_client(param_client));
 			break;
 		case INVITE:
 			break;
@@ -277,8 +280,7 @@ int Server::execute_cmd(const Message& msg)
 			break;
 		case NOTHING:
 			break;
-	}
-	
+	}	
 	return 0;
 }
 
@@ -287,7 +289,7 @@ Client& Server::get_client(int const fd)
 	return (*_client_list.find(fd)).second;
 }
 
-Client& Server::get_client(std::string const nick) 
+Client& Server::get_client(std::string const nick) // Return pointer instead and NULL if error 
 {
 	for (std::map<int, Client>::iterator it = _client_list.begin();
 			it != _client_list.end(); it++)

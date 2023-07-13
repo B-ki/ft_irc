@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Buffer.h                                           :+:      :+:    :+:   */
+/*   MMode.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/12 17:57:07 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/13 11:24:59 by rmorel           ###   ########.fr       */
+/*   Created: 2023/07/13 12:19:08 by rmorel            #+#    #+#             */
+/*   Updated: 2023/07/13 12:23:14 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUFFER_H
-# define BUFFER_H 
+#ifndef MMODE_HPP
+#define MMODE_HPP 
 
-# include <cstring>
+# include "Message.h"
 
-# define BUFFER_SIZE 8
-
-class Buffer
+class MMode : Message
 {
 	public:
-		Buffer();
-		Buffer(const Buffer& other);
-		~Buffer();
-
-		Buffer& operator=(const Buffer& other);
-
-		char* get_buffer(); // const member ? 
-		int receive(const int fd);
-		int get_end_message() const;
-
+		MMode();
+		
 	private:
-		char 			_s[BUFFER_SIZE]; // Pas de raison d'avoir le buffer en privé
-		unsigned int 	length;
+		bool 						_i;
+		bool 						_t;
+		bool 						_k;
+		bool 						_o;
+		std::vector<std::string> 	_user_to_remove;
+		std::vector<std::string> 	_user_to_add;
 };
 
 #endif 

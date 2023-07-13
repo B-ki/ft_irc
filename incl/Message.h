@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Command.h                                          :+:      :+:    :+:   */
+/*   Message.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/12 17:53:50 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/13 12:13:48 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,11 @@ class Message
 		std::string 						_raw;
 		std::map<std::string, std::string> 	_tags;
 		std::string 						_prefix;
+		/*
 		std::string 						_nick;
 		std::string 						_user;
 		std::string 						_host;
+		*/
 		t_cmd_type 							_cmd;
 		std::vector<std::string> 			_parameters;
 

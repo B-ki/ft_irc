@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:36:23 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/12 19:39:24 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/13 09:47:25 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ std::string Client::get_nick() const
 std::string Client::get_user() const
 {
 	return _user;
+}
+
+Buffer& Client::get_buffer()
+{
+	return _buffer;
 }
 
 void Client::set_fd(int fd)

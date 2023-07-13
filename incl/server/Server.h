@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/12 19:23:13 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/13 11:58:49 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
 # define MAX_CONNEXIONS 10
-# define BUFFER_SIZE 512
+# define BUFFER_SIZE 8
 
 class	Server {
 	public:
@@ -72,6 +72,7 @@ class	Server {
 		std::vector<pollfd> 	_client_pfd_list;
 		std::map<int, Client> 	_client_list;
 		char 					_buffer[BUFFER_SIZE];
+		// to do later : tableau_ptr = {kick(Message m), join(Message m), ...};
 };
 
 #endif
