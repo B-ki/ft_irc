@@ -20,7 +20,7 @@ int	run_tests(std::vector<Test*> tests, Config& config)
 	Test*		test;
 
 	i = failed = total_time = ret = 0;
-	std::cout << "    " GREEN "Starting" RESET " " << tests.size() << " tests\n";
+	std::cout << "    " T_GREEN "Starting" T_RESET " " << tests.size() << " tests\n";
 	std::cout << "------------\n";
 	std::vector<Test*>::iterator it = tests.begin();
 	test = NULL;
@@ -32,13 +32,13 @@ int	run_tests(std::vector<Test*> tests, Config& config)
 		if (config.doStopOnFail() && test->isFailed()) break;
 	}
 	if (config.doStopOnFail() && it != tests.end() && test && test->isFailed())
-		std::cout << RED "Canceling due to test failure" RESET "\n";
+		std::cout << T_RED "Canceling due to test failure" T_RESET "\n";
 	std::cout << "------------\n";
 	i = (it - tests.begin());
-	std::cout << "     " GREEN "Summary" RESET " [";
+	std::cout << "     " T_GREEN "Summary" T_RESET " [";
 	std::cout << print_time(test->getTime()) << "s]" << " " << i << "/";
 	std::cout << tests.size() << " tests run: " << i - failed;
-	std::cout << " " GREEN "passed" RESET ", " << failed << " " RED "failed" RESET "\n";
+	std::cout << " " T_GREEN "passed" T_RESET ", " << failed << " " T_RED "failed" T_RESET "\n";
 	it = tests.begin();
   if (failed)
     ret = 1;
