@@ -56,9 +56,10 @@ H_DIR		= incl
 SRCS	=	main.cpp \
 			utils/log.cpp \
 			parsing/Message.cpp \
+			parsing/MMode.cpp \
 			server/Server.cpp \
 			server/Client.cpp \
-			server/Buffer.cpp
+			server/Buffer.cpp \
 
 T_SRCS	=	tests/main.cpp \
 			tests/parsing.cpp \

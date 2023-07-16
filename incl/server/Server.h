@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/13 11:58:49 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/14 11:21:35 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <map>
 # include "Client.h"
 # include <iomanip>
-# include "Message.h"
+# include "parsing/Message.h"
 
 
 # define DEFAULT_PORT "6667"
