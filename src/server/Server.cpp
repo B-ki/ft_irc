@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/13 12:11:17 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/17 23:35:51 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int Server::loop()
 						}
 					}
 				}
-				// process buffer			
+				// process buffer with fd			
 			}
 		}
 	}
@@ -301,4 +301,3 @@ Client& Server::get_client(std::string const nick) // Return pointer instead and
 	// Ex : PRIVMSG John blablabla -> check first if John exist or not
 	return (*_client_list.begin()).second;
 }
-

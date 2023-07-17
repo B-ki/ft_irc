@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/14 11:21:35 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/17 22:27:37 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ class	Server {
 
 		// --- Public attributes ---
 		bool					_started;
+
+		// --- Command execution ---
+		
+		int execute_nick(Message mess);	
 
 	private:
 		// -- Private attributes --
