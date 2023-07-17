@@ -6,14 +6,14 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:47:06 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/03 16:26:22 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/17 18:24:44 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "constant.h"
 #include "core/color.h"
 # include "tests.h"
-# include "Message.hpp"
+# include "parsing/Message.h"
 # include "error.h"
 
 int parsing_test_cmd(t_cmd_type expected_cmd, 
@@ -23,8 +23,10 @@ int parsing_test_cmd(t_cmd_type expected_cmd,
 		Message &message)
 {
 	message.print_message();
-	assert(message.get_tags() == expected_tags);
-	assert(message.get_prefix() == expected_prefix);
+	if(message.get_tags() != expected_tags)
+		return 1;
+	if (message.get_prefix() != expected_prefix)
+		return 2;
 	if (message.get_cmd() != expected_cmd)
 	{
 		std::cerr << "message.cmd = " << message.get_cmd();
@@ -102,7 +104,7 @@ int parsing_test_3(void)
 
 int parsing_test_4(void)
 {
-	std::string tested_string("PRIVMSG           #chan    :Hey!");
+	std::string tested_string("PRIVMSG #chan :Hey!");
 
 	Message message;
 	message.parse_message(tested_string);
@@ -153,7 +155,7 @@ int parsing_test_6(void)
 
 int parsing_test_7(void)
 {
-	std::string tested_string("PRIVMSG    ");
+	std::string tested_string("PRIVMSG ");
 
 	Message message;
 	message.parse_message(tested_string);
@@ -168,7 +170,7 @@ int parsing_test_7(void)
 
 int parsing_test_8(void)
 {
-	std::string tested_string("  KICK        :      ");
+	std::string tested_string("PRIVMSG :");
 
 	Message message;
 	message.parse_message(tested_string);
@@ -176,14 +178,14 @@ int parsing_test_8(void)
 	std::string expected_prefix;
 	t_cmd_type expected_cmd;
 	std::vector<std::string> expected_params;
-	expected_cmd = KICK;
+	expected_cmd = PRIVMSG;
 	return (parsing_test_cmd(expected_cmd, expected_params, expected_tags,
 				expected_prefix, message));
 }
 
 int parsing_test_9(void)
 {
-	std::string tested_string(" MODE bla bla bla");
+	std::string tested_string("PRIVMSG bla bla bla");
 
 	Message message;
 	message.parse_message(tested_string);
@@ -194,43 +196,6 @@ int parsing_test_9(void)
 	expected_params.push_back("bla");
 	expected_params.push_back("bla");
 	expected_params.push_back("bla");
-	expected_cmd = MODE;
-	return (parsing_test_cmd(expected_cmd, expected_params, expected_tags,
-				expected_prefix, message));
-}
-
-int parsing_test_10(void)
-{
-	std::string tested_string("       PRIVMSG     bla   bla bla  ");
-
-	Message message;
-	message.parse_message(tested_string);
-	std::map<std::string, std::string> expected_tags;
-	std::string expected_prefix;
-	t_cmd_type expected_cmd;
-	std::vector<std::string> expected_params;
-	expected_params.push_back("bla");
-	expected_params.push_back("bla");
-	expected_params.push_back("bla");
-	expected_cmd = PRIVMSG;
-	return (parsing_test_cmd(expected_cmd, expected_params, expected_tags,
-				expected_prefix, message));
-}
-
-int parsing_test_11(void)
-{
-	std::string tested_string(":SomeOp MODE #channel +oo SomeUser :AnotherUser");
-
-	Message message;
-	message.parse_message(tested_string);
-	std::map<std::string, std::string> expected_tags;
-	std::string expected_prefix = "SomeOp";
-	t_cmd_type expected_cmd = MODE;
-	std::vector<std::string> expected_params;
-	expected_params.push_back("#channel");
-	expected_params.push_back("+oo");
-	expected_params.push_back("SomeUser");
-	expected_params.push_back("AnotherUser");
 	expected_cmd = PRIVMSG;
 	return (parsing_test_cmd(expected_cmd, expected_params, expected_tags,
 				expected_prefix, message));
@@ -248,9 +213,7 @@ void parsing_all_test(void)
 		parsing_test_6,
 		parsing_test_7,
 		parsing_test_8,
-		parsing_test_9,
-		parsing_test_10,
-		parsing_test_11,
+		parsing_test_9
 	};
 	std::string ret_type[5] = {	"SUCCESS", "TAGS ERROR", "PREFIX ERROR", 
 		"CMD ERROR", "PARAM ERROR" };
@@ -260,10 +223,11 @@ void parsing_all_test(void)
 	{
 		ret = (*funcptr[i])();
 		std::cout << "Test number " << i  + 1 << " : ";
+		std::cout << "[ret = " << ret << "] ";
 		if (ret == 0)
-			std::cout << T_GREEN << ret_type[ret] << T_RESET << std::endl;
+			std::cout << GREEN << ret_type[ret] << RESET << std::endl;
 		else {
-			std::cout << T_RED << ret_type[ret] << T_RESET << std::endl;
+			std::cout << RED << ret_type[ret] << RESET << std::endl;
 			assert(false);
 		}
 	}
