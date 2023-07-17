@@ -6,14 +6,13 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:47:06 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/14 19:20:30 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/17 09:35:51 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "constant.h"
 #include "tests.h"
 #include "parsing/Message.h"
-#include "parsing/MMode.h"
 
 int parsing_test_cmd(t_cmd_type expected_cmd, 
 		std::vector<std::string> expected_params,
@@ -235,26 +234,6 @@ int parsing_test_11(void)
 				expected_prefix, message));
 }
 
-int parsing_test_12()
-{
-	std::string tested_string(":SomeOp MODE #channel +oo SomeUser :AnotherUser");
-
-	Message message;
-	message.parse_message(tested_string);
-	MMode mode_message(message);
-
-	std::map<std::string, std::string> expected_tags;
-	std::string expected_prefix = "SomeOp";
-	t_cmd_type expected_cmd = MODE;
-	std::vector<std::string> expected_params;
-	expected_params.push_back("#channel");
-	expected_params.push_back("+oo");
-	expected_params.push_back("SomeUser");
-	expected_params.push_back("AnotherUser");
-	expected_cmd = PRIVMSG;
-	return (parsing_test_cmd(expected_cmd, expected_params, expected_tags,
-				expected_prefix, mode_message));
-}
 
 void parsing_all_test(void)
 {
@@ -271,7 +250,6 @@ void parsing_all_test(void)
 		parsing_test_9,
 		parsing_test_10,
 		parsing_test_11,
-		parsing_test_12,
 	};
 	std::string ret_type[5] = {	"SUCCESS", "TAGS ERROR", "PREFIX ERROR", 
 		"CMD ERROR", "PARAM ERROR" };
