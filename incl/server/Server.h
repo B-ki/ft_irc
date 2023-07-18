@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/17 22:27:37 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/18 12:22:12 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ class	Server {
 		int delete_client(struct pollfd* ptr);
 		void print_client();
 		void process_buffer();
-		Client& get_client(const int fd);
-		Client& get_client(std::string nick);
+		Client* get_client(const int fd);
+		Client* get_client(std::string nick);
 		int execute_cmd(const Message& msg);
 
 		// --- Public attributes ---
@@ -64,6 +64,8 @@ class	Server {
 		// --- Command execution ---
 		
 		int execute_nick(Message mess);	
+
+		// --- Errors & Replies ---
 
 	private:
 		// -- Private attributes --

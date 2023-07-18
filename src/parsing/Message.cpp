@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/14 11:22:03 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/18 15:56:50 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,13 @@ std::vector<std::string> Message::get_parameters(void) const
 	return this->_parameters;
 }
 
-t_parse_return Message::add_raw(std::string raw)
+Message::parse_return Message::add_raw(std::string raw)
 {
 	this->_raw = raw;
 	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::add_tag(std::string key, std::string value)
+Message::parse_return Message::add_tag(std::string key, std::string value)
 {
 	try {
 		this->_tags.insert(std::make_pair(key, value));
@@ -90,13 +90,13 @@ t_parse_return Message::add_tag(std::string key, std::string value)
 	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::add_prefix(std::string prefix)
+Message::parse_return Message::add_prefix(std::string prefix)
 {
 	this->_prefix = prefix;
 	return PARSING_SUCCESS;
 }
 
-t_parse_return Message::add_cmd(std::string cmd_str)
+Message::parse_return Message::add_cmd(std::string cmd_str)
 {
 	const std::string commands[12] = {"PASS", "NICK", "USER", "JOIN", "PART", "LEAVE", "PRIVMSG", "QUIT", "KICK", "INVITE", "TOPIC", "MODE"};
 	for (int i = 0; i < 12; i++)
@@ -110,7 +110,7 @@ t_parse_return Message::add_cmd(std::string cmd_str)
 	return PARSING_GRAMMAR_ERROR;
 }
 
-t_parse_return Message::add_parameter(std::string parameter)
+Message::parse_return Message::add_parameter(std::string parameter)
 {
 	try {
 		this->_parameters.push_back(parameter);
@@ -172,7 +172,7 @@ std::pair<std::string, std::string> get_key_value_tag(std::string tag)
 	return (std::make_pair(key, value));
 }
 
-t_parse_return Message::parse_tags(std::string all_tags)
+Message::parse_return Message::parse_tags(std::string all_tags)
 {
 	all_tags.erase(0, 1);
 	int start_index = 0;
@@ -200,7 +200,7 @@ t_parse_return Message::parse_tags(std::string all_tags)
 	return (PARSING_SUCCESS);
 }
 
-t_parse_return Message::handle_tags(std::string &str_to_parse, 
+Message::parse_return Message::handle_tags(std::string &str_to_parse, 
 		std::string::iterator &position, size_t &space_pos)
 {
 		space_pos = str_to_parse.find(' ', space_pos);
@@ -210,14 +210,14 @@ t_parse_return Message::handle_tags(std::string &str_to_parse,
 			tag_str = std::string(position, position + space_pos);
 		else 
 			return (PARSING_GRAMMAR_ERROR);
-		t_parse_return ret = this->parse_tags(tag_str);
+		Message::parse_return ret = this->parse_tags(tag_str);
 		if (ret != 0)
 			return (ret);
 		position += space_pos;
 		return (PARSING_SUCCESS);
 }
 
-t_parse_return Message::handle_prefix(std::string &str_to_parse,
+Message::parse_return Message::handle_prefix(std::string &str_to_parse,
 		std::string::iterator &position, size_t &space_pos)
 {
 		space_pos = str_to_parse.find(' ', space_pos);
@@ -232,7 +232,7 @@ t_parse_return Message::handle_prefix(std::string &str_to_parse,
 		return (PARSING_SUCCESS);
 }
 
-t_parse_return Message::parse_normal_parameters(std::string normal_params)
+Message::parse_return Message::parse_normal_parameters(std::string normal_params)
 {
 	std::string::size_type space_pos_1 = 0; 
 	std::string::size_type space_pos_2 = 0; 
@@ -265,7 +265,7 @@ void Message::skip_space(std::string::iterator &position, size_t &space_pos)
 	}
 }
 
-t_parse_return Message::parse_message(std::string str_to_parse)
+int Message::parse_message(std::string str_to_parse)
 {
 	if (str_to_parse.empty())
 		return (PARSING_EMPTY_MESSAGE);
@@ -277,7 +277,7 @@ t_parse_return Message::parse_message(std::string str_to_parse)
 
 	// Check if tags are presents
 	if (*position == '@') {
-		t_parse_return ret = handle_tags(str_to_parse, position, space_pos);
+		Message::parse_return ret = handle_tags(str_to_parse, position, space_pos);
 		if (ret != PARSING_SUCCESS)
 			return (ret);
 	}
@@ -286,7 +286,7 @@ t_parse_return Message::parse_message(std::string str_to_parse)
 
 	// Check if prefix are presents
 	if (*position == ':') {
-		t_parse_return ret = handle_prefix(str_to_parse, position, space_pos);
+		Message::parse_return ret = handle_prefix(str_to_parse, position, space_pos);
 		if (ret != PARSING_SUCCESS)
 			return (ret);
 	}
@@ -323,7 +323,7 @@ t_parse_return Message::parse_message(std::string str_to_parse)
 	// else :
 	std::string all_normal_params(position, str_to_parse.begin() + colon_pos);
 
-	t_parse_return ret = parse_normal_parameters(all_normal_params);
+	Message::parse_return ret = parse_normal_parameters(all_normal_params);
 	if (ret != PARSING_SUCCESS)
 		return (ret);
 

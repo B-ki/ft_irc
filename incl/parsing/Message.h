@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/14 11:18:34 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/18 15:46:32 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,23 @@
 # include <vector>
 # include <algorithm>
 # include <iostream>
+
+typedef enum e_cmd_type
+{
+	PASS = 0,
+	NICK,
+	USER,
+	JOIN,
+	PART,
+	LEAVE,
+	PRIVMSG,
+	QUIT,
+	KICK,
+	INVITE,
+	TOPIC,
+	MODE,
+	NOTHING
+}	t_cmd_type;
 
 class Message
 {
@@ -40,8 +57,15 @@ class Message
 
 		void 			print_message(void);
 		void 			clear(void);
-		t_parse_return 	parse_message(std::string str_to_parse);
+		int 			parse_message(std::string str_to_parse);
 		
+		enum parse_return
+		{
+			PARSING_SUCCESS = 0,
+			PARSING_EMPTY_MESSAGE,
+			PARSING_GRAMMAR_ERROR,
+			PARSING_EXCEPT_ERROR
+		};
 
 	private:
 		std::string 						_raw;
@@ -52,20 +76,20 @@ class Message
 
 		// -- Private functions --
 		
-		t_parse_return 	parse_tags(std::string all_tags);
-		t_parse_return 	handle_tags(std::string &str_to_parse, 
-							std::string::iterator &position, size_t &space_pos);
-		t_parse_return 	handle_prefix(std::string &str_to_parse,
+		parse_return 	parse_tags(std::string all_tags);
+		parse_return 	handle_tags(std::string &str_to_parse, 
+		  				std::string::iterator &position, size_t &space_pos);
+		parse_return 	handle_prefix(std::string &str_to_parse,
 							std::string::iterator &position, size_t &space_pos);
 		void 			skip_space(std::string::iterator &position, 
 							size_t &space_pos);
-		t_parse_return 	parse_normal_parameters(std::string normal_params);
+		parse_return 	parse_normal_parameters(std::string normal_params);
 
-		t_parse_return 	add_raw(std::string raw);
-		t_parse_return 	add_tag(std::string key, std::string value);
-		t_parse_return 	add_prefix(std::string prefix);
-		t_parse_return 	add_cmd(std::string cmd_str);
-		t_parse_return 	add_parameter(std::string parameter);
+		parse_return 	add_raw(std::string raw);
+		parse_return 	add_tag(std::string key, std::string value);
+		parse_return 	add_prefix(std::string prefix);
+		parse_return 	add_cmd(std::string cmd_str);
+		parse_return 	add_parameter(std::string parameter);
 
 };
 

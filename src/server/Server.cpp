@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/17 23:35:51 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/18 12:26:13 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,20 +284,22 @@ int Server::execute_cmd(const Message& msg)
 	return 0;
 }
 
-Client& Server::get_client(int const fd) 
+Client* Server::get_client(int const fd) 
 {
-	return (*_client_list.find(fd)).second;
+	std::map<int, Client>::iterator ret;
+	ret = _client_list.find(fd);
+	if (ret == _client_list.end())
+		return NULL;
+	return &(*ret).second;
 }
 
-Client& Server::get_client(std::string const nick) // Return pointer instead and NULL if error 
+Client* Server::get_client(std::string const nick) // Return pointer instead and NULL if error 
 {
 	for (std::map<int, Client>::iterator it = _client_list.begin();
 			it != _client_list.end(); it++)
 	{
 		if ((*it).second.get_nick() == nick)
-			return (*it).second;
+			return &(*it).second;
 	}
-	// Throw exception if fail -> Check required for every command using nick namme
-	// Ex : PRIVMSG John blablabla -> check first if John exist or not
-	return (*_client_list.begin()).second;
+	return NULL;
 }
