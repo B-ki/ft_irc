@@ -59,7 +59,12 @@ SRCS	=	main.cpp \
 			server/Server.cpp \
 			server/Client.cpp \
 			server/Buffer.cpp \
-			command/error_command.cpp
+			command/Command.cpp \
+			command/error_command.cpp \
+			command/reply_command.cpp \
+			command/PASS.cpp \
+			command/NICK.cpp \
+			command/USER.cpp \
 
 T_SRCS	=	tests/main.cpp \
 			tests/parsing.cpp \

@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/18 12:22:12 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/19 19:34:46 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,27 @@ class	Server {
 		// -- Destructor --
 		~Server();
 
+		// -- Getter --
+		Client* 				get_client(const int fd);
+		Client* 				get_client(std::string nick);
+		std::string& 			get_password(); 
+		std::map<int, Client>& 	get_client_list();
+
 		// -- Public Functions --
-		int	start();
-		int	stop();
-		int loop();
-		int create_client();
-		int delete_client(struct pollfd* ptr);
-		void print_client();
-		void process_buffer();
-		Client* get_client(const int fd);
-		Client* get_client(std::string nick);
-		int execute_cmd(const Message& msg);
+		int						start();
+		int						stop();
+		int 					loop();
+		int 					create_client();
+		int 					delete_client(struct pollfd* ptr);
+		void 					print_client();
+		void 					process_buffer();
+		int 					execute_cmd(const Message& msg);
 
 		// --- Public attributes ---
 		bool					_started;
 
 		// --- Command execution ---
-		
 		int execute_nick(Message mess);	
-
-		// --- Errors & Replies ---
 
 	private:
 		// -- Private attributes --
@@ -78,7 +79,6 @@ class	Server {
 		std::vector<pollfd> 	_client_pfd_list;
 		std::map<int, Client> 	_client_list;
 		char 					_buffer[BUFFER_SIZE];
-		// to do later : tableau_ptr = {kick(Message m), join(Message m), ...};
 };
 
 #endif

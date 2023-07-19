@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/18 15:46:32 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/19 11:13:37 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ typedef enum e_cmd_type
 class Message
 {
 	public:
-		// -- Constructor & Destructor --
+		// -- Constructors --
 		Message(void);
 		Message(std::string messageToParse);
 		Message(Message const & src);
+
+		// -- Destructor --
 		~Message(void);
 
 		Message & operator=(Message const & rhs);
@@ -55,6 +57,7 @@ class Message
 		t_cmd_type 							get_cmd(void) const;
 		std::vector<std::string> 			get_parameters(void) const;
 
+		// -- Public Functions --
 		void 			print_message(void);
 		void 			clear(void);
 		int 			parse_message(std::string str_to_parse);
@@ -75,7 +78,6 @@ class Message
 		std::vector<std::string> 			_parameters;
 
 		// -- Private functions --
-		
 		parse_return 	parse_tags(std::string all_tags);
 		parse_return 	handle_tags(std::string &str_to_parse, 
 		  				std::string::iterator &position, size_t &space_pos);

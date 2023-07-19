@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/18 12:26:13 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/19 19:35:51 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,4 +302,14 @@ Client* Server::get_client(std::string const nick) // Return pointer instead and
 			return &(*it).second;
 	}
 	return NULL;
+}
+
+std::map<int, Client>& 	Server::get_client_list()
+{
+	return _client_list;
+}
+
+std::string& Server::get_password()
+{
+	return _password;
 }

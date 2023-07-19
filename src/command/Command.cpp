@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 12:14:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/18 18:09:25 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/19 20:20:50 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ int Command::reply(std::string reply_mess, int reply_code)
 	return reply_code;
 }
 
-int Command::PASS(std::string password)
+int Command::execute_cmd()
 {
+	switch (_message.get_cmd()) {
+		case NICK:
 
-	return 0;
 }

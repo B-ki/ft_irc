@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 17:57:07 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/13 11:24:59 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/19 11:14:38 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,19 @@
 class Buffer
 {
 	public:
+		// -- Constructors --
 		Buffer();
 		Buffer(const Buffer& other);
-		~Buffer();
-
 		Buffer& operator=(const Buffer& other);
 
-		char* get_buffer(); // const member ? 
+		// -- Destructor --
+		~Buffer();
+
+		// -- Getter --
+		char* 	get_buffer(); // const member ? 
+		int 	get_end_message() const;
+
 		int receive(const int fd);
-		int get_end_message() const;
 
 	private:
 		char 			_s[BUFFER_SIZE]; // Pas de raison d'avoir le buffer en privé

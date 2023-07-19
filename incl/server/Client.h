@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 15:02:09 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/13 09:46:47 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/19 14:32:52 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,17 @@ class Client
 		char const* get_IP() const;
 		std::string get_nick() const;
 		std::string get_user() const;
+		std::string get_real_name() const;
 		Buffer& get_buffer();
+		bool is_authenticated() const;
 
 		// -- Setter --
 		void set_fd(int fd);
 		void set_IP();
 		void set_nick(std::string const new_nick);
 		void set_user(std::string const new_user);
+		void set_real_name(std::string const new_real_name);
+		void set_authenticated(bool const value);
 
 	private:
 		// -- Private attributes --
@@ -55,9 +59,10 @@ class Client
 		socklen_t 			_addrlen;
 		std::string 		_nick;
 		std::string 		_user;
+		std::string 		_real_name;
 		Buffer 				_buffer;
+		bool 				_authenticated;
 
-		// -- Private Functions
 };
 
 #endif 
