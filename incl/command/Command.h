@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:59:09 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 19:31:34 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/20 11:38:00 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 # define COMMAND_H
 
 # include "server/Server.h"
+# include "constant.h"
 # include "command/error_command.h"
 # include "command/reply_command.h"
+
 
 class Command
 {
@@ -48,9 +50,9 @@ class Command
 		Message _message;
 
 		// -- Commands --
-		int PASS();
-		int NICK();
-		int USER();
+		int execute_PASS();
+		int execute_NICK();
+		int execute_USER();
 		
 };
 

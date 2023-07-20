@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:08:59 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 19:07:40 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/20 11:33:00 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool username_already_used(std::string username, std::map<int, Client>& list)
 	return false;
 }
 
-int Command::USER()
+int Command::execute_USER()
 {
 	if (_message.get_parameters().empty())
 		return error(ERR_NEEDMOREPARAMS("USER"), 461);

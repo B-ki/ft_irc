@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 19:35:51 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/20 11:35:52 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,40 +248,6 @@ void Server::process_buffer()
 {
 	std::string raw(_buffer);
 	Message msg(raw);
-}
-
-int Server::execute_cmd(const Message& msg)
-{
-	switch (msg.get_cmd()) {
-		case PASS:
-			break;
-		case NICK:
-			break;
-		case USER:
-			break;
-		case JOIN:
-			break;
-		case PART:
-			break;
-		case LEAVE:
-			break;
-		case PRIVMSG:
-			break;
-		case QUIT:
-			break;
-		case KICK:
-			//get_channel(param_channel).kick(get_client(param_client));
-			break;
-		case INVITE:
-			break;
-		case TOPIC:
-			break;
-		case MODE:
-			break;
-		case NOTHING:
-			break;
-	}	
-	return 0;
 }
 
 Client* Server::get_client(int const fd) 

@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/18 15:56:50 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/20 11:28:05 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ std::string Message::get_prefix(void) const
 	return this->_prefix;
 }
 
-t_cmd_type Message::get_cmd(void) const
+cmd_type Message::get_cmd(void) const
 {
 	return this->_cmd;
 }
@@ -103,7 +103,7 @@ Message::parse_return Message::add_cmd(std::string cmd_str)
 	{
 		if (commands[i] == cmd_str)
 		{
-			this->_cmd = static_cast<t_cmd_type>(i);
+			this->_cmd = static_cast<cmd_type>(i);
 			return PARSING_SUCCESS;
 		}
 	}

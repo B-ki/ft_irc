@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 19:34:46 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/20 11:36:00 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ class	Server {
 		int 					delete_client(struct pollfd* ptr);
 		void 					print_client();
 		void 					process_buffer();
-		int 					execute_cmd(const Message& msg);
 
 		// --- Public attributes ---
 		bool					_started;

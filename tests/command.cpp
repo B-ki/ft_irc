@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 23:06:18 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 20:21:37 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/20 13:05:52 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ void test_error_function()
 
 	Server server;
 	Client client(sv[1]);
-	Command cmd(&server, &client, "NICK wron:gnick:name");	
+	std::string test_string = "NICK wron:gnick:name";
+	std::cerr << "Tested string is : " << test_string << std::endl;
+	Command cmd(&server, &client, test_string);	
+
+	cmd.execute_command();
 
 	ssize_t num_bytes = read(sv[0], buf, sizeof(buf));
 	if (num_bytes <= 0) {
@@ -39,6 +43,8 @@ void test_error_function()
 		return ;
 	}
 	buf[num_bytes] = '\0';
-	assert("wron:gnick:name :No such nick/channel" == buf);
+	std::string result(buf);
+	std::cerr << result << std::endl;
+	assert("wron:gnick:name:No such nick/channel" == result);
 	return;
 }

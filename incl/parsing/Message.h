@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 11:13:37 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/20 11:27:43 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,6 @@
 # include <vector>
 # include <algorithm>
 # include <iostream>
-
-typedef enum e_cmd_type
-{
-	PASS = 0,
-	NICK,
-	USER,
-	JOIN,
-	PART,
-	LEAVE,
-	PRIVMSG,
-	QUIT,
-	KICK,
-	INVITE,
-	TOPIC,
-	MODE,
-	NOTHING
-}	t_cmd_type;
 
 class Message
 {
@@ -54,7 +37,7 @@ class Message
 		std::string 						get_raw(void) const;
 		std::map<std::string, std::string> 	get_tags(void) const;
 		std::string 						get_prefix(void) const;
-		t_cmd_type 							get_cmd(void) const;
+		cmd_type							get_cmd(void) const;
 		std::vector<std::string> 			get_parameters(void) const;
 
 		// -- Public Functions --
@@ -74,7 +57,7 @@ class Message
 		std::string 						_raw;
 		std::map<std::string, std::string> 	_tags;
 		std::string 						_prefix;
-		t_cmd_type 							_cmd;
+		cmd_type 							_cmd;
 		std::vector<std::string> 			_parameters;
 
 		// -- Private functions --
