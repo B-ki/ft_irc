@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 17:57:07 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 11:14:38 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:35:51 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 # define BUFFER_H 
 
 # include <cstring>
-
-# define BUFFER_SIZE 8
+# include "constant.h"
 
 class Buffer
 {
@@ -32,7 +31,7 @@ class Buffer
 		char* 	get_buffer(); // const member ? 
 		int 	get_end_message() const;
 
-		int receive(const int fd);
+		int receive(int fd);
 
 	private:
 		char 			_s[BUFFER_SIZE]; // Pas de raison d'avoir le buffer en privé

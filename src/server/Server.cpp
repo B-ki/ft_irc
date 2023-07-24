@@ -6,12 +6,12 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 11:35:52 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:26:43 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server/Server.h"
-#include "color.h"
+#include "core/color.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <string.h>
@@ -190,18 +190,15 @@ int Server::create_client()
 		return 1;
 	}
 
-	// Adding the new client to the Client list
 	client.set_fd(client_fd);
 	client.set_IP();
 	_client_list.insert(std::make_pair(client_fd, client));
 
-	// Adding the new client to the poll_fds_list
 	pollfd new_client;
 	new_client.fd = client_fd;
 	new_client.events = POLLIN;
 	_client_pfd_list.push_back(new_client);
 
-	// Printing
 	if (client.get_storage_addr()->ss_family == AF_INET ||
 			client.get_storage_addr()->ss_family == AF_INET6) {
 		std::cout << "Adding new client fd : " << client.get_fd();

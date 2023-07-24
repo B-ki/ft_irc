@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 12:14:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 11:38:16 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:10:46 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int Command::error(std::string err_mess, int err_code)
 	std::string final_message = _client->get_nick() + " " + err_mess;
 	if (_client == NULL)
 		return -1;
-	if (send(_client->get_fd(), final_message.c_str(), sizeof(final_message), 0) == -1)
+	if (send(_client->get_fd(), final_message.c_str(), final_message.size(), 0) == -1)
 		ERROR("sending error message");
 	return err_code;
 }

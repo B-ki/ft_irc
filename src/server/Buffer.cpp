@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 18:12:03 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/13 11:23:54 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:27:45 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char* Buffer::get_buffer()
 	return _s;
 }
 
-int Buffer::receive(const int fd)
+int Buffer::receive(int fd)
 {
 	int ret = recv(fd, _s + length, BUFFER_SIZE - length, 0);
 	if (ret == -1)

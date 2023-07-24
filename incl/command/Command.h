@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:59:09 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 11:38:00 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/24 23:22:30 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ class Command
 		// -- Commands --
 		int execute_PASS();
 		int execute_NICK();
-		int execute_USER();
-		
+		int execute_USER();	
 };
 
 #endif

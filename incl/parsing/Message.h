@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 11:27:43 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/24 21:34:31 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <vector>
 # include <algorithm>
 # include <iostream>
+# include "error.h"
 
 class Message
 {
@@ -61,20 +62,20 @@ class Message
 		std::vector<std::string> 			_parameters;
 
 		// -- Private functions --
-		parse_return 	parse_tags(std::string all_tags);
-		parse_return 	handle_tags(std::string &str_to_parse, 
-		  				std::string::iterator &position, size_t &space_pos);
-		parse_return 	handle_prefix(std::string &str_to_parse,
+		int 	parse_tags(std::string all_tags);
+		int 	handle_tags(std::string &str_to_parse, 
+		  					std::string::iterator &position, size_t &space_pos);
+		int 	handle_prefix(std::string &str_to_parse,
 							std::string::iterator &position, size_t &space_pos);
-		void 			skip_space(std::string::iterator &position, 
-							size_t &space_pos);
-		parse_return 	parse_normal_parameters(std::string normal_params);
+		int 	handle_no_trailing(std::string &str_to_parse,
+							std::string::iterator &position, size_t &space_pos);
+		int 	parse_normal_parameters(std::string normal_params);
 
-		parse_return 	add_raw(std::string raw);
-		parse_return 	add_tag(std::string key, std::string value);
-		parse_return 	add_prefix(std::string prefix);
-		parse_return 	add_cmd(std::string cmd_str);
-		parse_return 	add_parameter(std::string parameter);
+		int 	add_raw(std::string raw);
+		int 	add_tag(std::string key, std::string value);
+		int 	add_prefix(std::string prefix);
+		int 	add_cmd(std::string cmd_str);
+		int 	add_parameter(std::string parameter);
 
 };
 

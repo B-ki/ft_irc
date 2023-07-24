@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:39:04 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 11:32:50 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/24 20:51:42 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 bool is_valid_nickname(std::string nick)
 {
+	std::cerr << nick << std::endl;
 	for (std::string::iterator it = nick.begin(); it != nick.end(); it++)
 	{
 		if (!isalpha(*it) && !isdigit(*it) && *it != '[' && *it != ']'
@@ -47,7 +48,6 @@ int Command::execute_NICK()
 	if (nick_already_used(nick, _server->get_client_list()))
 		return error(ERR_NICKNAMEINUSE(nick), 433);
 	_client->set_nick(nick);
-	// Send message to all clients to indicate user changed his nickname
 
 	return 0;
 }
