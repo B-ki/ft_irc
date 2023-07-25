@@ -2,7 +2,7 @@
 # define UTILS_H
 
 namespace utils {
-	int	min(int a, int b);
+	bool is_empty(const char* str);
 }
 
 #endif

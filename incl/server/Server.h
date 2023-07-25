@@ -30,7 +30,6 @@
 # include <iomanip>
 # include "parsing/Message.h"
 
-
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
 # define MAX_CONNEXIONS 10
@@ -53,16 +52,16 @@ class	Server {
 		std::map<int, Client>& 	get_client_list();
 
 		// -- Public Functions --
-		int						start();
-		int						stop();
-		int 					loop();
-		int 					create_client();
-		int 					delete_client(struct pollfd* ptr);
-		void 					print_client();
-		void 					process_buffer();
+		int		start();
+		int		stop();
+		int 	loop();
+		int 	create_client();
+		void 	print_clients();
+		void 	process_buffer();
+
 
 		// --- Public attributes ---
-		bool					_started;
+		bool	_started;
 
 		// --- Command execution ---
 		int execute_nick(Message mess);	
@@ -70,14 +69,20 @@ class	Server {
 	private:
 		// -- Private attributes --
 		int						_sockfd;
+		int						_nb_clients;
 		std::string				_port;
 		std::string				_password;
 		std::string				_ip_version;
 		struct addrinfo			_hints;
 		struct addrinfo*		_servinfo;
-		std::vector<pollfd> 	_client_pfd_list;
+		pollfd 	                _client_pfd_list[MAX_CONNEXIONS];
 		std::map<int, Client> 	_client_list;
 		char 					_buffer[BUFFER_SIZE];
+
+		// -- Private functions --
+		int						handle_recv(int fd, int i, int listener);
+		void                    remove_fd(int start);
+		int 	                delete_client(int id);
 };
 
 #endif

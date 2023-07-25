@@ -1,26 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/06 14:31:57 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 21:26:43 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "server/Server.h"
 #include "core/color.h"
+#include "utils.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <utility>
 
-Server::Server() : _started(false), _sockfd(-1), _port(DEFAULT_PORT),
-	_password(DEFAULT_PASSWORD), _ip_version(), _hints(), _servinfo(NULL),
-	_client_pfd_list()
+Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
+	_port(DEFAULT_PORT), _password(DEFAULT_PASSWORD), _ip_version(), _hints(),
+	_servinfo(NULL), _client_pfd_list()
 {
 	INFO((std::string)"no port provided, using default port " + DEFAULT_PORT);
 	INFO((std::string)"setting password to the default '" + DEFAULT_PASSWORD + "'");
@@ -32,11 +21,12 @@ Server::Server() : _started(false), _sockfd(-1), _port(DEFAULT_PORT),
 		ERROR("could not get the server connection details");
 		exit(1); // TODO throw an error ??
 	}
+	memset(&_client_pfd_list, 0, sizeof(_client_pfd_list) * MAX_CONNEXIONS);
 }
 
 Server::Server(std::string port, std::string password) : _started(false), 
-	_sockfd(-1), _port(port), _password(password), _ip_version(), _hints(),
-	_servinfo(NULL), _client_pfd_list()
+	_sockfd(-1), _nb_clients(0), _port(port), _password(password), _ip_version(),
+	_hints(), _servinfo(NULL), _client_pfd_list()
 {
 	INFO((std::string)"using the given port " + port);
 	INFO((std::string)"using the given password '" + port + "'");
@@ -46,26 +36,26 @@ Server::Server(std::string port, std::string password) : _started(false),
 	_hints.ai_flags = AI_PASSIVE;
 	if (getaddrinfo(NULL, _port.c_str(), &_hints, &_servinfo) != 0) {
 		ERROR("could not get the server connection details");
-		exit(1); // TODO throw an error ??
+		exit(1);
 	}
 }
 
-Server::Server(const Server& server)
-{
-	*this = server;
-}
+//Server::Server(const Server& server)
+//{
+//	*this = server;
+//}
 
-Server&	Server::operator=(const Server& server)
-{
-	if (this != &server) {
-		_port = server._port;
-		_hints = server._hints;
-		_servinfo = server._servinfo;
-		_sockfd = server._sockfd;
-		_started = server._started;
-	}
-	return *this;
-}
+//Server&	Server::operator=(const Server& server)
+//{
+//	if (this != &server) {
+//		_port = server._port;
+//		_hints = server._hints;
+//		_servinfo = server._servinfo;
+//		_sockfd = server._sockfd;
+//		_started = server._started;
+//	}
+//	return *this;
+//}
 
 Server::~Server()
 {
@@ -94,7 +84,7 @@ int Server::start()
 
 	_sockfd = socket(_servinfo->ai_family, _servinfo->ai_socktype, _servinfo->ai_protocol);
 	if (_sockfd < 0) {
-		ERROR("could not creatre server socket");
+		ERROR("could not create server socket");
 		return 1;
 	}
 	if (setsockopt(_sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
@@ -121,59 +111,56 @@ int Server::start()
 	server_pfd.events = POLLIN;
 	server_pfd.revents = 0;
 
-	_client_pfd_list.insert(_client_pfd_list.begin(), server_pfd);
+	_client_pfd_list[_nb_clients++] = server_pfd;
 	std::cout << "Server socket " << _sockfd << " added to _client_pfd_list\n";
-	// We need to initialize the vector _client_fd_list or poll won't work
 
 	std::cout << "Server in now waiting for connections on: ";
 	std::cout << ipstr << ":" << _port << std::endl;
 	return 0;
 }
 
+int Server::handle_recv(int fd, int i, int listener)
+{
+	if (_client_list[fd].read_buffer() != 0) {
+		ERROR("removing client, having problems reading buffer");
+		delete_client(i);
+		return -1;
+	}
+	const std::string& message = _client_list[fd].get_last_message();
+	for (int j=0; j < _nb_clients; j++) {
+		if (_client_pfd_list[j].fd != fd && _client_pfd_list[j].fd != listener) {
+			if (send(_client_pfd_list[j].fd, message.c_str(), message.size(), 0) == -1) {
+				ERROR("can't send message to client");
+				return 3;
+			}
+		}
+	}
+	return 0;
+}
+
 int Server::loop()
 {
 	int ret_poll = 0;
-	ret_poll = poll(&_client_pfd_list[0], _client_pfd_list.size(), -1);
+	ret_poll = poll(_client_pfd_list, _nb_clients, -1);
 	if (ret_poll < 0) {
 		ERROR("poll error");
 		return 0;
 	}
-	int listener = _client_pfd_list.begin()->fd;
-	for(size_t i = 0; i < _client_pfd_list.size(); i++)
+	int listener = _client_pfd_list[0].fd;
+	for(int i = 0; i < _nb_clients; i++)
 	{
 		if (_client_pfd_list[i].revents & POLLIN) {
 			int fd = _client_pfd_list[i].fd;
 			std::cout << "POLLIN from fd = " << fd << std::endl;
-			if (fd == listener) { 
+			if (fd == listener) {
 				if (create_client() != 0) {
 					ERROR("Can't add client");
 					return 1;
 				}
-			} else { // Create function to handle message
-				int nbytes = recv(fd, _buffer, BUFFER_SIZE, 0);
-				//int nbytes = get_client(fd).get_buffer().receive(fd);
-				std::cout << GREEN << "nbytes = " << RESET << nbytes << std::endl;
-				if (nbytes <= 0 || nbytes >= BUFFER_SIZE) {
-					if (nbytes == 0) 
-						delete_client(&_client_pfd_list[i]);
-					else {
-						ERROR("Error recv");
-						return 2;
-					}
-				} else {
-					for (std::vector<pollfd>::iterator it2 = _client_pfd_list.begin();
-							it2 != _client_pfd_list.end();
-							it2++)
-					{
-						if (it2->fd != listener && it2->fd != fd) {
-							if (send(it2->fd, _buffer, nbytes, 0) == -1) {
-								ERROR("Error send");
-								return 3;
-							}
-						}
-					}
+			} else {
+				if (handle_recv(fd, i, listener) != 0) {
+					return 1;
 				}
-				// process buffer with fd			
 			}
 		}
 	}
@@ -197,32 +184,49 @@ int Server::create_client()
 	pollfd new_client;
 	new_client.fd = client_fd;
 	new_client.events = POLLIN;
-	_client_pfd_list.push_back(new_client);
+	_client_pfd_list[_nb_clients++] = new_client;
 
 	if (client.get_storage_addr()->ss_family == AF_INET ||
 			client.get_storage_addr()->ss_family == AF_INET6) {
 		std::cout << "Adding new client fd : " << client.get_fd();
 		std::cout << ", IP : " << client.get_IP() << std::endl;
 	}
-	print_client();
+	print_clients();
 	return 0;
 }
 
-int Server::delete_client(struct pollfd* ptr)
+Client* Server::get_client(int const fd)
 {
+	for (int i=0; i < _nb_clients; i++) {
+		if (_client_pfd_list[i].fd == fd)
+			return &_client_list[fd];
+	}
+	return NULL;
+}
+
+void Server::remove_fd(int start)
+{
+	for (int i=start + 1; i < _nb_clients; i++) {
+		_client_pfd_list[i - 1] = _client_pfd_list[i];
+	}
+	_nb_clients--;
+}
+
+int Server::delete_client(int id)
+{
+	pollfd* ptr = &_client_pfd_list[id];
 	int client_fd = ptr->fd;
-	std::vector<pollfd>::iterator it(ptr); 
-	Client& client = _client_list.find(client_fd)->second; 
+	Client* client = get_client(client_fd);
 	std::cout << "Removing client fd : " << client_fd; 
-	std::cout << ", IP : " << client.get_IP() << std::endl;
-	_client_list.erase(client.get_fd());
-	_client_pfd_list.erase(it);
+	std::cout << ", IP : " << client->get_IP() << std::endl;
+	_client_list.erase(client->get_fd());
+	remove_fd(id);
 	close(client_fd);
-	print_client();
+	print_clients();
 	return 0;
 }
 
-void Server::print_client()
+void Server::print_clients()
 {
 	std::cout << std::endl;
 	std::cout << std::setw(25) << std::setfill(' ');
@@ -233,7 +237,7 @@ void Server::print_client()
 	std::cout << std::setw(22) << std::setfill(' ') << std::left << "| Listener : " << _client_pfd_list[0].fd;
 	std::cout << "  |\n";
 	std::cout << std::string(26, '-') << "\n";
-	for (size_t i = 1; i < _client_pfd_list.size(); i++) {
+	for (int i = 1; i < _nb_clients; i++) {
 		std::cout << std::setw(22) << std::setfill(' ') << std::left << "| Client : " << _client_pfd_list[i].fd;
 		std::cout << "  |\n";
 		std::cout << std::string(26, '-') << "\n";
@@ -245,15 +249,6 @@ void Server::process_buffer()
 {
 	std::string raw(_buffer);
 	Message msg(raw);
-}
-
-Client* Server::get_client(int const fd) 
-{
-	std::map<int, Client>::iterator ret;
-	ret = _client_list.find(fd);
-	if (ret == _client_list.end())
-		return NULL;
-	return &(*ret).second;
 }
 
 Client* Server::get_client(std::string const nick) // Return pointer instead and NULL if error 

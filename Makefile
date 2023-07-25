@@ -55,6 +55,7 @@ H_DIR		= incl
 ### SOURCE FILES ###
 SRCS	=	main.cpp \
 			utils/log.cpp \
+			utils/is_empty.cpp \
 			parsing/Message.cpp \
 			parsing/Message_parsing.cpp \
 			server/Server.cpp \

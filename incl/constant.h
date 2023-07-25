@@ -1,7 +1,7 @@
 #ifndef CONSTANT_H
 # define CONSTANT_H
 
-# define BUFFER_SIZE 1024
+# define BUFFER_SIZE 8
 
 typedef enum 
 {
