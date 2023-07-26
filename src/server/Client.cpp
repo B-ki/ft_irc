@@ -126,14 +126,14 @@ int Client::read_buffer() {
 	if (message_index == -1) {
 		if (_buffer.get_length() == BUFFER_SIZE) {
 			ERROR("buffer full, erasing it");
-			_buffer.empty();
-			return 0;
+			_buffer.clear();
+			return 2;
 		}
 		INFO("no message yet");
-		return 0;
+		return 2;
 	}
 	_last_message = _buffer.get_message(message_index);
 	std::cout << "message: " << _last_message;
 	_buffer.flush_message(message_index);
-	return 0;
+	return 1;
 }

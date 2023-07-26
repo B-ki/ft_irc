@@ -121,17 +121,21 @@ int Server::start()
 
 int Server::handle_recv(int fd, int i, int listener)
 {
-	if (_client_list[fd].read_buffer() != 0) {
+	int ret = _client_list[fd].read_buffer();
+	if (ret < 0) {
 		ERROR("removing client, having problems reading buffer");
 		delete_client(i);
 		return -1;
-	}
-	const std::string& message = _client_list[fd].get_last_message();
-	for (int j=0; j < _nb_clients; j++) {
-		if (_client_pfd_list[j].fd != fd && _client_pfd_list[j].fd != listener) {
-			if (send(_client_pfd_list[j].fd, message.c_str(), message.size(), 0) == -1) {
-				ERROR("can't send message to client");
-				return 3;
+	} else if (ret == 1) {
+		const std::string& message = _client_list[fd].get_last_message();
+		// TODO Create command
+		// TODO Execute command
+		for (int j=0; j < _nb_clients; j++) {
+			if (_client_pfd_list[j].fd != fd && _client_pfd_list[j].fd != listener) {
+				if (send(_client_pfd_list[j].fd, message.c_str(), message.size(), 0) == -1) {
+					ERROR("can't send message to client");
+					return 3;
+				}
 			}
 		}
 	}

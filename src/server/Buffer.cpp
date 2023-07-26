@@ -81,7 +81,7 @@ void Buffer::flush_message(int index)
 	_str[_length] = '\0';
 }
 
-void Buffer::empty()
+void Buffer::clear()
 {
 	_length = 0;
 	_str[0] = '\0';

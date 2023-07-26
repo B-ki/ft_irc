@@ -36,7 +36,7 @@ class Buffer
 		int         is_message_over();
 		std::string get_message(int index);
 		void        flush_message(int index);
-		void        empty();
+		void        clear();
 
 	private:
 		char 			_str[BUFFER_SIZE + 1];
