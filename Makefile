@@ -55,10 +55,21 @@ H_DIR		= incl
 ### SOURCE FILES ###
 SRCS	=	main.cpp \
 			utils/log.cpp \
-			parsing/Message.cpp
+			parsing/Message.cpp \
+			parsing/Message_parsing.cpp \
+			server/Server.cpp \
+			server/Client.cpp \
+			server/Buffer.cpp \
+			command/Command.cpp \
+			command/error_command.cpp \
+			command/reply_command.cpp \
+			command/PASS.cpp \
+			command/NICK.cpp \
+			command/USER.cpp \
 
 T_SRCS	=	tests/main.cpp \
 			tests/parsing.cpp \
+			tests/command.cpp \
 			tests/core/Test.cpp \
 			tests/core/Config.cpp \
 			tests/core/run_tests.cpp

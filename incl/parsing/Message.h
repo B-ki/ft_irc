@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/17 18:21:27 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/26 16:54:04 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,51 +19,63 @@
 # include <vector>
 # include <algorithm>
 # include <iostream>
+# include "error.h"
 
 class Message
 {
 	public:
+		// -- Constructors --
 		Message(void);
 		Message(std::string messageToParse);
 		Message(Message const & src);
+
+		// -- Destructor --
 		~Message(void);
 
 		Message & operator=(Message const & rhs);
 		
-		std::string get_raw(void) const;
-		std::map<std::string, std::string> get_tags(void) const;
-		std::string get_prefix(void) const;
-		t_cmd_type get_cmd(void) const;
-		std::vector<std::string> get_parameters(void) const;
+		// -- Getter --
+		std::string 						get_raw(void) const;
+		std::map<std::string, std::string> 	get_tags(void) const;
+		std::string 						get_prefix(void) const;
+		cmd_type							get_cmd(void) const;
+		std::vector<std::string> 			get_parameters(void) const;
 
-		t_parse_return add_raw(std::string raw);
-		t_parse_return add_tag(std::string key, std::string value);
-		t_parse_return add_prefix(std::string prefix);
+		// -- Public Functions --
+		void 			print_message(void);
+		void 			clear(void);
+		int 			parse_message(std::string str_to_parse);
 		
-		t_parse_return add_cmd(std::string cmd_str);
-		t_parse_return add_parameter(std::string parameter);
-
-		void print_message(void);
-		void clear(void);
-		t_parse_return parse_message(std::string str_to_parse);
+		enum parse_return
+		{
+			PARSING_SUCCESS = 0,
+			PARSING_EMPTY_MESSAGE,
+			PARSING_GRAMMAR_ERROR,
+			PARSING_EXCEPT_ERROR
+		};
 
 	private:
 		std::string 						_raw;
 		std::map<std::string, std::string> 	_tags;
 		std::string 						_prefix;
-		std::string 						_nick;
-		std::string 						_user;
-		std::string 						_host;
-		t_cmd_type 							_cmd;
+		cmd_type 							_cmd;
 		std::vector<std::string> 			_parameters;
 
-		t_parse_return parse_tags(std::string all_tags);
-		t_parse_return handle_tags(std::string &str_to_parse, 
-			std::string::iterator &position, size_t &space_pos);
-		t_parse_return handle_prefix(std::string &str_to_parse,
-			std::string::iterator &position, size_t &space_pos);
-		void skip_space(std::string::iterator &position, size_t &space_pos);
-		t_parse_return parse_normal_parameters(std::string normal_params);
+		// -- Private functions --
+		int 	parse_tags(std::string all_tags);
+		int 	handle_tags(std::string &str_to_parse, 
+		  					std::string::iterator &position, size_t &space_pos);
+		int 	handle_prefix(std::string &str_to_parse,
+							std::string::iterator &position, size_t &space_pos);
+		int 	handle_no_trailing(std::string &str_to_parse,
+							std::string::iterator &position, size_t &space_pos);
+		int 	parse_normal_parameters(std::string normal_params);
+
+		int 	add_raw(std::string raw);
+		int 	add_tag(std::string key, std::string value);
+		int 	add_prefix(std::string prefix);
+		int 	add_cmd(std::string cmd_str);
+		int 	add_parameter(std::string parameter);
 
 };
 

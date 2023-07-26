@@ -1,7 +1,9 @@
 #ifndef CONSTANT_H
 # define CONSTANT_H
 
-typedef enum e_cmd_type
+# define BUFFER_SIZE 1024
+
+typedef enum 
 {
 	PASS = 0,
 	NICK,
@@ -13,17 +15,10 @@ typedef enum e_cmd_type
 	QUIT,
 	KICK,
 	INVITE,
+	NOTICE,
 	TOPIC,
 	MODE,
 	NOTHING
-}	t_cmd_type;
-
-typedef enum e_parse_return
-{
-	PARSING_SUCCESS = 0,
-	PARSING_EMPTY_MESSAGE,
-	PARSING_GRAMMAR_ERROR,
-	PARSING_EXCEPT_ERROR
-}	t_parse_return;
+} cmd_type;
 
 #endif

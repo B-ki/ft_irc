@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <string>
-#include "color.h"
+#include "core/color.h"
+#include <sstream>
 
 typedef enum	e_log_type
 {
@@ -13,7 +14,7 @@ typedef enum	e_log_type
 	LOG_ERROR
 }				t_log_type;
 
-void	log(e_log_type type, std::string msg, std::string function, int line);
+void	log(e_log_type type, std::ostringstream &msg_stream, std::string function, int line);
 
 # define INFO(msg) LOG(LOG_INFO, msg)
 # define DEBUG(msg) LOG(LOG_DEBUG, msg)
@@ -21,10 +22,14 @@ void	log(e_log_type type, std::string msg, std::string function, int line);
 # define ERROR(msg) LOG(LOG_ERROR, msg)
 
 # ifdef DEBUG_MODE
-#  define LOG(type, msg) (log(type, msg, __FILE__, __LINE__))
-# else
-#  define LOG(type, msg) ((void)NULL)
-# endif
-
+#  define LOG(type, msg) 										 \
+    {                                                         \
+        std::ostringstream msgStream;                            \
+        msgStream << msg;                                        \
+        log(type, msgStream, __FILE__, __LINE__);                \
+    }
+#else
+#define LOG(type, msg) ((void)NULL)
+#endif
 
 #endif
