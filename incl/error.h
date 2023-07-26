@@ -23,13 +23,13 @@ void	log(e_log_type type, std::ostringstream &msg_stream, std::string function, 
 
 # ifdef DEBUG_MODE
 #  define LOG(type, msg) 										 \
-    {                                                         \
+    {                                                            \
         std::ostringstream msgStream;                            \
         msgStream << msg;                                        \
         log(type, msgStream, __FILE__, __LINE__);                \
     }
-#else
-#define LOG(type, msg) ((void)NULL)
-#endif
+# else
+#  define LOG(type, msg) ((void)NULL)
+# endif
 
 #endif

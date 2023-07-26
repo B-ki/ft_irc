@@ -14,6 +14,7 @@
 # define BUFFER_H 
 
 # include <cstring>
+# include <string>
 # include "constant.h"
 
 class Buffer
@@ -28,14 +29,18 @@ class Buffer
 		~Buffer();
 
 		// -- Getter --
-		char* 	get_buffer(); // const member ? 
-		int 	get_end_message() const;
+		int get_length() const;
 
-		int receive(int fd);
+		// -- Public functions --
+		int         receive(int fd);
+		int         is_message_over();
+		std::string get_message(int index);
+		void        flush_message(int index);
+		void        clear();
 
 	private:
-		char 			_s[BUFFER_SIZE]; // Pas de raison d'avoir le buffer en privé
-		unsigned int 	length;
+		char 			_str[BUFFER_SIZE + 1];
+		int 	        _length;
 };
 
 #endif 

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Client.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/07 15:02:09 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 14:32:52 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CLIENT_H
 #define CLIENT_H 
 
@@ -33,15 +21,15 @@ class Client
 		~Client();
 
 		// -- Getter --
-		int get_fd() const;
-		sockaddr_storage* get_storage_addr();
-		socklen_t* get_addr_len();
-		char const* get_IP() const;
-		std::string get_nick() const;
-		std::string get_user() const;
-		std::string get_real_name() const;
-		Buffer& get_buffer();
-		bool is_authenticated() const;
+		int                         get_fd() const;
+		const sockaddr_storage*     get_storage_addr() const;
+		socklen_t*                  get_addr_len();
+		const char*                 get_IP() const;
+		const std::string&          get_nick() const;
+		const std::string&          get_user() const;
+		const std::string&          get_real_name() const;
+		const std::string&          get_last_message() const;
+		bool                        is_authenticated() const;
 
 		// -- Setter --
 		void set_fd(int fd);
@@ -50,6 +38,9 @@ class Client
 		void set_user(std::string const new_user);
 		void set_real_name(std::string const new_real_name);
 		void set_authenticated(bool const value);
+
+		// -- Public functions --
+		int read_buffer();
 
 	private:
 		// -- Private attributes --
@@ -62,6 +53,7 @@ class Client
 		std::string 		_real_name;
 		Buffer 				_buffer;
 		bool 				_authenticated;
+		std::string 		_last_message;
 
 };
 

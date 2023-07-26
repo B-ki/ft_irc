@@ -14,13 +14,13 @@
 #include "server/Server.h"
 
 
-Buffer::Buffer() : _s()
+Buffer::Buffer() : _str(), _length(0)
 {
 }
 
-Buffer::Buffer(const Buffer& other)
+Buffer::Buffer(const Buffer& other) : _length(other._length)
 {
-	std::strcpy(_s, other._s);
+	std::strcpy(_str, other._str);
 }
 
 Buffer::~Buffer()
@@ -29,40 +29,60 @@ Buffer::~Buffer()
 
 Buffer& Buffer::operator=(const Buffer& other)
 {
-	if (this != &other)
-		std::strcpy(_s, other._s);
+	if (this != &other) {
+		std::strcpy(_str, other._str);
+		_length = other._length;
+	}
 	return *this;
 }
 
-char* Buffer::get_buffer()
-{
-	return _s;
-}
+int Buffer::get_length() const { return _length; }
 
 int Buffer::receive(int fd)
 {
-	int ret = recv(fd, _s + length, BUFFER_SIZE - length, 0);
-	if (ret == -1)
-		return -1;
-	else if (ret == 0)
-		return 0;
-	else if (ret > 0) {
-		length += ret;
-		if (get_end_message() < 0)
-			return -2;
-		ret = length;
-		length = 0;
+	int ret = recv(fd, _str + _length, BUFFER_SIZE - _length, 0);
+	if (ret <= 0) {
+		if (ret == 0) {
+			ERROR("fd disconnected");
+		}
+		else {
+			ERROR("recv error");
+		}
 		return ret;
 	}
+	_length += ret;
+	_str[_length] = '\0';
 	return ret;
 }
 
-int Buffer::get_end_message() const
+int Buffer::is_message_over()
 {
-	for (u_int i = 0; i < length; i++)
+	for (int i = 0; i < _length; i++)
 	{
-		if (_s[i] == '\r' && i - 1 < length && _s[i] == '\n')
-			return i;
+		if (_str[i] == '\n')
+			return i + 1;
 	}
-	return -1;	
+	return -1;
+}
+
+std::string Buffer::get_message(int index)
+{
+	return std::string(_str, index);
+}
+
+void Buffer::flush_message(int index)
+{
+	_length -= index;
+	if (_length < 0) {
+		ERROR("bad index in flush_message");
+		return;
+	}
+	std::memmove(_str, _str + index, _length);
+	_str[_length] = '\0';
+}
+
+void Buffer::clear()
+{
+	_length = 0;
+	_str[0] = '\0';
 }
