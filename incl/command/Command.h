@@ -52,7 +52,8 @@ class Command
 		// -- Commands --
 		int execute_PASS();
 		int execute_NICK();
-		int execute_USER();	
+		int execute_USER();
+		int execute_JOIN();
 };
 
 #endif

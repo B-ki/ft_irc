@@ -111,7 +111,7 @@ int Client::read_buffer() {
 	return 0;
 }
 
-int Client::send(std::string const message)
+int Client::send(std::string const message) const
 {
 	if (::send(_fd, message.c_str(), message.size(), 0) == -1)
 	{

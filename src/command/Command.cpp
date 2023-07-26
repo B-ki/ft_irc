@@ -72,6 +72,8 @@ int Command::welcome()
 int Command::execute_command()
 {
 	cmd_type cmd = _message.get_cmd();
+	if (cmd == UNKNOWN)
+		return reply(ERR_UNKNOWNCOMMAND(_message.get_command()), 421);
 	if (cmd != CAP && cmd != PASS && cmd != NICK && cmd != USER
 			&& !_client->is_authenticated()) {
 		ERROR("Trying command without being authenticated");
@@ -83,6 +85,7 @@ int Command::execute_command()
 		case PASS: return execute_PASS();
 		case NICK: return execute_NICK();
 		case USER: return execute_USER();
+		case JOIN: return execute_JOIN();
 		default: return -1;
 	}
 }

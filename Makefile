@@ -67,6 +67,8 @@ SRCS	=	main.cpp \
 			command/PASS.cpp \
 			command/NICK.cpp \
 			command/USER.cpp \
+			command/JOIN.cpp \
+			management/Channel.cpp
 
 T_SRCS	=	tests/main.cpp \
 			tests/parsing.cpp \
