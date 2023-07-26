@@ -21,13 +21,14 @@
 # include <poll.h>
 # include <netdb.h>
 # include <stdlib.h>
+# include <vector>
 # include <unistd.h>
+# include <map>
+# include <iomanip>
 # include "error.h"
 # include "color.h"
-# include <vector>
-# include <map>
 # include "Client.h"
-# include <iomanip>
+# include "management/Channel.h"
 # include "parsing/Message.h"
 
 # define DEFAULT_PORT "6667"
