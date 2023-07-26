@@ -65,17 +65,18 @@ class	Server {
 
 	private:
 		// -- Private attributes --
-		int						_sockfd;
-		int						_nb_clients;
-		std::string				_port;
-		std::string				_password;
-		std::string				_ip_version;
-		struct addrinfo			_hints;
-		struct addrinfo*		_servinfo;
-		pollfd 	                _client_pfd_list[MAX_CONNEXIONS];
-		std::map<int, Client> 	_client_list;
-		char 					_buffer[BUFFER_SIZE];
-		std::string			    _hostname;
+		int						        _sockfd;
+		int						        _nb_clients;
+		std::string				        _port;
+		std::string				        _password;
+		std::string				        _ip_version;
+		struct addrinfo			        _hints;
+		struct addrinfo*		        _servinfo;
+		pollfd 	                        _client_pfd_list[MAX_CONNEXIONS];
+		std::map<int, Client> 	        _client_list;
+		char 					        _buffer[BUFFER_SIZE];
+		std::string			            _hostname;
+		std::map<std::string, Channel>  _channels;
 
 		// -- Private functions --
 		int						handle_recv(int fd, int i, int listener);

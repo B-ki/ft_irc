@@ -61,7 +61,9 @@ int Command::reply(std::string message, int code)
 int Command::execute_command()
 {
 	cmd_type cmd = _message.get_cmd();
-	if (cmd != PASS && cmd != CAP && !_client->is_authenticated())
+	if (cmd == UNKNOWN)
+		return reply(ERR_UNKNOWNCOMMAND(_message.get_command()), 421);
+	if (cmd != CAP && cmd != PASS && !_client->is_authenticated())
 		return reply(ERR_PASSWDMISMATCH(), 464);
 	switch (cmd)
 	{
@@ -69,6 +71,7 @@ int Command::execute_command()
 		case PASS: return execute_PASS();
 		case NICK: return execute_NICK();
 		case USER: return execute_USER();
+		case JOIN: return execute_JOIN();
 		default: return -1;
 	}
 }

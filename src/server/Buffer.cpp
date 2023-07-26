@@ -60,7 +60,7 @@ int Buffer::is_message_over()
 	for (int i = 0; i < _length; i++)
 	{
 		if (_str[i] == '\n')
-			return i + 1;
+			return i;
 	}
 	return -1;
 }
@@ -72,12 +72,12 @@ std::string Buffer::get_message(int index)
 
 void Buffer::flush_message(int index)
 {
-	_length -= index;
+	_length -= index + 1;
 	if (_length < 0) {
 		ERROR("bad index in flush_message");
 		return;
 	}
-	std::memmove(_str, _str + index, _length);
+	std::memmove(_str, _str + index + 1, _length);
 	_str[_length] = '\0';
 }
 

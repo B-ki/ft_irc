@@ -17,19 +17,21 @@
 #include <string>
 #include <utility>
 
-Message::Message(void) : _raw(), _tags(), _prefix(), _cmd(UNKNOWN), 
-	_parameters()
+Message::Message(void) : _raw(), _tags(), _prefix(), _cmd(UNKNOWN), _parameters(), _command()
 {
 }
 
-Message::Message(std::string str_to_parse) : _raw(), _tags(), _prefix(), 
-	_cmd(UNKNOWN), _parameters()
+Message::Message(std::string str_to_parse) : _raw(), _tags(), _prefix(), _cmd(UNKNOWN), _parameters()
 {	
 	parse_message(str_to_parse);
 	print_message();
 }
 
-Message::~Message(void) 
+Message::Message(Message const & src) : _raw(src._raw), _tags(src._tags), _prefix(src._prefix), _cmd(src._cmd), _parameters(src._parameters), _command(src._command)
+{	
+}
+
+Message::~Message(void)
 {
 	this->clear();
 }
@@ -49,6 +51,7 @@ Message & Message::operator=(Message const & rhs)
 		this->_prefix = rhs._prefix;
 		this->_cmd = rhs._cmd;
 		this->_parameters = rhs._parameters;
+		this->_command = rhs._command;
 	}
 	return *this;
 }
@@ -72,6 +75,11 @@ std::string Message::get_prefix(void) const
 cmd_type Message::get_cmd(void) const
 {
 	return this->_cmd;
+}
+
+const std::string& Message::get_command() const
+{
+	return _command;
 }
 
 std::vector<std::string> Message::get_parameters(void) const
@@ -103,7 +111,8 @@ int Message::add_prefix(std::string prefix)
 
 int Message::add_cmd(std::string cmd_str)
 {
-	const std::string commands[14] = {"UNKNOWN", "CAP", "PASS", "NICK", "USER", 
+	_command = cmd_str;
+	const std::string commands[14] = {"UNKNOWN", "CAP", "PASS", "NICK", "USER",
 		"JOIN", "PART", "PRIVMSG", "QUIT", "KICK", "INVITE", "NOTICE", "TOPIC", 
 		"MODE"};
 	for (int i = 0; i < 14; i++)
@@ -140,6 +149,7 @@ void Message::print_message(void)
 	std::cout << "Prefix : [" << this->_prefix << "]" << std::endl;
 	std::cout << "Cmd : [" << this->_cmd << "]" << std::endl;
 	std::cout << "Parameters :"  << std::endl;
+	std::cout << "Command: [" << _command << "]" << std::endl;
 	std::vector<std::string>::iterator itv;
 	for (itv = this->_parameters.begin(); itv != this->_parameters.end(); itv++)
 		std::cout << "[" << *itv << "]" << std::endl;

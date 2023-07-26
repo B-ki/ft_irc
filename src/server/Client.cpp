@@ -154,12 +154,12 @@ int Client::read_buffer() {
 		return 2;
 	}
 	_last_message = _buffer.get_message(message_index);
-	std::cout << "message: " << _last_message;
+	std::cout << "message: " << _last_message << std::endl;
 	_buffer.flush_message(message_index);
 	return 1;
 }
 
-int Client::send(std::string const message)
+int Client::send(std::string const message) const
 {
 	if (::send(_fd, message.c_str(), message.size(), 0) == -1)
 	{

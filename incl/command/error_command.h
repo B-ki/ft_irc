@@ -41,5 +41,6 @@
 	std::string ERR_BADCHANNELKEY(std::string channel);
 	std::string ERR_BADCHANMASK(std::string mask);
 	std::string ERR_CHANOPRIVSNEEDED(std::string channel);
+	std::string ERR_UNKNOWNCOMMAND(std::string command);
 
 #endif
