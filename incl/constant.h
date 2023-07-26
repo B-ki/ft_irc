@@ -5,20 +5,20 @@
 
 typedef enum 
 {
-	PASS = 0,
+	UNKNOWN = 0,
+	CAP,
+	PASS,
 	NICK,
 	USER,
 	JOIN,
 	PART,
-	LEAVE,
 	PRIVMSG,
 	QUIT,
 	KICK,
 	INVITE,
 	NOTICE,
 	TOPIC,
-	MODE,
-	NOTHING
+	MODE
 } cmd_type;
 
 #endif
