@@ -15,15 +15,18 @@ Client::Client(int fd) : _fd(fd), _nick("*"), _user("*"), _buffer(), _authentica
 	_addrlen = sizeof(struct sockaddr_storage);
 }
 
+/*
 Client::Client(const Client &other)
 {
 	*this = other;
 }
+*/
 
 Client::~Client()
 {
 }
 
+/*
 Client& Client::operator=(const Client& other)
 {
 	if (this != &other) {
@@ -40,6 +43,7 @@ Client& Client::operator=(const Client& other)
 	}
 	return *this;
 }
+*/
 
 int Client::get_fd() const
 {
@@ -81,9 +85,21 @@ const std::string& Client::get_last_message() const
 	return _last_message;
 }
 
+const std::string Client::get_source() const
+{
+	if (_user.empty())
+		return _nick;
+	return _nick + "!" + _user;
+}
+
 bool Client::is_authenticated() const
 {
 	return _authenticated;
+}
+
+bool Client::has_given_pwd() const
+{
+	return _pwd_ok;
 }
 
 void Client::set_fd(int fd)
@@ -115,6 +131,11 @@ void Client::set_real_name(std::string const new_real_name)
 void Client::set_authenticated(const bool value)
 {
 	_authenticated = value;
+}
+
+void Client::set_pwd_ok(const bool value)
+{
+	_pwd_ok = value;
 }
 
 int Client::read_buffer() {

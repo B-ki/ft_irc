@@ -6,11 +6,12 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 12:14:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 15:18:04 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 00:11:31 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command/Command.h"
+#include "constant.h"
 
 Command::Command() : _server(), _client(), _message()
 {
@@ -60,10 +61,11 @@ int Command::reply(std::string message, int code)
 int Command::execute_command()
 {
 	cmd_type cmd = _message.get_cmd();
-	if (cmd != PASS && !_client->is_authenticated())
+	if (cmd != PASS && cmd != CAP && !_client->is_authenticated())
 		return reply(ERR_PASSWDMISMATCH(), 464);
 	switch (cmd)
 	{
+		case CAP: return 0;
 		case PASS: return execute_PASS();
 		case NICK: return execute_NICK();
 		case USER: return execute_USER();

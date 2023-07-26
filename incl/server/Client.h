@@ -14,8 +14,8 @@ class Client
 		// -- Constructors --
 		Client();
 		Client(int fd);
-		Client(const Client& other);
-		Client& operator=(const Client& other);
+		//Client(const Client& other);
+		//Client& operator=(const Client& other);
 
 		// -- Destructors --
 		~Client();
@@ -30,6 +30,8 @@ class Client
 		const std::string&          get_real_name() const;
 		const std::string&          get_last_message() const;
 		bool                        is_authenticated() const;
+		bool 						has_given_pwd() const;
+		const std::string 			get_source() const;
 
 		// -- Setter --
 		void set_fd(int fd);
@@ -38,6 +40,7 @@ class Client
 		void set_user(std::string const new_user);
 		void set_real_name(std::string const new_real_name);
 		void set_authenticated(bool const value);
+		void set_pwd_ok(bool const value);
 
 		// -- Public functions --
 		int read_buffer();
@@ -54,6 +57,7 @@ class Client
 		std::string 		_real_name;
 		Buffer 				_buffer;
 		bool 				_authenticated;
+		bool 				_pwd_ok;
 		std::string 		_last_message;
 
 };

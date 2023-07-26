@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:04:54 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 16:54:04 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 00:00:20 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ class Message
 		// -- Constructors --
 		Message(void);
 		Message(std::string messageToParse);
-		Message(Message const & src);
+		//Message(Message const & src);
 
 		// -- Destructor --
 		~Message(void);
 
-		Message & operator=(Message const & rhs);
+		//Message & operator=(Message const & rhs);
 		
 		// -- Getter --
 		std::string 						get_raw(void) const;

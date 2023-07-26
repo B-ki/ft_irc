@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 16:53:57 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 00:10:17 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,27 @@
 #include <string>
 #include <utility>
 
-Message::Message(void) : _raw(), _tags(), _prefix(),_parameters()
+Message::Message(void) : _raw(), _tags(), _prefix(), _cmd(UNKNOWN), 
+	_parameters()
 {
-	this->_cmd = NOTHING;
 }
 
-Message::Message(std::string str_to_parse)
+Message::Message(std::string str_to_parse) : _raw(), _tags(), _prefix(), 
+	_cmd(UNKNOWN), _parameters()
 {	
 	parse_message(str_to_parse);
 	print_message();
 }
 
-Message::Message(Message const & src) : _raw(src._raw), _tags(src._tags), 
-	_prefix(src._prefix), _cmd(src._cmd), _parameters(src._parameters)
-{	
-}
-
 Message::~Message(void) 
 {
 	this->clear();
+}
+
+/*
+Message::Message(Message const & src) : _raw(src._raw), _tags(src._tags), 
+	_prefix(src._prefix), _cmd(src._cmd), _parameters(src._parameters)
+{	
 }
 
 Message & Message::operator=(Message const & rhs)
@@ -50,6 +52,7 @@ Message & Message::operator=(Message const & rhs)
 	}
 	return *this;
 }
+*/
 		
 std::string Message::get_raw(void) const
 {
@@ -100,7 +103,9 @@ int Message::add_prefix(std::string prefix)
 
 int Message::add_cmd(std::string cmd_str)
 {
-	const std::string commands[13] = {"PASS", "NICK", "USER", "JOIN", "PART", "LEAVE", "PRIVMSG", "QUIT", "KICK", "INVITE", "NOTICE", "TOPIC", "MODE"};
+	const std::string commands[14] = {"UNKOWN", "CAP", "PASS", "NICK", "USER", 
+		"JOIN", "PART", "PRIVMSG", "QUIT", "KICK", "INVITE", "NOTICE", "TOPIC", 
+		"MODE"};
 	for (int i = 0; i < 13; i++)
 	{
 		if (commands[i] == cmd_str)
@@ -109,6 +114,7 @@ int Message::add_cmd(std::string cmd_str)
 			return PARSING_SUCCESS;
 		}
 	}
+	ERROR("Unknown command");
 	return PARSING_GRAMMAR_ERROR;
 }
 
@@ -127,7 +133,6 @@ void Message::print_message(void)
 	std::cout << "---------------" << std::endl;
 	std::cout << "-- MESSAGE --" << std::endl;
 	std::cout << "Raw : [" << this->_raw << "]" << std::endl;
-	//std::cout << "       0123456789012345678901234567890123456789\n";
 	std::cout << "Tags :"  << std::endl;
 	std::map<std::string, std::string>::iterator it;
 	for (it = this->_tags.begin(); it != this->_tags.end(); it++)
@@ -146,6 +151,6 @@ void Message::clear()
 	this->_raw = "";
 	this->_prefix = "";
 	this->_tags.clear();
-	this->_cmd = NOTHING;
+	this->_cmd = UNKNOWN;
 	this->_parameters.clear();
 }

@@ -1,0 +1,72 @@
+<< CAP LS
+<< NICK rmorel
+<< USER rmorel rmorel irc.dal.net :Romain MOREL
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** Looking up your hostname...
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** Checking Ident
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** Found your hostname
+>> :atw.hu.eu.dal.net NOTICE AUTH :*** No Ident response
+>> :atw.hu.eu.dal.net 001 rmorel :Welcome to the DALnet IRC Network rmorel!~rmorel@62.210.33.104
+<< MODE rmorel +i
+>> :atw.hu.eu.dal.net 002 rmorel :Your host is atw.hu.eu.dal.net, running version bahamut-2.2.2
+>> :atw.hu.eu.dal.net 003 rmorel :This server was created Sat 08 Oct CEST at 2022 02:30:58 PM
+>> :atw.hu.eu.dal.net 004 rmorel atw.hu.eu.dal.net bahamut-2.2.2 aAbcCdefFghHiIjkKmnoOPrRsSwxXy AbceiIjklLmMnoOpPrRsStv beIjklov
+>> :atw.hu.eu.dal.net 005 rmorel NETWORK=DALnet SAFELIST MAXBANS=200 MAXCHANNELS=50 CHANNELLEN=32 KICKLEN=307 NICKLEN=30 TOPICLEN=307 MODES=6 CHANTYPES=# CHANLIMIT=#:50 PREFIX=(ohv)@%+ STATUSMSG=@%+ :are available on this server
+>> :atw.hu.eu.dal.net 005 rmorel CASEMAPPING=ascii WATCH=128 SILENCE=10 ELIST=cmntu EXCEPTS INVEX CHANMODES=beI,k,jl,ciPAmMnOprRsSt MAXLIST=b:200,e:100,I:100 TARGMAX=DCCALLOW:,JOIN:,KICK:4,KILL:20,NOTICE:20,PART:,PRIVMSG:20,WHOIS:,WHOWAS: :are available on this server
+>> :atw.hu.eu.dal.net 251 rmorel :There are 85 users and 7226 invisible on 38 servers
+>> :atw.hu.eu.dal.net 252 rmorel 73 :IRC Operators online
+>> :atw.hu.eu.dal.net 254 rmorel 3834 :channels formed
+>> :atw.hu.eu.dal.net 255 rmorel :I have 1616 clients and 1 servers
+>> :atw.hu.eu.dal.net 265 rmorel :Current local users: 1616 Max: 2113
+>> :atw.hu.eu.dal.net 266 rmorel :Current global users: 7311 Max: 12060
+>> :atw.hu.eu.dal.net NOTICE rmorel :*** Notice -- motd was last changed at 20/1/2021 6:02
+>> :atw.hu.eu.dal.net 375 rmorel :- atw.hu.eu.dal.net Message of the Day - 
+>> :atw.hu.eu.dal.net 372 rmorel :-20/1/2021 6:02
+>> :atw.hu.eu.dal.net 372 rmorel :- Welcome to DALnet!  By connecting to this network, you agree to abide
+>> :atw.hu.eu.dal.net 372 rmorel :- by its acceptable use policy, available here: http://www.dal.net/aup
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 372 rmorel :- Server Policies:
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 372 rmorel :-    *   We reserve the right to deny access to this server without
+>> :atw.hu.eu.dal.net 372 rmorel :-        warning or explanation
+>> :atw.hu.eu.dal.net 372 rmorel :-    *   No malicious bots, including flood and nick/channel chasers
+>> :atw.hu.eu.dal.net 372 rmorel :-    *   No channel filler bots/clients/psybncs
+>> :atw.hu.eu.dal.net 372 rmorel :-          - A channel filler is a client, bnc, or bot which is
+>> :atw.hu.eu.dal.net 372 rmorel :-            connected just to fill a channel and make it look
+>> :atw.hu.eu.dal.net 372 rmorel :-            bigger
+>> :atw.hu.eu.dal.net 372 rmorel :-    *   Operator impersonation, spamming, or any other abuse will
+>> :atw.hu.eu.dal.net 372 rmorel :-        cause you to be banned from this server
+>> :atw.hu.eu.dal.net 372 rmorel :-    *   Abide by DALnet's AUP (www.dal.net/aup)
+>> :atw.hu.eu.dal.net 372 rmorel :-    *   Please have fun and enjoy DALnet!
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 372 rmorel :-      ///admins////////////////////////////////////////
+>> :atw.hu.eu.dal.net 372 rmorel :-      //                                             //
+>> :atw.hu.eu.dal.net 372 rmorel :-      //  [ Hidden  - administrator             ]    //
+>> :atw.hu.eu.dal.net 372 rmorel :-      //                                             // 
+>> :atw.hu.eu.dal.net 372 rmorel :-      //  [ koszik  - assistant administrator   ]    //
+>> :atw.hu.eu.dal.net 372 rmorel :-      //                                             //
+>> :atw.hu.eu.dal.net 372 rmorel :-      ///operators/////////////////////////////////////
+>> :atw.hu.eu.dal.net 372 rmorel :-      //                                             //
+>> :atw.hu.eu.dal.net 372 rmorel :-      //                                             //
+>> :atw.hu.eu.dal.net 372 rmorel :-      //                                             //
+>> :atw.hu.eu.dal.net 372 rmorel :-      /////////////////////////////////////////////////
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 372 rmorel :- For IRCop assistance, please /join #operhelp or message one of our
+>> :atw.hu.eu.dal.net 372 rmorel :- friendly server staff listed above.
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 372 rmorel :- For multilingual information:  <http://docs.dal.net/>
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 372 rmorel :- Thank you for using DALnet!  We hope you have a pleasant day.
+>> :atw.hu.eu.dal.net 372 rmorel :- 
+>> :atw.hu.eu.dal.net 376 rmorel :End of /MOTD command.
+>> :rmorel MODE rmorel :+iH
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :rmorel
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :rmorel
+--> lag pong
+<< PING atw.hu.eu.dal.net
+>> :atw.hu.eu.dal.net PONG atw.hu.eu.dal.net :rmorel
+--> lag pong
+<< QUIT :leaving

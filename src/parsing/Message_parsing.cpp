@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 15:37:52 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 21:35:08 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/26 23:52:24 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,17 @@ int Message::parse_message(std::string str_to_parse)
 	skip_space(position, space_pos);
 	if (*position == '@') {
 		int ret = handle_tags(str_to_parse, position, space_pos);
-		if (ret != PARSING_SUCCESS)
+		if (ret != PARSING_SUCCESS) {
+			ERROR("parsing tags");
 			return (ret);
+		}
 	}
 	if (*position == ':') {
 		int ret = handle_prefix(str_to_parse, position, space_pos);
-		if (ret != PARSING_SUCCESS)
+		if (ret != PARSING_SUCCESS) {
+			ERROR("parsing prefix");
 			return (ret);
+		}
 	}
 	skip_space(position, space_pos);
 
@@ -173,8 +177,10 @@ int Message::parse_message(std::string str_to_parse)
 		return (this->add_cmd(std::string(position, str_to_parse.end())));
 
 	if (this->add_cmd(std::string(position, str_to_parse.begin() + space_pos)) 
-			== PARSING_GRAMMAR_ERROR)
+			== PARSING_GRAMMAR_ERROR) {
+		ERROR("adding cmd");
 		return (PARSING_GRAMMAR_ERROR);
+	}
 	while (position != str_to_parse.end() && *position != ' ')
 		position++;
 
