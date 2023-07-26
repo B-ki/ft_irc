@@ -32,5 +32,4 @@ void	log(e_log_type type, std::ostringstream &msg_stream, std::string function, 
 #define LOG(type, msg) ((void)NULL)
 #endif
 
-
 #endif
