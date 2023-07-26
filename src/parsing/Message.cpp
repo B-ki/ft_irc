@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 00:10:17 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 00:18:43 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int Message::add_cmd(std::string cmd_str)
 	const std::string commands[14] = {"UNKOWN", "CAP", "PASS", "NICK", "USER", 
 		"JOIN", "PART", "PRIVMSG", "QUIT", "KICK", "INVITE", "NOTICE", "TOPIC", 
 		"MODE"};
-	for (int i = 0; i < 13; i++)
+	for (int i = 0; i < 14; i++)
 	{
 		if (commands[i] == cmd_str)
 		{
