@@ -129,6 +129,8 @@ int Server::handle_recv(int fd, int i, int listener)
 		return -1;
 	} else if (ret == 1) {
 		const std::string& message = _client_list[fd].get_last_message();
+		if (message.empty())
+			return 0;
 		Command command(this, &_client_list[fd], message);
 		command.execute_command();
 	}
