@@ -120,6 +120,8 @@ int Server::start()
 
 int Server::handle_recv(int fd, int i, int listener)
 {
+	(void)listener;
+	// TODO clean this
 	int ret = _client_list[fd].read_buffer();
 	if (ret < 0) {
 		ERROR("removing client, having problems reading buffer");
