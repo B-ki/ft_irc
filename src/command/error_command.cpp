@@ -31,7 +31,7 @@ std::string ERR_NOTONCHANNEL(std::string channel) { return " :You're not on that
 std::string ERR_USERONCHANNEL(std::string nick, std::string channel) { return nick + " is already on channel " + channel; }
 std::string ERR_NEEDMOREPARAMS(std::string command) { return " :Not enough parameters for command " + command; }
 std::string ERR_ALREADYREGISTERED() { return " :You may not reregister"; }
-std::string ERR_PASSWDMISMATCH() { return " :Password incorrect"; }
+std::string ERR_PASSWDMISMATCH() { return ":Password incorrect"; }
 std::string ERR_CHANNELISFULL(std::string channel) { return " :Cannot join channel " + channel + " (+l)"; }
 std::string ERR_INVITEONLYCHAN(std::string channel) { return " :Cannot join channel " + channel + " (+i)"; }
 std::string ERR_BANNEDFROMCHAN(std::string channel) { return " :Cannot join channel " + channel + " (+b)"; }

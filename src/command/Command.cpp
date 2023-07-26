@@ -46,29 +46,22 @@ Server* Command::get_server() { return _server; }
 Client* Command::get_client() { return _client; }
 Message& Command::get_message() { return _message; }
 
-int Command::error(std::string err_mess, int err_code)
+int Command::reply(std::string message, int code)
 {
-	std::string final_message = _client->get_nick() + " " + err_mess;
+	std::stringstream final_message;
+	final_message << code << " " << _client->get_nick() << " " << message << "\n";
 	if (_client == NULL)
 		return -1;
-	if (send(_client->get_fd(), final_message.c_str(), final_message.size(), 0) == -1)
-		ERROR("sending error message");
-	return err_code;
-}
-
-int Command::reply(std::string reply_mess, int reply_code)
-{
-	std::string final_message = _client->get_nick() + " " + reply_mess;
-	if (_client == NULL)
-		return -1;
-	if (send(_client->get_fd(), final_message.c_str(), sizeof(final_message), 0) == -1)
+	if (_client->send(final_message.str()) != -1)
 		ERROR("sending reply message");
-	return reply_code;
+	return code;
 }
 
 int Command::execute_command()
 {
 	cmd_type cmd = _message.get_cmd();
+	if (cmd != PASS && !_client->is_authenticated())
+		return reply(ERR_PASSWDMISMATCH(), 464);
 	switch (cmd)
 	{
 		case PASS: return execute_PASS();
