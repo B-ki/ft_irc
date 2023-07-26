@@ -50,6 +50,7 @@ class	Server {
 		Client* 				get_client(std::string nick);
 		std::string& 			get_password(); 
 		std::map<int, Client>& 	get_client_list();
+		const std::string&      get_hostname() const;
 
 		// -- Public Functions --
 		int		start();
@@ -57,14 +58,10 @@ class	Server {
 		int 	loop();
 		int 	create_client();
 		void 	print_clients();
-		void 	process_buffer();
 
 
 		// --- Public attributes ---
 		bool	_started;
-
-		// --- Command execution ---
-		int execute_nick(Message mess);	
 
 	private:
 		// -- Private attributes --
@@ -78,6 +75,7 @@ class	Server {
 		pollfd 	                _client_pfd_list[MAX_CONNEXIONS];
 		std::map<int, Client> 	_client_list;
 		char 					_buffer[BUFFER_SIZE];
+		std::string			    _hostname;
 
 		// -- Private functions --
 		int						handle_recv(int fd, int i, int listener);

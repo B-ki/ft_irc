@@ -41,12 +41,12 @@ bool nick_already_used(std::string nick, std::map<int, Client>& list)
 int Command::execute_NICK()
 {
 	if (_message.get_parameters().empty())
-		return error(ERR_NONICKNAMEGIVEN(), 431);
+		return reply(ERR_NONICKNAMEGIVEN(), 431);
 	std::string nick = *_message.get_parameters().begin();
 	if (!is_valid_nickname(nick))
-		return error(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
+		return reply(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
 	if (nick_already_used(nick, _server->get_client_list()))
-		return error(ERR_NICKNAMEINUSE(nick), 433);
+		return reply(ERR_NICKNAMEINUSE(nick), 433);
 	_client->set_nick(nick);
 
 	return 0;

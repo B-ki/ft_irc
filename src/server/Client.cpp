@@ -3,13 +3,13 @@
 #include <netdb.h>
 
 
-Client::Client() : _nick(), _user(), _buffer()
+Client::Client() : _nick("*"), _user("*"), _buffer(), _authenticated(false)
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);
 }
 
-Client::Client(int fd) : _fd(fd), _nick(), _user(), _buffer()
+Client::Client(int fd) : _fd(fd), _nick("*"), _user("*"), _buffer(), _authenticated(false)
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);
@@ -136,4 +136,14 @@ int Client::read_buffer() {
 	std::cout << "message: " << _last_message;
 	_buffer.flush_message(message_index);
 	return 1;
+}
+
+int Client::send(std::string const message)
+{
+	if (::send(_fd, message.c_str(), message.size(), 0) == -1)
+	{
+		ERROR("sending message");
+		return -1;
+	}
+	return 0;
 }
