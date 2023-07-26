@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 11:39:04 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 20:51:42 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/26 14:40:12 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool nick_already_used(std::string nick, std::map<int, Client>& list)
 int Command::execute_NICK()
 {
 	if (_message.get_parameters().empty())
-		return error(ERR_NONICKNAMEGIVEN(), (431));
+		return error(ERR_NONICKNAMEGIVEN(), 431);
 	std::string nick = *_message.get_parameters().begin();
 	if (!is_valid_nickname(nick))
 		return error(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
