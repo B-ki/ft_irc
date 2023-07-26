@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 21:36:38 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/26 17:13:16 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include "error.h"
+# include "color.h"
 # include <vector>
 # include <map>
 # include "Client.h"
