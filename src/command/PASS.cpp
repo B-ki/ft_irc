@@ -15,12 +15,11 @@
 int Command::execute_PASS()
 {
 	if (_message.get_parameters().empty())
-		return error(ERR_NEEDMOREPARAMS("PASS"), 461);
+		return reply(ERR_NEEDMOREPARAMS("PASS"), 461);
 	if (*_message.get_parameters().begin() != _server->get_password())
-		return error(ERR_PASSWDMISMATCH(), 462);
+		return reply(ERR_PASSWDMISMATCH(), 462);
 	if (_client->is_authenticated())
-		return error(ERR_ALREADYREGISTERED(), 464);
+		return reply(ERR_ALREADYREGISTERED(), 464);
 	_client->set_authenticated(true);
-
 	return 0;
 }

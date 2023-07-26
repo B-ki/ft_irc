@@ -41,6 +41,7 @@ class Client
 
 		// -- Public functions --
 		int read_buffer();
+		int send(std::string const message);
 
 	private:
 		// -- Private attributes --

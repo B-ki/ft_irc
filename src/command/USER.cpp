@@ -37,12 +37,12 @@ bool username_already_used(std::string username, std::map<int, Client>& list)
 int Command::execute_USER()
 {
 	if (_message.get_parameters().empty())
-		return error(ERR_NEEDMOREPARAMS("USER"), 461);
+		return reply(ERR_NEEDMOREPARAMS("USER"), 461);
 	std::string username = *_message.get_parameters().begin();
 	if (!is_valid_username(username))
-		return error(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
+		return reply(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
 	if (username_already_used(username, _server->get_client_list()))
-		return error(ERR_NICKNAMEINUSE(username), 433);
+		return reply(ERR_NICKNAMEINUSE(username), 433);
 	_client->set_user(username);
 
 	return 0;

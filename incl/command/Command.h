@@ -38,8 +38,7 @@ class Command
 		Message& get_message();
 
 		// -- Error & replies --
-		int error(std::string err_mess, int err_code);
-		int reply(std::string reply_mess, int reply_code);
+		int reply(std::string message, int code);
 
 		// -- Execute --
 		int execute_command();

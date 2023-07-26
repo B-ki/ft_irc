@@ -1,6 +1,5 @@
 #include "server/Server.h"
-#include "core/color.h"
-#include "utils.h"
+#include "command/Command.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <string.h>
@@ -9,7 +8,7 @@
 
 Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
 	_port(DEFAULT_PORT), _password(DEFAULT_PASSWORD), _ip_version(), _hints(),
-	_servinfo(NULL), _client_pfd_list()
+	_servinfo(NULL), _client_pfd_list(), _hostname("irc42.fr")
 {
 	INFO((std::string)"no port provided, using default port " + DEFAULT_PORT);
 	INFO((std::string)"setting password to the default '" + DEFAULT_PASSWORD + "'");
@@ -26,7 +25,7 @@ Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
 
 Server::Server(std::string port, std::string password) : _started(false), 
 	_sockfd(-1), _nb_clients(0), _port(port), _password(password), _ip_version(),
-	_hints(), _servinfo(NULL), _client_pfd_list()
+	_hints(), _servinfo(NULL), _client_pfd_list(), _hostname("irc42.fr")
 {
 	INFO((std::string)"using the given port " + port);
 	INFO((std::string)"using the given password '" + port + "'");
@@ -128,16 +127,8 @@ int Server::handle_recv(int fd, int i, int listener)
 		return -1;
 	} else if (ret == 1) {
 		const std::string& message = _client_list[fd].get_last_message();
-		// TODO Create command
-		// TODO Execute command
-		for (int j=0; j < _nb_clients; j++) {
-			if (_client_pfd_list[j].fd != fd && _client_pfd_list[j].fd != listener) {
-				if (send(_client_pfd_list[j].fd, message.c_str(), message.size(), 0) == -1) {
-					ERROR("can't send message to client");
-					return 3;
-				}
-			}
-		}
+		Command command(this, &_client_list[fd], message);
+		command.execute_command();
 	}
 	return 0;
 }
@@ -249,13 +240,7 @@ void Server::print_clients()
 	std::cout << std::endl;
 }
 
-void Server::process_buffer()
-{
-	std::string raw(_buffer);
-	Message msg(raw);
-}
-
-Client* Server::get_client(std::string const nick) // Return pointer instead and NULL if error 
+Client* Server::get_client(std::string const nick)
 {
 	for (std::map<int, Client>::iterator it = _client_list.begin();
 			it != _client_list.end(); it++)
@@ -274,4 +259,9 @@ std::map<int, Client>& 	Server::get_client_list()
 std::string& Server::get_password()
 {
 	return _password;
+}
+
+const std::string& Server::get_hostname() const
+{
+	return _hostname;
 }
