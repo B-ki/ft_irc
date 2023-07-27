@@ -30,10 +30,9 @@ class Channel
 		const std::string&                get_name() const;
 		const std::vector<const Client*>& get_admins() const;
 		const std::vector<const Client*>& get_members() const;
-		const std::vector<const Client*>& get_connected() const;
 		bool                              is_invite_only() const;
 		bool                              is_topic_restricted() const;
-		bool                              is_password_activation() const;
+		bool                              is_password_restricted() const;
 		const std::string&                get_password() const;
 		const std::string&                get_topic() const;
 
@@ -50,22 +49,33 @@ class Channel
 		void    add_admin(const Client* user);
 		void    remove_admin(const Client* user);
 		bool    is_admin(const Client* user) const;
+		bool    is_full() const;
+		bool    is_banned(const Client* user) const;
+		bool    is_invited(const Client* user) const;
+		bool    is_in_channel(const Client* user) const;
+		bool    validate_password(const std::string& password) const;
+
 
 		void    send_message(const Client* user, std::string message);
 		void    send_all(std::string message);
 
 
 	private:
+		// -- Private Variables --
 		std::string 			    _name;
 		std::vector<const Client*>  _admins;
 		std::vector<const Client*>  _members;
-		std::vector<const Client*>  _connected;
 		bool                        _invite_only;
 		bool                        _topic_restriction;
-		bool                        _password_activation;
+		bool                        _password_restriction;
 		std::string                 _password;
 		std::string                 _topic;
+		size_t                      _max_users;
 
+		// -- Private Functions --
+		std::vector<const Client*>::const_iterator  find_user(const std::vector<const Client*>& list, const Client* elem) const;
+		std::vector<const Client*>::iterator        find_user(std::vector<const Client*>& list, const Client* elem);
+		std::string                                 get_nicks_list() const;
 };
 
-#endif 
+#endif

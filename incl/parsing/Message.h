@@ -27,12 +27,12 @@ class Message
 		// -- Constructors --
 		Message(void);
 		Message(std::string messageToParse);
-		//Message(Message const & src);
+		Message(Message const & src);
 
 		// -- Destructor --
 		~Message(void);
 
-		//Message & operator=(Message const & rhs);
+		Message & operator=(Message const & rhs);
 		
 		// -- Getter --
 		std::string 						get_raw(void) const;

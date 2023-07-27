@@ -49,13 +49,9 @@ Message& Command::get_message() { return _message; }
 
 int Command::reply(std::string message, int code)
 {
-	std::stringstream final_message;
-	final_message << code << " " << _client->get_nick() << " " << message << "\n";
 	if (_client == NULL)
 		return -1;
-	if (_client->send(final_message.str()) != -1)
-		ERROR("sending reply message");
-	return code;
+	return _client->reply(message, code);
 }
 
 int Command::execute_command()

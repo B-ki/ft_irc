@@ -113,17 +113,17 @@ void Client::set_IP()
 			sizeof(_ip), NULL, 0, NI_NUMERICHOST);
 }
 
-void Client::set_nick(std::string const new_nick)
+void Client::set_nick(const std::string& new_nick)
 {
 	_nick = new_nick;
 }
 
-void Client::set_user(std::string const new_user)
+void Client::set_user(const std::string& new_user)
 {
 	_user = new_user;
 }
 
-void Client::set_real_name(std::string const new_real_name)
+void Client::set_real_name(const std::string& new_real_name)
 {
 	_real_name = new_real_name;
 }
@@ -159,12 +159,21 @@ int Client::read_buffer() {
 	return 1;
 }
 
-int Client::send(std::string const message) const
+int Client::send(const std::string& message) const
 {
 	if (::send(_fd, message.c_str(), message.size(), 0) == -1)
 	{
-		ERROR("sending message");
+		ERROR("cannot send message to client '" + _nick + "'");
 		return -1;
 	}
 	return 0;
+}
+
+int Client::reply(const std::string& message, int code) const
+{
+	std::stringstream final_message;
+	final_message << code << " " << _nick << " " << message << "\n";
+	if (send(final_message.str()) == -1)
+		ERROR("sending reply message");
+	return code;
 }

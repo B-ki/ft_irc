@@ -36,15 +36,16 @@ class Client
 		// -- Setter --
 		void set_fd(int fd);
 		void set_IP();
-		void set_nick(std::string const new_nick);
-		void set_user(std::string const new_user);
-		void set_real_name(std::string const new_real_name);
-		void set_authenticated(bool const value);
-		void set_pwd_ok(bool const value);
+		void set_nick(const std::string& new_nick);
+		void set_user(const std::string& new_user);
+		void set_real_name(const std::string& new_real_name);
+		void set_pwd_ok(bool value);
+		void set_authenticated(bool value);
 
 		// -- Public functions --
 		int read_buffer();
-		int send(std::string const message) const;
+		int send(const std::string& message) const;
+		int reply(const std::string& message, int code) const;
 
 	private:
 		// -- Private attributes --
