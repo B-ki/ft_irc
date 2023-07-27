@@ -55,11 +55,14 @@ class	Server {
 		const std::string&      get_hostname() const;
 
 		// -- Public Functions --
-		int		start();
-		int		stop();
-		int 	loop();
-		int 	create_client();
-		void 	print_clients();
+		int		    start();
+		int		    stop();
+		int 	    loop();
+		int 	    create_client();
+		void 	    print_clients();
+		bool        channel_exists(std::string name);
+		int         create_channel(const Client* client, const std::string& name);
+		Channel*    get_channel(const std::string& name);
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);

@@ -53,14 +53,7 @@ int Command::reply(std::string message, int code)
 	std::stringstream final_message;
 	if (_client == NULL)
 		return -1;
-	if (code < 10)
-		final_message << "00";
-	else if (code < 100)
-		final_message << "0";
-	final_message << code << " " << _client->get_nick() << " " << message << "\n";
-	if (_client->send(final_message.str()) != -1)
-		INFO("Sending reply message, code : " << code);
-	return code;
+	return _client->reply(message, code);
 }
 
 int Command::welcome()

@@ -27,8 +27,9 @@ Message::Message(std::string str_to_parse) : _raw(), _tags(), _prefix(), _cmd(UN
 	print_message();
 }
 
-Message::Message(Message const & src) : _raw(src._raw), _tags(src._tags), _prefix(src._prefix), _cmd(src._cmd), _parameters(src._parameters), _command(src._command)
-{	
+Message::Message(Message const & src)
+{
+	*this = src;
 }
 
 Message::~Message(void)
@@ -36,13 +37,7 @@ Message::~Message(void)
 	this->clear();
 }
 
-/*
-Message::Message(Message const & src) : _raw(src._raw), _tags(src._tags), 
-	_prefix(src._prefix), _cmd(src._cmd), _parameters(src._parameters)
-{	
-}
-
-Message & Message::operator=(Message const & rhs)
+Message& Message::operator=(Message const & rhs)
 {
 	if (this != &rhs)
 	{
@@ -55,8 +50,7 @@ Message & Message::operator=(Message const & rhs)
 	}
 	return *this;
 }
-*/
-		
+
 std::string Message::get_raw(void) const
 {
 	return this->_raw;
