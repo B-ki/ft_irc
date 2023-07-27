@@ -68,6 +68,7 @@ SRCS	=	main.cpp \
 			command/NICK.cpp \
 			command/USER.cpp \
 			command/JOIN.cpp \
+			command/TOPIC.cpp \
 			management/Channel.cpp
 
 T_SRCS	=	tests/main.cpp \

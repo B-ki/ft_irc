@@ -3,12 +3,12 @@
 #include "command/reply_command.h"
 
 Channel::Channel()
-: _name(), _admins(), _members(), _invite_only(false), _topic_restriction(false), _password_restriction(false), _password(""), _topic(""), _max_users(10)
+: _name(), _admins(), _members(), _invite_only(false), _topic_restriction(true), _password_restriction(false), _password(""), _topic(""), _max_users(10)
 {
 }
 
 Channel::Channel(const Client* user, const std::string& name)
-: _name(name), _admins(), _members(), _invite_only(false), _topic_restriction(false), _password_restriction(false), _password(""), _topic(""), _max_users(10)
+: _name(name), _admins(), _members(), _invite_only(false), _topic_restriction(true), _password_restriction(false), _password(""), _topic(""), _max_users(10)
 {
 	add_admin(user);
 	add_user(user);
@@ -99,9 +99,10 @@ void          Channel::set_password(const std::string& password)
 	_password = password;
 }
 
-void          Channel::set_topic(const std::string& topic)
+void          Channel::set_topic(const Client& user, const std::string& topic)
 {
 	_topic = topic;
+	send_all(":" + user.get_nick() + " TOPIC " + _name + " :" + _topic);
 	INFO("channel '" + _name + "' topic set to '" + _topic + "'");
 }
 
@@ -110,6 +111,8 @@ void          Channel::add_user(const Client* user)
 	if (find_user(_members, user) == _members.end()) {
 		_members.push_back(user);
 		send_all(user->get_nick() + " JOIN :" + _name);
+		user->reply(RPL_TOPIC(_name, _topic), 332);
+		// TODO: RPL_TOPICWHOTIME
 		user->reply(RPL_NAMREPLY(_name, get_nicks_list()), 353);
 		user->reply(RPL_ENDOFNAMES(_name), 366);
 	}

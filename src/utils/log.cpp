@@ -28,6 +28,9 @@ void	log(e_log_type type, std::ostringstream& msg_stream, std::string file, int 
 		case LOG_ERROR:
 			std::cerr << "[" << RED  << "ERROR ";
 			break;
+		default:
+			std::cerr << "[" << RESET  << "UNKNOWN ";
+			break;
     }
 	std::cerr << RESET << file << ":" << line << "] " << msg_stream.str() << std::endl;
 }

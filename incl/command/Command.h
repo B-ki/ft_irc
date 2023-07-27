@@ -53,6 +53,7 @@ class Command
 		int execute_NICK();
 		int execute_USER();
 		int execute_JOIN();
+		int execute_TOPIC();
 };
 
 #endif
