@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:08:59 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 11:33:00 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 18:36:46 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,17 @@ bool username_already_used(std::string username, std::map<int, Client>& list)
 
 int Command::execute_USER()
 {
+	if (!_client->has_given_pwd() || _client->get_nick().empty())
+		return -1;
 	if (_message.get_parameters().empty())
 		return reply(ERR_NEEDMOREPARAMS("USER"), 461);
 	std::string username = *_message.get_parameters().begin();
 	if (!is_valid_username(username))
-		return reply(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
+		return -1;
+		//return reply(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
 	if (username_already_used(username, _server->get_client_list()))
 		return reply(ERR_NICKNAMEINUSE(username), 433);
 	_client->set_user(username);
-
+	welcome();
 	return 0;
 }

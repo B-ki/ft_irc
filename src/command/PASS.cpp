@@ -6,11 +6,12 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 09:41:43 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 11:32:39 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 18:37:47 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command/Command.h"
+#include "command/reply_command.h"
 
 int Command::execute_PASS()
 {

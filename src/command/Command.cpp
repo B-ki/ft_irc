@@ -6,11 +6,12 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 12:14:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 00:11:31 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:31:10 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command/Command.h"
+#include "command/reply_command.h"
 #include "constant.h"
 
 Command::Command() : _server(), _client(), _message()
@@ -50,12 +51,25 @@ Message& Command::get_message() { return _message; }
 int Command::reply(std::string message, int code)
 {
 	std::stringstream final_message;
-	final_message << code << " " << _client->get_nick() << " " << message << "\n";
 	if (_client == NULL)
 		return -1;
+	final_message << _client->get_source() << " " << code << " " 
+		<< _client->get_nick() << " " << message << "\n";
 	if (_client->send(final_message.str()) != -1)
 		ERROR("sending reply message");
 	return code;
+}
+
+int Command::welcome()
+{
+	std::stringstream final_message;
+	if (_client == NULL)
+		return -1;
+	final_message << ":" << _server->get_hostname() << " 001 " << 
+		_client->get_nick() << RPL_WELCOME() << _client->get_source();
+	if (_client->send(final_message.str()) != -1)
+		ERROR("sending reply message");
+	return 1;
 }
 
 int Command::execute_command()
