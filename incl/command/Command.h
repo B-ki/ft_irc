@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 11:59:09 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 23:22:30 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:31:22 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Command
 
 		// -- Error & replies --
 		int reply(std::string message, int code);
+		int welcome();
 
 		// -- Execute --
 		int execute_command();

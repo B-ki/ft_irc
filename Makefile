@@ -71,6 +71,7 @@ SRCS	=	main.cpp \
 T_SRCS	=	tests/main.cpp \
 			tests/parsing.cpp \
 			tests/command.cpp \
+			tests/CmdTest.cpp \
 			tests/core/Test.cpp \
 			tests/core/Config.cpp \
 			tests/core/run_tests.cpp

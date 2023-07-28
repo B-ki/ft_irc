@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 17:13:16 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 15:30:32 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ class	Server {
 		// -- Getter --
 		Client* 				get_client(const int fd);
 		Client* 				get_client(std::string nick);
-		std::string& 			get_password(); 
+		const std::string& 			get_password() const; 
 		std::map<int, Client>& 	get_client_list();
 		const std::string&      get_hostname() const;
 
@@ -74,7 +74,6 @@ class	Server {
 		struct addrinfo*		_servinfo;
 		pollfd 	                _client_pfd_list[MAX_CONNEXIONS];
 		std::map<int, Client> 	_client_list;
-		char 					_buffer[BUFFER_SIZE];
 		std::string			    _hostname;
 
 		// -- Private functions --

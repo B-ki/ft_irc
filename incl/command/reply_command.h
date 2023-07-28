@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 15:35:40 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 19:16:42 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:15:20 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <string>
 
+	std::string RPL_WELCOME();
 	std::string RPL_AWAY(std::string nick);
 	std::string RPL_TOPIC(std::string channel, std::string topic);
 	std::string RPL_NOTOPIC(std::string channel);

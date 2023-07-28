@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:47:06 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 00:18:12 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 18:19:57 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,3 +329,26 @@ void parsing_test_18(void)
 	parsing_test_cmd(expected_cmd, expected_params, expected_tags,
 				expected_prefix, message);
 }
+
+void parsing_test(std::vector<Test*>& tests)
+{
+	tests.push_back(new Test("Parsing 1", &parsing_test_1));
+	tests.push_back(new Test("Parsing 2", &parsing_test_2));
+	tests.push_back(new Test("Parsing 3", &parsing_test_3));
+	tests.push_back(new Test("Parsing 4", &parsing_test_4));
+	tests.push_back(new Test("Parsing 5", &parsing_test_5));
+	tests.push_back(new Test("Parsing 6", &parsing_test_6));
+	tests.push_back(new Test("Parsing 7", &parsing_test_7));
+	tests.push_back(new Test("Parsing 8", &parsing_test_8));
+	tests.push_back(new Test("Parsing 9", &parsing_test_9));
+	tests.push_back(new Test("Parsing 10", &parsing_test_10));
+	tests.push_back(new Test("Parsing 11", &parsing_test_11));
+	tests.push_back(new Test("Parsing 12", &parsing_test_12));
+	tests.push_back(new Test("Parsing 13", &parsing_test_13));
+	tests.push_back(new Test("Parsing 14", &parsing_test_14));
+	tests.push_back(new Test("Parsing 15", &parsing_test_15));
+	tests.push_back(new Test("Parsing 16", &parsing_test_16));
+	tests.push_back(new Test("Parsing 17", &parsing_test_17));
+	tests.push_back(new Test("Parsing 18", &parsing_test_18));
+}
+

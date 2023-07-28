@@ -29,8 +29,9 @@ class Client
 		const std::string&          get_user() const;
 		const std::string&          get_real_name() const;
 		const std::string&          get_last_message() const;
-		bool                        is_authenticated() const;
-		bool 						has_given_pwd() const;
+		bool                  		is_authenticated() const;
+		bool 						has_given_password() const;
+		bool 						has_given_one_name() const;
 		const std::string 			get_source() const;
 
 		// -- Setter --
@@ -40,7 +41,8 @@ class Client
 		void set_user(std::string const new_user);
 		void set_real_name(std::string const new_real_name);
 		void set_authenticated(bool const value);
-		void set_pwd_ok(bool const value);
+		void set_password_ok(bool const value);
+		void set_name_given(bool const value);
 
 		// -- Public functions --
 		int         read_buffer();
@@ -59,6 +61,7 @@ class Client
 		std::string 		_real_name;
 		Buffer 				_buffer;
 		bool 				_authenticated;
+		bool 				_name_given;
 		bool 				_pwd_ok;
 		std::string 		_last_message;
 

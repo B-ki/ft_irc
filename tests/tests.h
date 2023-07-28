@@ -13,6 +13,8 @@
 #include "core/Config.h"
 #include "parsing/Message.h"
 #include "constant.h"
+#include "command/Command.h"
+#include "command/error_command.h"
 
 #define assert_str(s1, s2) \
     (strcmp(s1, s2) != 0 ? \
@@ -29,21 +31,5 @@ void 	parsing_test_cmd(cmd_type expected_cmd,
 			std::map<std::string, std::string> expected_tags,
 			std::string expected_prefix,
 			Message &message);
-void 	parsing_test_1(void);
-void 	parsing_test_2(void);
-void 	parsing_test_3(void);
-void 	parsing_test_4(void);
-void 	parsing_test_5(void);
-void 	parsing_test_6(void);
-void 	parsing_test_7(void);
-void 	parsing_test_8(void);
-void 	parsing_test_9(void);
-void 	parsing_test_10(void);
-void 	parsing_test_11(void);
-void 	parsing_test_12(void);
-void 	parsing_test_13(void);
-void 	parsing_test_14(void);
-void 	parsing_test_15(void);
-void 	parsing_test_16(void);
-void 	parsing_test_17(void);
-void 	parsing_test_18(void);
+void 	parsing_test(std::vector<Test*>& tests);
+void 	command_test_all(std::vector<Test*>& tests);

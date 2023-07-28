@@ -45,67 +45,36 @@ Client& Client::operator=(const Client& other)
 }
 */
 
-int Client::get_fd() const
-{
-	return _fd;
-}
+int Client::get_fd() const { return _fd; }
 
-const sockaddr_storage* Client::get_storage_addr() const
-{
-	return &_sock_addr;
-}
+const sockaddr_storage* Client::get_storage_addr() const { return &_sock_addr; }
 
-socklen_t* Client::get_addr_len()
-{
-	return &_addrlen;
-}
+socklen_t* Client::get_addr_len() {	return &_addrlen; }
 
-const char* Client::get_IP() const
-{
-	return _ip;
-}
+const char* Client::get_IP() const { return _ip; }
 
-const std::string& Client::get_nick() const
-{
-	return _nick;
-}
+const std::string& Client::get_nick() const { return _nick; }
 
-const std::string& Client::get_user() const
-{
-	return _user;
-}
+const std::string& Client::get_user() const { return _user; }
 
-const std::string& Client::get_real_name() const
-{
-	return _real_name;
-}
+const std::string& Client::get_real_name() const { return _real_name; }
 
-const std::string& Client::get_last_message() const
-{
-	return _last_message;
-}
+const std::string& Client::get_last_message() const { return _last_message; }
 
 const std::string Client::get_source() const
 {
 	if (_user.empty())
 		return _nick;
-	return _nick + "!" + _user;
+	return ":" + _nick + "!" + _user + "@" + get_IP();
 }
 
-bool Client::is_authenticated() const
-{
-	return _authenticated;
-}
+bool Client::is_authenticated() const {	return _authenticated; }
 
-bool Client::has_given_pwd() const
-{
-	return _pwd_ok;
-}
+bool Client::has_given_password() const { return _pwd_ok; }
 
-void Client::set_fd(int fd)
-{
-	_fd = fd;
-}
+bool Client::has_given_one_name() const { return _name_given; }
+
+void Client::set_fd(int fd) { _fd = fd; }
 
 void Client::set_IP()
 {
@@ -113,30 +82,17 @@ void Client::set_IP()
 			sizeof(_ip), NULL, 0, NI_NUMERICHOST);
 }
 
-void Client::set_nick(std::string const new_nick)
-{
-	_nick = new_nick;
-}
+void Client::set_nick(std::string const new_nick) {	_nick = new_nick; }
 
-void Client::set_user(std::string const new_user)
-{
-	_user = new_user;
-}
+void Client::set_user(std::string const new_user) {	_user = new_user; }
 
-void Client::set_real_name(std::string const new_real_name)
-{
-	_real_name = new_real_name;
-}
+void Client::set_real_name(std::string const new_real_name) { _real_name = new_real_name; }
 
-void Client::set_authenticated(const bool value)
-{
-	_authenticated = value;
-}
+void Client::set_authenticated(const bool value) { _authenticated = value; }
 
-void Client::set_pwd_ok(const bool value)
-{
-	_pwd_ok = value;
-}
+void Client::set_password_ok(const bool value) {	_pwd_ok = value; }
+
+void Client::set_name_given(const bool value) {	_name_given = value; }
 
 int Client::read_buffer() {
 	if (_buffer.receive(_fd) <= 0) {

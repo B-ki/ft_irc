@@ -6,44 +6,33 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 23:06:18 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 21:11:02 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 19:40:29 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "command/error_command.h"
 #include <cstring> 
-#include "command/Command.h"
 #include "tests.h"
+#include "CmdTest.hpp"
 
-void test_error_function()
+void command_test_1()
 {
-	int 	sv[2];
-	char 	buf[1024];
+	CmdTest cmd_test;
+	cmd_test.send("PASS password");
+	cmd_test.send("NICK rmorel");
+	cmd_test.send("USER rmorel");
+	//std::string result = cmd_test.receive();
+	//DEBUG("After PASS password, NICK rmorel and USER rmorel got [" << 
+	//		result << "]");
+	//DEBUG(cmd_test.get_server_hostname());
+	//std::string expected = ":" + cmd_test.get_server_hostname() + 
+	//	" rmorel :Welcome to the IRC Network rmorel"; 
+	//assert(result == expected);
+	DEBUG("Segfault? ");
+}
 
-	if (socketpair(AF_UNIX, SOCK_STREAM, 0, sv) == -1) {
-		ERROR("socketpair");
-		return;
-	}
-	std::cout << "Socket_pair = [" << sv[0] << ", " << sv[1] << "]\n";
 
-	Server server;
-	Client client(sv[1]);
-	std::string test_string = "NICK wron:gnick:name";
-	std::cout << "Tested string is : " << test_string << std::endl;
-	Command cmd(&server, &client, test_string);	
-
-	cmd.execute_command();
-
-	ssize_t num_bytes = read(sv[0], buf, sizeof(buf));
-	if (num_bytes <= 0) {
-		ERROR("Read");
-		close(sv[0]);
-		close(sv[1]);
-		return ;
-	}
-
-	buf[num_bytes] = '\0';
-	std::string result(buf);
-	assert(" wron:gnick:name :Erroneous nickname" == result);
-	return;
+void command_test_all(std::vector<Test*>& tests)
+{
+	(void)tests;
+	//tests.push_back(new Test("Welcome message", &command_test_1));	
 }
