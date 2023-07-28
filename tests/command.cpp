@@ -6,44 +6,23 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 23:06:18 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 12:29:58 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 15:13:01 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "command/error_command.h"
 #include <cstring> 
-#include "command/Command.h"
 #include "tests.h"
+#include "CmdTest.hpp"
 
-void test_error_function()
+
+void command_test_1()
 {
-	int 	sv[2];
-	char 	buf[1024];
+	CmdTest cmd_test("PASS 123", "PASS 123");
+	cmd_test.test();
+}
 
-	if (socketpair(AF_UNIX, SOCK_STREAM, 0, sv) == -1) {
-		ERROR("socketpair");
-		return;
-	}
-	std::cout << "Socket_pair = [" << sv[0] << ", " << sv[1] << "]\n";
-
-	Server server;
-	Client client(sv[1]);
-	std::string test_string = "NICK wron:gnick:name";
-	INFO( "Tested string is : " << test_string );
-	Command cmd(&server, &client, test_string);	
-
-	cmd.execute_command();
-
-	ssize_t num_bytes = read(sv[0], buf, sizeof(buf));
-	if (num_bytes <= 0) {
-		ERROR("Read");
-		close(sv[0]);
-		close(sv[1]);
-		return ;
-	}
-
-	buf[num_bytes] = '\0';
-	std::string result(buf);
-	assert(" wron:gnick:name :Erroneous nickname" == result);
-	return;
+void command_test_2()
+{
+	CmdTest cmd_test("PASS 123", "PASS 123");
+	cmd_test.test();
 }

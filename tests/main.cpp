@@ -28,11 +28,6 @@ void parsing_test(std::vector<Test*>& tests)
 	tests.push_back(new Test("Parsing 18", &parsing_test_18));
 }
 
-void command_test(std::vector<Test*>& tests)
-{
-	tests.push_back(new Test("Error return", &test_error_function));
-}
-
 int	main(void)
 {
     Config				config;

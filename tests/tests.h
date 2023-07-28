@@ -13,6 +13,8 @@
 #include "core/Config.h"
 #include "parsing/Message.h"
 #include "constant.h"
+#include "command/Command.h"
+#include "command/error_command.h"
 
 #define assert_str(s1, s2) \
     (strcmp(s1, s2) != 0 ? \
