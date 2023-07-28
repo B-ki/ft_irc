@@ -143,20 +143,16 @@ int Client::read_buffer() {
 		ERROR("client connection lost or read error");
 		return -1;
 	}
-	int message_index = _buffer.is_message_over();
-	if (message_index == -1) {
+	if (_buffer.has_message() == -1) {
 		if (_buffer.get_length() == BUFFER_SIZE) {
 			ERROR("buffer full, erasing it");
 			_buffer.clear();
-			return 2;
+			return 1;
 		}
-		INFO("no message yet");
-		return 2;
+		WARNING("no message yet");
+		return 1;
 	}
-	_last_message = _buffer.get_message(message_index);
-	std::cout << "message: " << _last_message;
-	_buffer.flush_message(message_index);
-	return 1;
+	return 0;
 }
 
 int Client::send(std::string const message)
@@ -167,4 +163,14 @@ int Client::send(std::string const message)
 		return -1;
 	}
 	return 0;
+}
+
+bool Client::has_message() const
+{
+	return _buffer.has_message() != -1;
+}
+
+std::string Client::extract_message()
+{
+	return _buffer.extract_message();
 }

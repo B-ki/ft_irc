@@ -43,8 +43,10 @@ class Client
 		void set_pwd_ok(bool const value);
 
 		// -- Public functions --
-		int read_buffer();
-		int send(std::string const message);
+		int         read_buffer();
+		int         send(std::string const message);
+		bool        has_message() const;
+		std::string extract_message();
 
 	private:
 		// -- Private attributes --

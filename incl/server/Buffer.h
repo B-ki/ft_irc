@@ -33,9 +33,8 @@ class Buffer
 
 		// -- Public functions --
 		int         receive(int fd);
-		int         is_message_over();
-		std::string get_message(int index);
-		void        flush_message(int index);
+		int         has_message() const;
+		std::string extract_message();
 		void        clear();
 
 	private:
