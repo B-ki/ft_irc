@@ -118,21 +118,21 @@ int Server::start()
 	return 0;
 }
 
-int Server::handle_recv(int fd, int i, int listener)
+int Server::handle_recv(int fd, int i)
 {
-	(void)listener;
-	// TODO clean this
 	int ret = _client_list[fd].read_buffer();
 	if (ret < 0) {
 		ERROR("removing client, having problems reading buffer");
 		delete_client(i);
 		return -1;
-	} else if (ret == 1) {
-		const std::string& message = _client_list[fd].get_last_message();
-		if (message.empty())
-			return 0;
-		Command command(this, &_client_list[fd], message);
-		command.execute_command();
+	} else if (ret == 0) {
+		while (_client_list[fd].has_message()) {
+			const std::string& message = _client_list[fd].extract_message();
+			if (!message.empty()) {
+				Command command(this, &_client_list[fd], message);
+				command.execute_command();
+			}
+		}
 	}
 	return 0;
 }
@@ -157,7 +157,7 @@ int Server::loop()
 					return 1;
 				}
 			} else {
-				if (handle_recv(fd, i, listener) != 0) {
+				if (handle_recv(fd, i) != 0) {
 					return 1;
 				}
 			}

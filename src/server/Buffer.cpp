@@ -55,30 +55,28 @@ int Buffer::receive(int fd)
 	return ret;
 }
 
-int Buffer::is_message_over()
+int Buffer::has_message() const
 {
 	for (int i = 0; i < _length; i++)
 	{
 		if (_str[i] == '\n')
-			return i + 1;
+			return i;
 	}
 	return -1;
 }
 
-std::string Buffer::get_message(int index)
+std::string Buffer::extract_message()
 {
-	return std::string(_str, index);
-}
-
-void Buffer::flush_message(int index)
-{
-	_length -= index;
-	if (_length < 0) {
-		ERROR("bad index in flush_message");
-		return;
-	}
-	std::memmove(_str, _str + index, _length);
+	int index = has_message();
+	if (index == -1)
+		return "";
+	std::string message(_str, index);
+	if (message.size() > 1 && message[message.size() - 1] == '\r')
+		message[message.size() - 1] = '\0';
+	_length -= index + 1;
+	std::memmove(_str, _str + index + 1, _length);
 	_str[_length] = '\0';
+	return message;
 }
 
 void Buffer::clear()

@@ -39,8 +39,8 @@ class	Server {
 		// -- Constructors --
 		Server();
 		Server(std::string port, std::string password);
-		Server(const Server& server);
-		Server&	operator=(const Server& server);
+//		Server(const Server& server);
+//		Server&	operator=(const Server& server);
 
 		// -- Destructor --
 		~Server();
@@ -78,7 +78,7 @@ class	Server {
 		std::string			    _hostname;
 
 		// -- Private functions --
-		int						handle_recv(int fd, int i, int listener);
+		int						handle_recv(int fd, int i);
 		void                    remove_fd(int start);
 		int 	                delete_client(int id);
 };
