@@ -6,13 +6,8 @@ void    fake_test(void)
     assert(true);
 }
 
-int	main(void)
+void parsing_test(std::vector<Test*>& tests)
 {
-    Config				config;
-    std::vector<Test*>	tests;
-
-    config.setStopOnFail(true);
-    tests.push_back(new Test("fake_test", &fake_test));
 	tests.push_back(new Test("Parsing 1", &parsing_test_1));
 	tests.push_back(new Test("Parsing 2", &parsing_test_2));
 	tests.push_back(new Test("Parsing 3", &parsing_test_3));
@@ -31,7 +26,20 @@ int	main(void)
 	tests.push_back(new Test("Parsing 16", &parsing_test_16));
 	tests.push_back(new Test("Parsing 17", &parsing_test_17));
 	tests.push_back(new Test("Parsing 18", &parsing_test_18));
-	//tests.push_back(new Test("Error return", &test_error_function));
+}
+
+void command_test(std::vector<Test*>& tests)
+{
+	tests.push_back(new Test("Error return", &test_error_function));
+}
+
+int	main(void)
+{
+    Config				config;
+    std::vector<Test*>	tests;
+
+    config.setStopOnFail(true);
+	parsing_test(tests);
 	// TODO fix test
     return run_tests(tests, config);
 }

@@ -89,7 +89,7 @@ const std::string Client::get_source() const
 {
 	if (_user.empty())
 		return _nick;
-	return ":" + _nick + "!" + _user + "@" + get_source();
+	return ":" + _nick + "!" + _user + "@" + get_IP();
 }
 
 bool Client::is_authenticated() const

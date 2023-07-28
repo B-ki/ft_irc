@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 23:06:18 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 21:11:02 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 12:29:58 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void test_error_function()
 	Server server;
 	Client client(sv[1]);
 	std::string test_string = "NICK wron:gnick:name";
-	std::cout << "Tested string is : " << test_string << std::endl;
+	INFO( "Tested string is : " << test_string );
 	Command cmd(&server, &client, test_string);	
 
 	cmd.execute_command();
