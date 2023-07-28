@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 12:14:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 17:31:10 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 19:44:38 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,30 +53,30 @@ int Command::reply(std::string message, int code)
 	std::stringstream final_message;
 	if (_client == NULL)
 		return -1;
-	final_message << _client->get_source() << " " << code << " " 
-		<< _client->get_nick() << " " << message << "\n";
+	if (code < 10)
+		final_message << "00";
+	else if (code < 100)
+		final_message << "0";
+	final_message << code << " " << _client->get_nick() << " " << message << "\n";
 	if (_client->send(final_message.str()) != -1)
-		ERROR("sending reply message");
+		INFO("Sending reply message, code : " << code);
 	return code;
 }
 
 int Command::welcome()
 {
-	std::stringstream final_message;
-	if (_client == NULL)
-		return -1;
-	final_message << ":" << _server->get_hostname() << " 001 " << 
-		_client->get_nick() << RPL_WELCOME() << _client->get_source();
-	if (_client->send(final_message.str()) != -1)
-		ERROR("sending reply message");
+	reply(RPL_WELCOME(), 001);
 	return 1;
 }
 
 int Command::execute_command()
 {
 	cmd_type cmd = _message.get_cmd();
-	if (cmd != PASS && cmd != CAP && !_client->is_authenticated())
-		return reply(ERR_PASSWDMISMATCH(), 464);
+	if (cmd != CAP && cmd != PASS && cmd != NICK && cmd != USER
+			&& !_client->is_authenticated()) {
+		ERROR("Trying command without being authenticated");
+		return reply(ERR_NOTREGISTERED(), 451);
+	}
 	switch (cmd)
 	{
 		case CAP: return 0;

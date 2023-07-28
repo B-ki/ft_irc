@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:52:55 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 15:11:28 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 18:15:18 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,21 @@ class CmdTest
 {
 	public:
 		// -- Constructors, Destructors && Operator --
-		CmdTest(std::string tested, std::string expected);
+		CmdTest();
 		CmdTest(const CmdTest& src);
 		~CmdTest(void);
 		CmdTest& operator=(const CmdTest& rhs);
 
 		std::string cmd_return();
-		void test();
+		void send(const std::string& tested);
+		const std::string receive();
+		const std::string get_server_hostname();
 
 	private:
 		char _buf[1024];
 		int _sv[2];
 		Client _client;
 		Server _server;
-		std::string _tested;
-		std::string _expected;
 
 };
 

@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 22:20:37 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/19 19:15:11 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 17:15:39 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 	std::string ERR_USERNOTINCHANNEL(std::string nick, std::string channel);
 	std::string ERR_NOTONCHANNEL(std::string channel);
 	std::string ERR_USERONCHANNEL(std::string nick, std::string channel);
+	std::string ERR_NOTREGISTERED();
 	std::string ERR_NEEDMOREPARAMS(std::string command);
 	std::string ERR_ALREADYREGISTERED();
 	std::string ERR_PASSWDMISMATCH();

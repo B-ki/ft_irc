@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 18:12:03 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/24 21:27:45 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 15:37:58 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ std::string Buffer::extract_message()
 		return "";
 	std::string message(_str, index);
 	if (message.size() > 1 && message[message.size() - 1] == '\r')
-		message[message.size() - 1] = '\0';
+		message.erase(message.size() - 1);
 	_length -= index + 1;
 	std::memmove(_str, _str + index + 1, _length);
 	_str[_length] = '\0';

@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 15:08:59 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 18:36:46 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 19:35:27 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,27 @@ bool is_valid_username(std::string user)
 	return true;
 }
 
-bool username_already_used(std::string username, std::map<int, Client>& list)
-{
-	std::map<int, Client>::iterator it = list.begin();
-	for (; it != list.end(); it++)
-	{
-		if ((*it).second.get_nick() == username)
-			return true;
-	}
-	return false;
-}
-
 int Command::execute_USER()
 {
-	if (!_client->has_given_pwd() || _client->get_nick().empty())
-		return -1;
-	if (_message.get_parameters().empty())
+	if (!_client->has_given_password())
+		return reply(ERR_NOTREGISTERED(), 452);
+	if (_client->get_user() != "*")
+		return reply(ERR_ALREADYREGISTERED(), 462);
+	if (_message.get_parameters().empty() 
+			|| _message.get_parameters()[0].empty())
 		return reply(ERR_NEEDMOREPARAMS("USER"), 461);
-	std::string username = *_message.get_parameters().begin();
+	std::string username = _message.get_parameters()[0];
 	if (!is_valid_username(username))
-		return -1;
-		//return reply(ERR_ERRONEUSNICKNAME(*_message.get_parameters().begin()), 432);
-	if (username_already_used(username, _server->get_client_list()))
-		return reply(ERR_NICKNAMEINUSE(username), 433);
+		return reply(ERR_ERRONEUSNICKNAME(username), 432);
 	_client->set_user(username);
-	welcome();
+	if (_client->has_given_one_name()) {
+		_client->set_authenticated(true);
+		welcome();
+		DEBUG("Welcome message ! Awesome !");
+	}
+	else {
+		_client->set_name_given(true);
+		DEBUG("Nick name given, need user now !");
+	}
 	return 0;
 }

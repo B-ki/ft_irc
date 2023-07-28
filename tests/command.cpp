@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 23:06:18 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 15:13:01 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 19:40:29 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,25 @@
 #include "tests.h"
 #include "CmdTest.hpp"
 
-
 void command_test_1()
 {
-	CmdTest cmd_test("PASS 123", "PASS 123");
-	cmd_test.test();
+	CmdTest cmd_test;
+	cmd_test.send("PASS password");
+	cmd_test.send("NICK rmorel");
+	cmd_test.send("USER rmorel");
+	//std::string result = cmd_test.receive();
+	//DEBUG("After PASS password, NICK rmorel and USER rmorel got [" << 
+	//		result << "]");
+	//DEBUG(cmd_test.get_server_hostname());
+	//std::string expected = ":" + cmd_test.get_server_hostname() + 
+	//	" rmorel :Welcome to the IRC Network rmorel"; 
+	//assert(result == expected);
+	DEBUG("Segfault? ");
 }
 
-void command_test_2()
+
+void command_test_all(std::vector<Test*>& tests)
 {
-	CmdTest cmd_test("PASS 123", "PASS 123");
-	cmd_test.test();
+	(void)tests;
+	//tests.push_back(new Test("Welcome message", &command_test_1));	
 }

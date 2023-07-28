@@ -6,14 +6,14 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 15:35:40 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 17:30:04 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/28 19:42:21 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "command/reply_command.h"
 
-std::string RPL_WELCOME() { return " :Welcome to the IRC Network "; }
+std::string RPL_WELCOME() { return ":Welcome to the IRC Network "; }
 std::string RPL_AWAY(std::string nick) { return nick + " :User is away"; }
 std::string RPL_TOPIC(std::string channel, std::string topic) { return channel + " :" + topic; }
 std::string RPL_NOTOPIC(std::string channel) { return channel + " :No topic is set"; }

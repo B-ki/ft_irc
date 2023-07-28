@@ -260,7 +260,7 @@ std::map<int, Client>& 	Server::get_client_list()
 	return _client_list;
 }
 
-std::string& Server::get_password()
+const std::string& Server::get_password() const
 {
 	return _password;
 }
