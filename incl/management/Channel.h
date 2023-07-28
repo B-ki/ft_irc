@@ -43,8 +43,8 @@ class Channel
 		bool    validate_password(const std::string& password) const;
 
 
-		void    send_message(const Client* user, std::string message);
-		void    send_all(std::string message);
+		void    send_message(const Client* user, const std::string& message);
+		void    send_all(const Client* user, const std::string& message);
 
 
 	private:

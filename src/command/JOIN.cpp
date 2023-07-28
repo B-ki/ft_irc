@@ -6,7 +6,7 @@ static bool is_valid_channel_name(const std::string& channel_name)
 		return false;
 	if (channel_name[0] != '#')
 		return false;
-	for (std::string::const_iterator it = channel_name.begin(); it != channel_name.end(); it++) {
+	for (std::string::const_iterator it = channel_name.begin() + 1; it != channel_name.end(); it++) {
 		if (!isalpha(*it) && !isdigit(*it) && *it != '_' && *it != '-')
 			return false;
 	}

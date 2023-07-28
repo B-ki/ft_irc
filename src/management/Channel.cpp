@@ -71,7 +71,7 @@ void          Channel::add_user(const Client* user)
 {
 	if (find_user(_members, user) == _members.end()) {
 		_members.push_back(user);
-		send_all(user->get_nick() + " JOIN :" + _name);
+		send_all(user,  CMD_JOIN(_name));
 		user->reply(RPL_NAMREPLY(_name, get_nicks_list()), 353);
 		user->reply(RPL_ENDOFNAMES(_name), 366);
 	}
@@ -117,19 +117,21 @@ bool          Channel::is_in_channel(const Client* user) const
 	return find_user(_members, user) != _members.end();
 }
 
-void          Channel::send_message(const Client* user, std::string message)
+void          Channel::send_message(const Client* user, const std::string& message)
 {
 	std::vector<const Client*>::iterator it = _members.begin();
 	for (; it != _members.end(); it++)
 	{
 		if (*it != user)
-			(*it)->send(message + "\n");
+			user->send_to(**it, message);
 	}
 }
 
-void 		Channel::send_all(std::string message)
+void 		Channel::send_all(const Client* user, const std::string& message)
 {
-	send_message(NULL, message);
+	std::vector<const Client*>::iterator it = _members.begin();
+	for (; it != _members.end(); it++)
+		user->send_to(**it, message);
 }
 
 bool          Channel::is_full() const
@@ -145,10 +147,7 @@ bool		  Channel::is_invited(const Client* user) const
 	return false;
 }
 
-bool          Channel::validate_password(const std::string& password) const
-{
-	return _password == password;
-}
+bool          Channel::validate_password(const std::string& password) const { return _password == password; }
 
 std::vector<const Client*>::const_iterator    Channel::find_user(const std::vector<const Client*>& list, const Client* elem) const
 {

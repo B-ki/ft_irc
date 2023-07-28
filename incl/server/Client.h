@@ -46,7 +46,7 @@ class Client
 
 		// -- Public functions --
 		int         read_buffer();
-		int 		send(const std::string& message) const;
+		int         send_to(const Client& client, const std::string& message) const;
 		int 		reply(const std::string& message, int code) const;
 		bool        has_message() const;
 		std::string extract_message();
@@ -66,6 +66,8 @@ class Client
 		bool 				_pwd_ok;
 		std::string 		_last_message;
 
+		// -- Private functions --
+		int 		send(const std::string& message) const;
 };
 
 #endif 

@@ -50,7 +50,6 @@ Message& Command::get_message() { return _message; }
 
 int Command::reply(std::string message, int code)
 {
-	std::stringstream final_message;
 	if (_client == NULL)
 		return -1;
 	return _client->reply(message, code);

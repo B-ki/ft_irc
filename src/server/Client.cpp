@@ -111,13 +111,12 @@ int Client::read_buffer() {
 	return 0;
 }
 
-int Client::send(const std::string& message) const
+int Client::send_to(const Client& client, const std::string& message) const
 {
-	if (::send(_fd, message.c_str(), message.size(), 0) == -1)
-	{
-		ERROR("cannot send message to client '" + _nick + "'");
+	std::stringstream final_message;
+	final_message << ":" << get_nick() << "!" << get_user() << "@" << get_IP() << " " << message << "\n";
+	if (client.send(final_message.str()) == -1)
 		return -1;
-	}
 	return 0;
 }
 
@@ -140,4 +139,14 @@ bool Client::has_message() const
 std::string Client::extract_message()
 {
 	return _buffer.extract_message();
+}
+
+int Client::send(const std::string& message) const
+{
+	if (::send(_fd, message.c_str(), message.size(), 0) == -1)
+	{
+		ERROR("cannot send message to client '" + _nick + "'");
+		return -1;
+	}
+	return 0;
 }
