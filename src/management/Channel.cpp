@@ -3,21 +3,20 @@
 #include "command/reply_command.h"
 
 Channel::Channel()
-: _name(), _admins(), _members(), _invite_only(false), _topic_restriction(false), _password_restriction(false), _password(""), _topic(""), _max_users(10)
-{
-}
+: _name(), _admins(), _members(), _invite_only(false), _topic_restriction(false),
+_password_restriction(false), _password(""), _topic(""), _max_users(10),
+_capacity_restriction(false) {}
 
 Channel::Channel(const Client* user, const std::string& name)
-: _name(name), _admins(), _members(), _invite_only(false), _topic_restriction(false), _password_restriction(false), _password(""), _topic(""), _max_users(10)
+: _name(name), _admins(), _members(), _invite_only(false), _topic_restriction(false),
+_password_restriction(false), _password(""), _topic(""), _max_users(10),
+_capacity_restriction(false)
 {
 	add_admin(user);
 	add_user(user);
 }
 
-Channel::Channel(const Channel& other)
-{
-	*this = other;
-}
+Channel::Channel(const Channel& other) { *this = other; }
 
 Channel&    Channel::operator=(const Channel& other)
 {
@@ -31,75 +30,38 @@ Channel&    Channel::operator=(const Channel& other)
 		_password = other._password;
 		_topic = other._topic;
 		_max_users = other._max_users;
+		_capacity_restriction = other._capacity_restriction;
 	}
 	return *this;
 }
 
-Channel::~Channel()
-{
-}
+Channel::~Channel() {}
 
-const std::string& Channel::get_name() const
-{
-	return _name;
-}
+const std::string&  Channel::get_name() const { return _name; }
 
-const std::vector<const Client*>& Channel::get_admins() const
-{
-	return _admins;
-}
+const std::vector<const Client*>&   Channel::get_admins() const { return _admins; }
 
-const std::vector<const Client*>& Channel::get_members() const
-{
-	return _members;
-}
+const std::vector<const Client*>&   Channel::get_members() const { return _members; }
 
-const std::string&  Channel::get_password() const
-{
-	return _password;
-}
+const std::string&  Channel::get_password() const { return _password; }
 
-const std::string&  Channel::get_topic() const
-{
-	return _topic;
-}
+const std::string&  Channel::get_topic() const { return _topic; }
 
-bool          Channel::is_invite_only() const
-{
-	return _invite_only;
-}
+bool    Channel::is_invite_only() const { return _invite_only; }
 
-bool          Channel::is_topic_restricted() const
-{
-	return _topic_restriction;
-}
+bool    Channel::is_topic_restricted() const { return _topic_restriction; }
 
-bool          Channel::is_password_restricted() const
-{
-	return _password_restriction;
-}
+bool    Channel::is_password_restricted() const { return _password_restriction; }
 
-void          Channel::set_invite_only(bool invite_only)
-{
-	_invite_only = invite_only;
-}
+void    Channel::set_invite_only(bool invite_only) { _invite_only = invite_only; }
 
-void          Channel::set_topic_restriction(bool topic_restriction)
-{
-	_topic_restriction = topic_restriction;
-}
+void    Channel::set_topic_restriction(bool topic_restriction) { _topic_restriction = topic_restriction; }
 
-void          Channel::set_password_activation(bool password_activation)
-{
-	_password_restriction = password_activation;
-}
+void    Channel::set_password_activation(bool password_activation) { _password_restriction = password_activation; }
 
-void          Channel::set_password(const std::string& password)
-{
-	_password = password;
-}
+void    Channel::set_password(const std::string& password) { _password = password; }
 
-void          Channel::set_topic(const std::string& topic)
+void    Channel::set_topic(const std::string& topic)
 {
 	_topic = topic;
 	INFO("channel '" + _name + "' topic set to '" + _topic + "'");
@@ -172,23 +134,15 @@ void 		Channel::send_all(std::string message)
 
 bool          Channel::is_full() const
 {
+	if (!_capacity_restriction)
+		return false;
 	return _members.size() >= _max_users;
-}
-
-bool          Channel::is_banned(const Client* user) const
-{
-	// TODO ban list
-	(void)user;
-	return false;
 }
 
 bool		  Channel::is_invited(const Client* user) const
 {
 	(void)user;
-	if (!_invite_only)
-		return true;
 	return false;
-	// TODO handle invite list
 }
 
 bool          Channel::validate_password(const std::string& password) const

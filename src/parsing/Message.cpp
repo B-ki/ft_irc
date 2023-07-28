@@ -76,7 +76,7 @@ const std::string& Message::get_command() const
 	return _command;
 }
 
-std::vector<std::string> Message::get_parameters(void) const
+const std::vector<std::string>& Message::get_parameters(void) const
 {
 	return this->_parameters;
 }

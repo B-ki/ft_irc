@@ -39,7 +39,7 @@ class Message
 		std::map<std::string, std::string> 	get_tags(void) const;
 		std::string 						get_prefix(void) const;
 		cmd_type							get_cmd(void) const;
-		std::vector<std::string> 			get_parameters(void) const;
+		const std::vector<std::string>& 	get_parameters(void) const;
 		const std::string& 					get_command() const;
 
 		// -- Public Functions --

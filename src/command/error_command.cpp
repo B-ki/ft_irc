@@ -37,6 +37,6 @@ std::string ERR_CHANNELISFULL(std::string channel) { return ":Cannot join channe
 std::string ERR_INVITEONLYCHAN(std::string channel) { return ":Cannot join channel " + channel + " (+i)"; }
 std::string ERR_BANNEDFROMCHAN(std::string channel) { return ":Cannot join channel " + channel + " (+b)"; }
 std::string ERR_BADCHANNELKEY(std::string channel) { return ":Cannot join channel " + channel + " (+k)"; }
-std::string ERR_BADCHANMASK(std::string mask) { return ":Bad Channel Mask " + mask; }
+std::string ERR_BADCHANMASK(std::string channel) { return channel + " :Invalid channel name"; }
 std::string ERR_CHANOPRIVSNEEDED(std::string channel) { return ":You're not channel operator in " + channel; }
 std::string ERR_UNKNOWNCOMMAND(std::string command) { return command + " :Unknown command"; }

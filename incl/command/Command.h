@@ -54,6 +54,8 @@ class Command
 		int execute_NICK();
 		int execute_USER();
 		int execute_JOIN();
+
+		void    join_channel(const std::string& channel_name, const std::string& password);
 };
 
 #endif

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Channel.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/13 11:40:47 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/13 11:49:20 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP 
 
@@ -50,7 +38,6 @@ class Channel
 		void    remove_admin(const Client* user);
 		bool    is_admin(const Client* user) const;
 		bool    is_full() const;
-		bool    is_banned(const Client* user) const;
 		bool    is_invited(const Client* user) const;
 		bool    is_in_channel(const Client* user) const;
 		bool    validate_password(const std::string& password) const;
@@ -71,6 +58,7 @@ class Channel
 		std::string                 _password;
 		std::string                 _topic;
 		size_t                      _max_users;
+		bool                        _capacity_restriction;
 
 		// -- Private Functions --
 		std::vector<const Client*>::const_iterator  find_user(const std::vector<const Client*>& list, const Client* elem) const;
