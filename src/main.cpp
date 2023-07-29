@@ -14,14 +14,17 @@ int	main(int ac, char **av)
 		usage(av[0]);
 		exit(1);
 	}
-
+	if (!Server::is_valid_port(av[1])) {
+		std::cerr << "Invalid port number\n";
+		exit(2);
+	}
+	if (!Server::is_valid_password(av[2])) {
+		std::cerr << "Invalid password\n";
+		exit(3);
+	}
 	Server server = Server(av[1], av[2]);
 	server.start();
-	if (server._started)
-		std::cout << "Server started." << std::endl;
 	while(server._started)
-	{
 		server.loop();
-	}
 	return 0;
 }
