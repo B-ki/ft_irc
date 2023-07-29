@@ -8,7 +8,7 @@
 
 Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
 	_port(DEFAULT_PORT), _password(DEFAULT_PASSWORD), _ip_version(), _hints(),
-	_servinfo(NULL), _client_pfd_list(), _hostname("irc42.fr")
+	_servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
 {
 	INFO((std::string)"no port provided, using default port " + DEFAULT_PORT);
 	INFO((std::string)"setting password to the default '" + DEFAULT_PASSWORD + "'");
@@ -18,14 +18,14 @@ Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
 	_hints.ai_flags = AI_PASSIVE;
 	if (getaddrinfo(NULL, _port.c_str(), &_hints, &_servinfo) != 0) {
 		ERROR("could not get the server connection details");
-		exit(1); // TODO throw an error ??
+		exit(1);
 	}
 	memset(&_client_pfd_list, 0, sizeof(_client_pfd_list) * MAX_CONNEXIONS);
 }
 
 Server::Server(std::string port, std::string password) : _started(false), 
 	_sockfd(-1), _nb_clients(0), _port(port), _password(password), _ip_version(),
-	_hints(), _servinfo(NULL), _client_pfd_list(), _hostname("irc42.fr")
+	_hints(), _servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
 {
 	INFO((std::string)"using the given port " + port);
 	INFO((std::string)"using the given password '" + port + "'");
@@ -60,7 +60,7 @@ Server::~Server()
 {
 	this->stop();
 	freeaddrinfo(_servinfo);
-	INFO("Destroying server");
+	INFO("destroying server");
 }
 
 int	Server::stop()
@@ -268,4 +268,28 @@ const std::string& Server::get_password() const
 const std::string& Server::get_hostname() const
 {
 	return _hostname;
+}
+
+bool Server::is_valid_port(const std::string& port)
+{
+	if (port.empty())
+		return false;
+	for (std::string::const_iterator it = port.begin(); it != port.end(); it++) {
+		if (!isdigit(*it))
+			return false;
+	}
+	if (atoi(port.c_str()) < 1024 || atoi(port.c_str()) > 65535)
+		return false;
+	return true;
+}
+
+bool Server::is_valid_password(const std::string& password)
+{
+	if (password.size() < 1 || password.size() > 255)
+		return false;
+	for (std::string::const_iterator it = password.begin(); it != password.end(); it++) {
+		if (std::isspace(*it) || *it == '\0' || *it == ':')
+			return false;
+	}
+	return true;
 }

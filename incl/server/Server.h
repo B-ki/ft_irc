@@ -32,6 +32,7 @@
 
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
+# define SERVER_HOSTNAME "ft_irc.42.fr"
 # define MAX_CONNEXIONS 10
 
 class	Server {
@@ -48,7 +49,7 @@ class	Server {
 		// -- Getter --
 		Client* 				get_client(const int fd);
 		Client* 				get_client(std::string nick);
-		const std::string& 			get_password() const; 
+		const std::string& 		get_password() const;
 		std::map<int, Client>& 	get_client_list();
 		const std::string&      get_hostname() const;
 
@@ -59,6 +60,9 @@ class	Server {
 		int 	create_client();
 		void 	print_clients();
 
+		// -- Public static functions --
+		static bool		is_valid_port(const std::string& port);
+		static bool		is_valid_password(const std::string& password);
 
 		// --- Public attributes ---
 		bool	_started;
