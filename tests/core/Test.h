@@ -25,27 +25,27 @@ class Test {
 
 		~Test(void);
 
-		int			getPid(void) const;
-		int			getStatus(void) const;
-		double		getTime(void) const;
-		std::string	getName(void) const;
-		fun_ptr		getFun(void) const;
-		bool		isFailed(void) const;
+		int			        getPid(void) const;
+		int			        getStatus(void) const;
+		double		        getTime(void) const;
+		const std::string&	getName(void) const;
+		fun_ptr		        getFun(void) const;
+		bool		        isFailed(void) const;
 
 		bool		exec(const Config& config);
 		void		print_trace(void);
 		void		print_banner(void) const;
 
 	private:
-		int			pid;
-		int			status;
-		int			exit_code;
-		bool		failed;
-		double		time;
-		std::string	name;
-		fun_ptr		fun;
-		int			stdout;
-		int			stderr;
+		int			_pid;
+		int			_status;
+		int			_exit_code;
+		bool		_failed;
+		double		_time;
+		std::string	_name;
+		fun_ptr		_fun;
+		int			_stdout;
+		int			_stderr;
 };
 
 std::string	print_time(double time);

@@ -1,11 +1,13 @@
 #include "core/Test.h"
 #include "tests.h"
 
-void	__assert_str_rtn(std::string s1, std::string s2, std::string file, std::string function, int line)
+void 	__assert_str(const std::string& s1, const std::string& s2, const char *file, const char *function, int line)
 {
-	std::cerr << "Assertion failed: (\"" << s1 << "\" != \"" << s2 << "\"), function ";
-	std::cerr << function << ", file" << file << ", line" << line << ".\n";
-	exit(2);
+	if (s1 != s2) {
+		std::cerr << "Assertion failed: (\"" << s1 << "\" != \"" << s2 << "\"), function ";
+		std::cerr << function << ", file" << file << ", line" << line << ".\n";
+		exit(2);
+	}
 }
 
 bool	launch_test(Test* test, Config& config)
@@ -25,6 +27,7 @@ int	run_tests(std::vector<Test*> tests, Config& config)
 	std::vector<Test*>::iterator it = tests.begin();
 	test = NULL;
 	for (; it != tests.end(); it++) {
+		i++;
 		test = *it;
 		launch_test(test, config);
 		failed += test->isFailed();
@@ -34,7 +37,6 @@ int	run_tests(std::vector<Test*> tests, Config& config)
 	if (config.doStopOnFail() && it != tests.end() && test && test->isFailed())
 		std::cout << T_RED "Canceling due to test failure" T_RESET "\n";
 	std::cout << "------------\n";
-	i = (it - tests.begin());
 	std::cout << "     " T_GREEN "Summary" T_RESET " [";
 	std::cout << print_time(test->getTime()) << "s]" << " " << i << "/";
 	std::cout << tests.size() << " tests run: " << i - failed;

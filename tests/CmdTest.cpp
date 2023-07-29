@@ -1,57 +1,63 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   CmdTest.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 14:57:40 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 18:23:15 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CmdTest.hpp"
+#include <pthread.h>
 
-CmdTest::CmdTest() : _client(),	_server()
+static void*    start_server_loop(void* ptr)
 {
-	if (socketpair(AF_UNIX, SOCK_STREAM, 0, _sv) == -1) {
-		ERROR("socketpair");
+	Server* server = (Server*)ptr;
+	while (server->_started)
+		server->loop();
+	return NULL;
+}
+
+CmdTest::CmdTest(const std::string& port, const std::string& password) : _server(port, password), _client_fd(-1)
+{
+	_server.start();
+	pthread_create(&_server_thread_id, NULL, &start_server_loop, (void*)&_server);
+	struct sockaddr_in serv_addr;
+	if ((_client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+		ERROR("Socket creation error");
 		exit(1);
 	}
-	std::cout << "Socket_pair = [" << _sv[0] << ", " << _sv[1] << "]\n";
-
-	_client.set_fd(_sv[1]);
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_port = htons(atoi(port.c_str()));
+	if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
+		ERROR("Invalid address/ Address not supported");
+		exit(1);
+	}
+	if (connect(_client_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+		ERROR("Connection Failed");
+		exit(1);
+	}
 }
 
-CmdTest::~CmdTest()
-{
-	close(_sv[0]);
-	close(_sv[1]);
-}
+CmdTest::~CmdTest() { stop(); }
 
 const std::string CmdTest::receive()
 {
-
-	ssize_t num_bytes = read(_sv[0], _buf, sizeof(_buf));
+	char _buf[1024] = {0};
+	ssize_t num_bytes = ::read(_client_fd, _buf, sizeof(_buf));
 	if (num_bytes <= 0) {
-		ERROR("Read");
-		return "";
+		ERROR("cannot read message from server");
+		exit(1);
 	}
-
 	_buf[num_bytes] = '\0';
-	std::string result(_buf);
-	return result;
+	if (_buf[num_bytes - 1] == '\n')
+		_buf[num_bytes - 1] = '\0';
+	return std::string(_buf);
 }
 
 void CmdTest::send(const std::string& tested)
 {
 	INFO( "Tested string is : " << tested);
-	Command cmd(&_server, &_client, tested);	
-
-	cmd.execute_command();
+	if (::send(_client_fd, (tested + '\n').c_str(), tested.size() + 1, 0) == -1) {
+		ERROR("cannot send message to server");
+		exit(1);
+	}
 }
 
-const std::string CmdTest::get_server_hostname()
+void CmdTest::stop()
 {
-	return _server.get_hostname();
+	close(_client_fd);
+	_server.stop();
+	pthread_join(_server_thread_id, NULL);
 }

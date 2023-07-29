@@ -2,26 +2,26 @@
 
 Test::Test(void)
 {
-	this->name = "";
-	this->fun = NULL;
-	this->pid = 0;
-	this->status = 0;
-	this->time = 0;
-	this->failed = false;
-	this->stdout = 1;
-	this->stdout = 2;
+	_name = "";
+	_fun = NULL;
+	_pid = 0;
+	_status = 0;
+	_time = 0;
+	_failed = false;
+	_stdout = 1;
+	_stdout = 2;
 }
 
 Test::Test(std::string name, fun_ptr fun)
 {
-	this->name = name;
-	this->fun = fun;
-	this->pid = 0;
-	this->status = 0;
-	this->time = 0;
-	this->failed = false;
-	this->stdout = 1;
-	this->stdout = 2;
+	_name = name;
+	_fun = fun;
+	_pid = 0;
+	_status = 0;
+	_time = 0;
+	_failed = false;
+	_stdout = 1;
+	_stdout = 2;
 }
 
 Test::Test(const Test& test)
@@ -31,52 +31,54 @@ Test::Test(const Test& test)
 
 Test& Test::operator=(const Test& test)
 {
-	this->name = test.getName();
-	this->fun = test.getFun();
-	this->pid = test.getPid();
-	this->status = test.getStatus();
-	this->time = test.getTime();
-	this->failed = test.isFailed();
-	return (*this);
+	if (this != &test) {
+		_name = test._name;
+		_fun = test._fun;
+		_pid = test._pid;
+		_status = test._status;
+		_time = test._time;
+		_failed = test._failed;
+	}
+	return *this;
 }
 
 Test::~Test(void)
 {
-	if (this->stdout != STDOUT_FILENO)
-		close(this->stdout);
-	if (this->stderr != STDERR_FILENO)
-		close(this->stderr);
+	if (_stdout != STDOUT_FILENO)
+		close(_stdout);
+	if (_stderr != STDERR_FILENO)
+		close(_stderr);
 }
 
 
 int			Test::getPid(void) const
 {
-	return this->pid;
+	return _pid;
 }
 
 int			Test::getStatus(void) const
 {
-	return this->status;
+	return _status;
 }
 
 double		Test::getTime(void) const
 {
-	return this->time;
+	return _time;
 }
 
-std::string	Test::getName(void) const
+const std::string&	Test::getName(void) const
 {
-	return this->name;
+	return _name;
 }
 
 fun_ptr		Test::getFun(void) const
 {
-	return this->fun;
+	return _fun;
 }
 
 bool		Test::isFailed(void) const
 {
-	return this->failed;
+	return _failed;
 }
 
 static double	timediff(t_timeval end, t_timeval start)
@@ -91,23 +93,23 @@ void	Test::print_banner(void) const
 {
 	std::string	state;
 
-	if (this->exit_code == 0)
+	if (_exit_code == 0)
 		state = T_GREEN "PASS" T_RESET;
 	else
 		state = T_RED "FAIL" T_RESET;
 	std::cout << std::fixed << std::setprecision(2);
-	std::cout << "        " << state << " [" << print_time(this->time) << "s]        " << T_BLUE + this->name + T_RESET;
-	if (WIFSIGNALED(this->status)) {
+	std::cout << "        " << state << " [" << print_time(_time) << "s]        " << T_BLUE + _name + T_RESET;
+	if (WIFSIGNALED(_status)) {
 		std::string	sig;
-		if (this->exit_code == SIGSEGV)
+		if (_exit_code == SIGSEGV)
 			sig = "SIGSEGV";
-		else if (this->exit_code == SIGABRT)
+		else if (_exit_code == SIGABRT)
 			sig = "SIGABRT";
-		else if (this->exit_code == SIGBUS)
+		else if (_exit_code == SIGBUS)
 			sig = "SIGBUS";
-		else if (this->exit_code == SIGPIPE)
+		else if (_exit_code == SIGPIPE)
 			sig = "SIGPIPE";
-		else if (this->exit_code == SIGUSR1)
+		else if (_exit_code == SIGKILL)
 			sig = "TIMEOUT";
 		else
 			sig = "";
@@ -130,23 +132,23 @@ static void	print_pipe(int fd)
 
 void	Test::print_trace(void)
 {
-	if (this->stdout == STDOUT_FILENO || this->stderr == STDERR_FILENO)
+	if (_stdout == STDOUT_FILENO || _stderr == STDERR_FILENO)
 		return ;
 
 	print_banner();
 
-	if (this->failed) {
-		std::cout << "\n" T_RED "--- STDOUT:" T_RESET "           \t\t" T_BLUE << this->name << T_RESET " " T_RED "---" T_RESET "\n";
-		print_pipe(this->stdout);
-		std::cout << "\n" T_RED "--- STDERR:" T_RESET "           \t\t" T_BLUE << this->name << T_RESET " " T_RED "---" T_RESET "\n";
-		print_pipe(this->stderr);
+	if (_failed) {
+		std::cout << "\n" T_RED "--- STDOUT:" T_RESET "           \t\t" T_BLUE << _name << T_RESET " " T_RED "---" T_RESET "\n";
+		print_pipe(_stdout);
+		std::cout << "\n" T_RED "--- STDERR:" T_RESET "           \t\t" T_BLUE << _name << T_RESET " " T_RED "---" T_RESET "\n";
+		print_pipe(_stderr);
 		std::cout << "\n" T_RED "---" T_RESET "\n";
 	}
 
-	close(this->stderr);
-	close(this->stdout);
-	this->stdout = STDOUT_FILENO;
-	this->stderr = STDERR_FILENO;
+	close(_stderr);
+	close(_stdout);
+	_stdout = STDOUT_FILENO;
+	_stderr = STDERR_FILENO;
 }
 
 static int	settimeout(int pid, uint timeout)
@@ -171,33 +173,34 @@ bool	Test::exec(const Config& config)
 	if (pipe(fd_out) == -1) return (false);
 	if (pipe(fd_err) == -1) return (false);
 	gettimeofday(&start, NULL);
-	this->pid = fork();
-	if (this->pid == -1) return (false);
-	if (this->pid == 0) {
+	_pid = fork();
+	if (_pid == -1) return (false);
+	if (_pid == 0) {
 		close(fd_out[0]);
 		close(fd_err[0]);
 		dup2(fd_out[1], STDOUT_FILENO);
 		dup2(fd_err[1], STDERR_FILENO);
-		this->fun();
+		_fun();
 		exit(0);
 	}
-	this->stdout = fd_out[0];
-	this->stderr = fd_err[0];
+	_stdout = fd_out[0];
+	_stderr = fd_err[0];
 	close(fd_out[1]);
 	close(fd_err[1]);
-	timeout_pid = settimeout(this->pid, config.getTimeout());
-	waitpid(this->pid, &this->status, 0);
+	timeout_pid = settimeout(_pid, config.getTimeout());
+	waitpid(_pid, &_status, 0);
 	gettimeofday(&end, NULL);
 	kill(timeout_pid, SIGKILL);
-	this->time = timediff(end, start);
-	if (WIFEXITED(this->status))
-		this->exit_code = WEXITSTATUS(this->status);
-	else if (WIFSIGNALED(this->status))
-		this->exit_code = WTERMSIG(this->status);
+	waitpid(timeout_pid, NULL, 0);
+	_time = timediff(end, start);
+	if (WIFEXITED(_status))
+		_exit_code = WEXITSTATUS(_status);
+	else if (WIFSIGNALED(_status))
+		_exit_code = WTERMSIG(_status);
 	else
-		this->exit_code = -1;
-	if (this->exit_code != 0)
-		this->failed = true;
+		_exit_code = -1;
+	if (_exit_code != 0)
+		_failed = true;
 	print_trace();
 	return (true);
 }

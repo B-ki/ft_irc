@@ -1,6 +1,6 @@
 #include "command/reply_command.h"
 
-std::string RPL_WELCOME() { return ":Welcome to the IRC Network "; }
+std::string RPL_WELCOME() { return ":Welcome to the IRC Network"; }
 std::string RPL_AWAY(const std::string& nick) { return nick + " :User is away"; }
 std::string RPL_TOPIC(const std::string& channel, const std::string& topic) { return channel + " :" + topic; }
 std::string RPL_NOTOPIC(const std::string& channel) { return channel + " :No topic is set"; }

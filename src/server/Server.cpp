@@ -68,6 +68,7 @@ int	Server::stop()
 	if (_started) {
 		INFO("stopping the server");
 		close(_sockfd);
+		_started = false;
 		return 0;
 	} else {
 		INFO("could not stop the server, wasn't running");
