@@ -28,6 +28,7 @@ std::string CMD_PART(const std::string& channel, const std::string& reason) {
 		return "PART :" + channel;
 	return "PART " + channel + " :" + reason;
 }
+std::string CMD_KICK(const std::string& channel, const std::string& nick, const std::string& reason) { return "KICK " + channel + " " + nick + " :" + reason; }
 std::string CMD_PRIVMSG(const std::string& channel, const std::string& message) { return "PRIVMSG " + channel + " :" + message; }
 std::string CMD_NOTICE(const std::string& channel, const std::string& message) { return "NOTICE " + channel + " :" + message; }
 std::string CMD_QUIT() { return "QUIT :Connection closed"; }

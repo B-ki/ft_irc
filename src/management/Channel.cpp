@@ -88,7 +88,7 @@ void    Channel::remove_user(const Client* user)
 	it = find_user(_admins, user);
 	if (it != _admins.end())
 		_admins.erase(it);
-
+	// TODO : remove from invited list
 //	it = find_user(_invited, user);
 //	if (it != _invited.end())
 //		_invited.erase(it);
@@ -185,6 +185,14 @@ void    Channel::part_user(const Client *user, const std::string &reason) {
 	std::vector<const Client*>::iterator it = find_user(_members, user);
 	if (it != _members.end()) {
 		send_all(user, CMD_PART(_name, reason));
+		remove_user(user);
+	}
+}
+
+void    Channel::kick_user(const Client *user, const Client* target, const std::string &reason) {
+	std::vector<const Client*>::iterator it = find_user(_members, target);
+	if (it != _members.end()) {
+		send_all(user, CMD_KICK(_name, target->get_nick(), reason));
 		remove_user(user);
 	}
 }

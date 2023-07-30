@@ -79,6 +79,7 @@ int Command::execute_command()
 		case USER: return execute_USER();
 		case JOIN: return execute_JOIN();
 		case PART: return execute_PART();
+		case KICK: return execute_KICK();
 		default: return -1;
 	}
 }
