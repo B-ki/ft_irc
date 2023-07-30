@@ -39,29 +39,14 @@ void  Command::join_channel(const std::string& channel_name, const std::string& 
 	}
 }
 
-static std::vector<std::string> split(const std::string& str, const std::string& delim)
-{
-	std::vector<std::string> tokens;
-	size_t prev = 0, pos = 0;
-	do {
-		pos = str.find(delim, prev);
-		if (pos == std::string::npos)
-			pos = str.length();
-		std::string token = str.substr(prev, pos - prev);
-		tokens.push_back(token);
-		prev = pos + delim.length();
-	} while (pos < str.length() && prev < str.length());
-	return tokens;
-}
-
 int Command::execute_JOIN()
 {
 	if (_message.get_parameters().empty())
 		return reply(ERR_NEEDMOREPARAMS("JOIN"), 461);
-	std::vector<std::string> channels = split(_message.get_parameters()[0], ",");
+	std::vector<std::string> channels = utils::split(_message.get_parameters()[0], ",");
 	std::vector<std::string> passwords;
 	if (_message.get_parameters().size() > 1)
-		passwords = split(_message.get_parameters()[1], ",");
+		passwords = utils::split(_message.get_parameters()[1], ",");
 	for (size_t i = 0; i < channels.size(); i++) {
 		if (passwords.size() <= i)
 			join_channel(channels[i], "");

@@ -33,7 +33,9 @@ class Channel
 
 		// -- Public Functions --
 		void    add_user(const Client* user);
-		void    remove_user(const Client* user);
+		void    part_user(const Client* user, const std::string& reason);
+		void	kick_user(const Client* user, const std::string& reason);
+		void    quit_user(const Client* user, const std::string& reason);
 		void    add_admin(const Client* user);
 		void    remove_admin(const Client* user);
 		bool    is_admin(const Client* user) const;
@@ -64,6 +66,7 @@ class Channel
 		std::vector<const Client*>::const_iterator  find_user(const std::vector<const Client*>& list, const Client* elem) const;
 		std::vector<const Client*>::iterator        find_user(std::vector<const Client*>& list, const Client* elem);
 		std::string                                 get_nicks_list() const;
+		void                                        remove_user(const Client* user);
 };
 
 #endif

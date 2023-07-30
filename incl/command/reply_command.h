@@ -25,7 +25,7 @@
 	std::string RPL_ENDOFNAMES(const std::string& channel);
 
 	std::string CMD_JOIN(const std::string& channel);
-	std::string CMD_PART(const std::string& channel);
+	std::string CMD_PART(const std::string& channel, const std::string& reason);
 	std::string CMD_PRIVMSG(const std::string& channel, const std::string& message);
 	std::string CMD_NOTICE(const std::string& channel, const std::string& message);
 	std::string CMD_QUIT();

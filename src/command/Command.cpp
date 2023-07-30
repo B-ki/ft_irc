@@ -78,6 +78,7 @@ int Command::execute_command()
 		case NICK: return execute_NICK();
 		case USER: return execute_USER();
 		case JOIN: return execute_JOIN();
+		case PART: return execute_PART();
 		default: return -1;
 	}
 }

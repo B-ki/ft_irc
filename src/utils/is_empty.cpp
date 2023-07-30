@@ -1,4 +1,4 @@
-#include <ctype.h>
+#include <cctype>
 #include <unistd.h>
 
 bool    is_empty(const char* str)

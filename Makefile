@@ -55,6 +55,7 @@ H_DIR		= incl
 ### SOURCE FILES ###
 SRCS	=	main.cpp \
 			utils/log.cpp \
+			utils/split.cpp \
 			utils/is_empty.cpp \
 			parsing/Message.cpp \
 			parsing/Message_parsing.cpp \
@@ -68,6 +69,7 @@ SRCS	=	main.cpp \
 			command/NICK.cpp \
 			command/USER.cpp \
 			command/JOIN.cpp \
+			command/PART.cpp \
 			management/Channel.cpp
 
 T_SRCS	=	tests/main.cpp \
