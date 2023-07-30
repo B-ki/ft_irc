@@ -29,7 +29,7 @@ class Channel
 		void    set_topic_restriction(bool topic_restriction);
 		void    set_password_activation(bool password_activation);
 		void    set_password(const std::string& password);
-		void    set_topic(const std::string& topic);
+		void    set_topic(const Client& user, const std::string& topic);
 
 		// -- Public Functions --
 		void    add_user(const Client* user);

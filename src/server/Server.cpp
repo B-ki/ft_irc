@@ -302,11 +302,9 @@ int Server::create_channel(const Client* client, const std::string& name)
 {
 	Channel channel(client, name);
 	if (channel_exists(name)) {
-		ERROR("channel already exists");
 		return -1;
 	}
 	_channels.insert(std::make_pair(name, channel));
-	INFO("channel created");
 	return 0;
 }
 
@@ -315,7 +313,6 @@ Channel* Server::get_channel(const std::string& name)
 	try {
 		return &_channels.at(name);
 	} catch (std::out_of_range& e) {
-		ERROR("channel doesn't exist");
 		return NULL;
 	}
 }

@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 #include "server/Server.h"
-#include <stdlib.h>
+#include <cstdlib>
 
-void	usage(std::string prog_name)
+void	usage(const std::string& prog_name)
 {
 	std::cerr << "Usage: " << prog_name << " <port> <password>\n";
 }
