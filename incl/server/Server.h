@@ -21,13 +21,14 @@
 # include <poll.h>
 # include <netdb.h>
 # include <stdlib.h>
+# include <vector>
 # include <unistd.h>
+# include <map>
+# include <iomanip>
 # include "error.h"
 # include "color.h"
-# include <vector>
-# include <map>
 # include "Client.h"
-# include <iomanip>
+# include "management/Channel.h"
 # include "parsing/Message.h"
 
 # define DEFAULT_PORT "6667"
@@ -54,11 +55,14 @@ class	Server {
 		const std::string&      get_hostname() const;
 
 		// -- Public Functions --
-		int		start();
-		int		stop();
-		int 	loop();
-		int 	create_client();
-		void 	print_clients();
+		int		    start();
+		int		    stop();
+		int 	    loop();
+		int 	    create_client();
+		void 	    print_clients();
+		bool        channel_exists(std::string name);
+		int         create_channel(const Client* client, const std::string& name);
+		Channel*    get_channel(const std::string& name);
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);
@@ -69,16 +73,17 @@ class	Server {
 
 	private:
 		// -- Private attributes --
-		int						_sockfd;
-		int						_nb_clients;
-		std::string				_port;
-		std::string				_password;
-		std::string				_ip_version;
-		struct addrinfo			_hints;
-		struct addrinfo*		_servinfo;
-		pollfd 	                _client_pfd_list[MAX_CONNEXIONS];
-		std::map<int, Client> 	_client_list;
-		std::string			    _hostname;
+		int						        _sockfd;
+		int						        _nb_clients;
+		std::string				        _port;
+		std::string				        _password;
+		std::string				        _ip_version;
+		struct addrinfo			        _hints;
+		struct addrinfo*		        _servinfo;
+		pollfd 	                        _client_pfd_list[MAX_CONNEXIONS];
+		std::map<int, Client> 	        _client_list;
+		std::string			            _hostname;
+		std::map<std::string, Channel>  _channels;
 
 		// -- Private functions --
 		int						handle_recv(int fd, int i);

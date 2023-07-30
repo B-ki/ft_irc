@@ -27,8 +27,8 @@ Server::Server(std::string port, std::string password) : _started(false),
 	_sockfd(-1), _nb_clients(0), _port(port), _password(password), _ip_version(),
 	_hints(), _servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
 {
-	INFO((std::string)"using the given port " + port);
-	INFO((std::string)"using the given password '" + port + "'");
+	INFO((std::string)"using the given port " + _port);
+	INFO((std::string)"using the given password '" + _password + "'");
 	memset(&_hints, 0, sizeof(_hints));
 	_hints.ai_family = AF_INET;
 	_hints.ai_socktype = SOCK_STREAM;
@@ -292,4 +292,31 @@ bool Server::is_valid_password(const std::string& password)
 			return false;
 	}
 	return true;
+}
+
+bool Server::channel_exists(std::string name)
+{
+	return _channels.find(name) != _channels.end();
+}
+
+int Server::create_channel(const Client* client, const std::string& name)
+{
+	Channel channel(client, name);
+	if (channel_exists(name)) {
+		ERROR("channel already exists");
+		return -1;
+	}
+	_channels.insert(std::make_pair(name, channel));
+	INFO("channel created");
+	return 0;
+}
+
+Channel* Server::get_channel(const std::string& name)
+{
+	try {
+		return &_channels.at(name);
+	} catch (std::out_of_range& e) {
+		ERROR("channel doesn't exist");
+		return NULL;
+	}
 }

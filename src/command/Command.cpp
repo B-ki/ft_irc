@@ -50,17 +50,9 @@ Message& Command::get_message() { return _message; }
 
 int Command::reply(std::string message, int code)
 {
-	std::stringstream final_message;
 	if (_client == NULL)
 		return -1;
-	if (code < 10)
-		final_message << "00";
-	else if (code < 100)
-		final_message << "0";
-	final_message << code << " " << _client->get_nick() << " " << message << "\n";
-	if (_client->send(final_message.str()) != -1)
-		INFO("Sending reply message, code : " << code);
-	return code;
+	return _client->reply(message, code);
 }
 
 int Command::welcome()
@@ -72,6 +64,8 @@ int Command::welcome()
 int Command::execute_command()
 {
 	cmd_type cmd = _message.get_cmd();
+	if (cmd == UNKNOWN)
+		return reply(ERR_UNKNOWNCOMMAND(_message.get_command()), 421);
 	if (cmd != CAP && cmd != PASS && cmd != NICK && cmd != USER
 			&& !_client->is_authenticated()) {
 		ERROR("Trying command without being authenticated");
@@ -83,6 +77,7 @@ int Command::execute_command()
 		case PASS: return execute_PASS();
 		case NICK: return execute_NICK();
 		case USER: return execute_USER();
+		case JOIN: return execute_JOIN();
 		default: return -1;
 	}
 }

@@ -27,19 +27,20 @@ class Message
 		// -- Constructors --
 		Message(void);
 		Message(std::string messageToParse);
-		//Message(Message const & src);
+		Message(Message const & src);
 
 		// -- Destructor --
 		~Message(void);
 
-		//Message & operator=(Message const & rhs);
+		Message & operator=(Message const & rhs);
 		
 		// -- Getter --
 		std::string 						get_raw(void) const;
 		std::map<std::string, std::string> 	get_tags(void) const;
 		std::string 						get_prefix(void) const;
 		cmd_type							get_cmd(void) const;
-		std::vector<std::string> 			get_parameters(void) const;
+		const std::vector<std::string>& 	get_parameters(void) const;
+		const std::string& 					get_command() const;
 
 		// -- Public Functions --
 		void 			print_message(void);
@@ -60,6 +61,7 @@ class Message
 		std::string 						_prefix;
 		cmd_type 							_cmd;
 		std::vector<std::string> 			_parameters;
+		std::string     			        _command;
 
 		// -- Private functions --
 		int 	parse_tags(std::string all_tags);

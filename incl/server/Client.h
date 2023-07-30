@@ -37,16 +37,17 @@ class Client
 		// -- Setter --
 		void set_fd(int fd);
 		void set_IP();
-		void set_nick(std::string const new_nick);
-		void set_user(std::string const new_user);
-		void set_real_name(std::string const new_real_name);
-		void set_authenticated(bool const value);
+		void set_nick(const std::string& new_nick);
+		void set_user(const std::string& new_user);
+		void set_real_name(const std::string& new_real_name);
+		void set_authenticated(bool value);
 		void set_password_ok(bool const value);
 		void set_name_given(bool const value);
 
 		// -- Public functions --
 		int         read_buffer();
-		int         send(std::string const message);
+		int         send_to(const Client& client, const std::string& message) const;
+		int 		reply(const std::string& message, int code) const;
 		bool        has_message() const;
 		std::string extract_message();
 
@@ -65,6 +66,8 @@ class Client
 		bool 				_pwd_ok;
 		std::string 		_last_message;
 
+		// -- Private functions --
+		int 		send(const std::string& message) const;
 };
 
 #endif 
