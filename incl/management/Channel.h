@@ -43,6 +43,7 @@ class Channel
 		bool    is_invited(const Client* user) const;
 		bool    is_in_channel(const Client* user) const;
 		bool    validate_password(const std::string& password) const;
+		void    invite_user(const Client* user, const Client* target);
 
 
 		void    send_message(const Client* user, const std::string& message);
@@ -54,6 +55,7 @@ class Channel
 		std::string 			    _name;
 		std::vector<const Client*>  _admins;
 		std::vector<const Client*>  _members;
+		std::vector<const Client*>  _invited;
 		bool                        _invite_only;
 		bool                        _topic_restriction;
 		bool                        _password_restriction;

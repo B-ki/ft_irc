@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   error_command.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 22:20:37 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 17:11:46 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 # include "command/error_command.h"
 
 std::string ERR_NOSUCHNICK(std::string nick) { return nick + " :No such nick/channel"; }
@@ -38,5 +26,5 @@ std::string ERR_INVITEONLYCHAN(std::string channel) { return ":Cannot join chann
 std::string ERR_BANNEDFROMCHAN(std::string channel) { return ":Cannot join channel " + channel + " (+b)"; }
 std::string ERR_BADCHANNELKEY(std::string channel) { return ":Cannot join channel " + channel + " (+k)"; }
 std::string ERR_BADCHANMASK(std::string channel) { return channel + " :Invalid channel name"; }
-std::string ERR_CHANOPRIVSNEEDED(std::string channel) { return ":You're not channel operator in " + channel; }
+std::string ERR_CHANOPRIVSNEEDED(std::string channel) { return channel + " :You're not channel operator"; }
 std::string ERR_UNKNOWNCOMMAND(std::string command) { return command + " :Unknown command"; }

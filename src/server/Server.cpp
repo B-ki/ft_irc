@@ -246,8 +246,7 @@ void Server::print_clients()
 
 Client* Server::get_client(std::string const nick)
 {
-	for (std::map<int, Client>::iterator it = _client_list.begin();
-			it != _client_list.end(); it++)
+	for (std::map<int, Client>::iterator it = _client_list.begin(); it != _client_list.end(); it++)
 	{
 		if ((*it).second.get_nick() == nick)
 			return &(*it).second;

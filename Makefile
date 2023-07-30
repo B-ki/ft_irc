@@ -71,6 +71,7 @@ SRCS	=	main.cpp \
 			command/JOIN.cpp \
 			command/PART.cpp \
 			command/KICK.cpp \
+			command/INVITE.cpp \
 			management/Channel.cpp
 
 T_SRCS	=	tests/main.cpp \
