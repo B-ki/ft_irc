@@ -8,6 +8,7 @@ INCLUDE	= -I$(H_DIR) -I$(TEST_DIR)
 LFLAGS	= 
 LINKS	= 
 VFLAGS	=
+TFLAGS	= -pthread
 
 ### EXECUTABLE ###
 NAME	= $(PROJECT)
@@ -134,7 +135,7 @@ val: $(NAME)
 	@$(VALGRIND) ./$(NAME) $(ARGS)
 
 $(TEST): $(NAME) $(T_OBJS)
-	@$(CC) $(CFLAGS) $(LFLAGS) $(T_OBJS) -o $(TEST)
+	@$(CC) $(CFLAGS) $(TFLAGS) $(LFLAGS) $(T_OBJS) -o $(TEST)
 	@echo "$(PROJECT): $(GREEN)Test binary created -> $(WHITE)$@$(RESET)"
 
 test: $(TEST)
