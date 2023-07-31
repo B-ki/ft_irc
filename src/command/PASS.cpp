@@ -15,15 +15,12 @@
 
 int Command::execute_PASS()
 {
-	DEBUG("executing PASS with [" << *_message.get_parameters().begin()
-			<< "], real pwd = [" << _server->get_password() << "]");
-	if (_client->is_authenticated())
-		return reply(ERR_ALREADYREGISTERED(), 464);
+	if (_client->is_authenticated() || _client->has_given_password())
+		return reply(ERR_ALREADYREGISTERED(), 462);
 	if (_message.get_parameters().empty()) 
 		return reply(ERR_NEEDMOREPARAMS("PASS"), 461);
 	if (_message.get_parameters()[0] != _server->get_password())
-		return reply(ERR_PASSWDMISMATCH(), 462);
+		return reply(ERR_PASSWDMISMATCH(), 464);
 	_client->set_password_ok(true);
-	DEBUG("Password given ! GOOD JOB !");
 	return 0;
 }

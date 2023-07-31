@@ -22,6 +22,7 @@ void  Command::join_channel(const std::string& channel_name, const std::string& 
 		if (channel == NULL) {
 			_server->create_channel(_client, channel_name);
 		} else if (!channel->is_in_channel(_client)){
+			if (channel->is_in_channel(_client)) return;
 			if (channel->is_invited(_client))
 				channel->add_user(_client);
 			else if (channel->is_invite_only())

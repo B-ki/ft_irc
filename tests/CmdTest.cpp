@@ -1,5 +1,6 @@
 #include "CmdTest.hpp"
 #include <pthread.h>
+#include <errno.h>
 
 static void*    start_server_loop(void* ptr)
 {
@@ -20,11 +21,15 @@ CmdTest::~CmdTest() { stop(); }
 void    CmdTest::create_client() {
 	int client_fd;
 	struct sockaddr_in serv_addr;
+	struct timeval tv;
 
 	if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		ERROR("Socket creation error");
 		exit(1);
 	}
+	tv.tv_sec = 0;
+	tv.tv_usec = 200000;
+	setsockopt(client_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(atoi(_port.c_str()));
 	if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
@@ -45,10 +50,11 @@ const std::string CmdTest::receive(size_t id)
 		exit(1);
 	}
 	id--;
-	char _buf[1024] = {0};
-	ssize_t num_bytes = ::read(_clients_fd[id], _buf, sizeof(_buf));
-	if (num_bytes <= 0) {
-		ERROR("cannot read message from server");
+	char _buf[1024 + 1] = {0};
+	usleep(1000); // To be sure the server have time to send the message
+	ssize_t num_bytes = recv(_clients_fd[id], _buf, sizeof(_buf), 0);
+	if (num_bytes <= 0 && errno != EAGAIN) {
+		ERROR(std::string("Cannot read from server: ") + strerror(errno));
 		exit(1);
 	}
 	_buf[num_bytes] = '\0';
