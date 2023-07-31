@@ -16,6 +16,7 @@
 
 # include "server/Server.h"
 # include "constant.h"
+# include "utils.h"
 # include "command/error_command.h"
 # include "command/reply_command.h"
 
@@ -54,6 +55,8 @@ class Command
 		int execute_NICK();
 		int execute_USER();
 		int execute_JOIN();
+		int execute_PART();
+		int execute_KICK();
 
 		void    join_channel(const std::string& channel_name, const std::string& password);
 };

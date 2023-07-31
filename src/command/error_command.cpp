@@ -27,7 +27,7 @@ std::string ERR_ERRONEUSNICKNAME(std::string nick) { return nick + " :Erroneous 
 std::string ERR_NICKNAMEINUSE(std::string nick) { return nick + " :Nickname is already in use"; }
 std::string ERR_NICKCOLLISION(std::string nick) { return nick + " :Nickname collision KILL from"; }
 std::string ERR_USERNOTINCHANNEL(std::string nick, std::string channel) { return nick + " " + channel + " :They aren't on that channel"; }
-std::string ERR_NOTONCHANNEL(std::string channel) { return ":You're not on that channel " + channel; }
+std::string ERR_NOTONCHANNEL(std::string channel) { return channel + " :You're not on that channel"; }
 std::string ERR_USERONCHANNEL(std::string nick, std::string channel) { return nick + " is already on channel " + channel; }
 std::string ERR_NOTREGISTERED() { return ":You have not registered"; }
 std::string ERR_NEEDMOREPARAMS(std::string command) { return ":Not enough parameters for command " + command; }

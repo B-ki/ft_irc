@@ -67,7 +67,7 @@ void    Channel::set_topic(const std::string& topic)
 	INFO("channel '" + _name + "' topic set to '" + _topic + "'");
 }
 
-void          Channel::add_user(const Client* user)
+void    Channel::add_user(const Client* user)
 {
 	if (find_user(_members, user) == _members.end()) {
 		_members.push_back(user);
@@ -80,17 +80,21 @@ void          Channel::add_user(const Client* user)
 	}
 }
 
-void          Channel::remove_user(const Client* user)
+void    Channel::remove_user(const Client* user)
 {
-	// TODO send users infos
 	std::vector<const Client*>::iterator it = find_user(_members, user);
 	if (it != _members.end())
 		_members.erase(it);
-	else
-		WARNING("User not in channel");
+	it = find_user(_admins, user);
+	if (it != _admins.end())
+		_admins.erase(it);
+	// TODO : remove from invited list
+//	it = find_user(_invited, user);
+//	if (it != _invited.end())
+//		_invited.erase(it);
 }
 
-void          Channel::add_admin(const Client* user)
+void    Channel::add_admin(const Client* user)
 {
 	if (find_user(_admins, user) == _admins.end())
 		_admins.push_back(user);
@@ -98,26 +102,17 @@ void          Channel::add_admin(const Client* user)
 		WARNING("User already administrator of channel");
 }
 
-void          Channel::remove_admin(const Client* user)
-{
-	std::vector<const Client*>::iterator it = find_user(_admins,user);
-	if (it != _admins.end())
-		_admins.erase(it);
-	else
-		WARNING("User not administrator of channel");
-}
-
-bool		  Channel::is_admin(const Client* user) const
+bool    Channel::is_admin(const Client* user) const
 {
 	return find_user(_admins, user) != _admins.end();
 }
 
-bool          Channel::is_in_channel(const Client* user) const
+bool    Channel::is_in_channel(const Client* user) const
 {
 	return find_user(_members, user) != _members.end();
 }
 
-void          Channel::send_message(const Client* user, const std::string& message)
+void    Channel::send_message(const Client* user, const std::string& message)
 {
 	std::vector<const Client*>::iterator it = _members.begin();
 	for (; it != _members.end(); it++)
@@ -127,29 +122,29 @@ void          Channel::send_message(const Client* user, const std::string& messa
 	}
 }
 
-void 		Channel::send_all(const Client* user, const std::string& message)
+void 	Channel::send_all(const Client* user, const std::string& message)
 {
 	std::vector<const Client*>::iterator it = _members.begin();
 	for (; it != _members.end(); it++)
 		user->send_to(**it, message);
 }
 
-bool          Channel::is_full() const
+bool    Channel::is_full() const
 {
 	if (!_capacity_restriction)
 		return false;
 	return _members.size() >= _max_users;
 }
 
-bool		  Channel::is_invited(const Client* user) const
+bool	Channel::is_invited(const Client* user) const
 {
 	(void)user;
 	return false;
 }
 
-bool          Channel::validate_password(const std::string& password) const { return _password == password; }
+bool    Channel::validate_password(const std::string& password) const { return _password == password; }
 
-std::vector<const Client*>::const_iterator    Channel::find_user(const std::vector<const Client*>& list, const Client* elem) const
+std::vector<const Client*>::const_iterator  Channel::find_user(const std::vector<const Client*>& list, const Client* elem) const
 {
 	std::vector<const Client*>::const_iterator it = list.begin();
 	for (; it != list.end(); it++)
@@ -184,4 +179,20 @@ std::string Channel::get_nicks_list() const
 			nicks_list += " ";
 	}
 	return nicks_list;
+}
+
+void    Channel::part_user(const Client *user, const std::string &reason) {
+	std::vector<const Client*>::iterator it = find_user(_members, user);
+	if (it != _members.end()) {
+		send_all(user, CMD_PART(_name, reason));
+		remove_user(user);
+	}
+}
+
+void    Channel::kick_user(const Client *user, const Client* target, const std::string &reason) {
+	std::vector<const Client*>::iterator it = find_user(_members, target);
+	if (it != _members.end()) {
+		send_all(user, CMD_KICK(_name, target->get_nick(), reason));
+		remove_user(user);
+	}
 }
