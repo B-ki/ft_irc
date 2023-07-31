@@ -1,16 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Command.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/18 11:59:09 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 17:31:22 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 #ifndef COMMAND_H
 # define COMMAND_H
 
@@ -57,6 +44,7 @@ class Command
 		int execute_JOIN();
 		int execute_PART();
 		int execute_KICK();
+		int execute_INVITE();
 
 		void    join_channel(const std::string& channel_name, const std::string& password);
 };

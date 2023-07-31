@@ -3,12 +3,12 @@
 #include "command/reply_command.h"
 
 Channel::Channel()
-: _name(), _admins(), _members(), _invite_only(false), _topic_restriction(false),
+: _name(), _admins(), _members(), _invite_only(true), _topic_restriction(false),
 _password_restriction(false), _password(""), _topic(""), _max_users(10),
 _capacity_restriction(false) {}
 
 Channel::Channel(const Client* user, const std::string& name)
-: _name(name), _admins(), _members(), _invite_only(false), _topic_restriction(false),
+: _name(name), _admins(), _members(), _invite_only(true), _topic_restriction(false),
 _password_restriction(false), _password(""), _topic(""), _max_users(10),
 _capacity_restriction(false)
 {
@@ -138,8 +138,7 @@ bool    Channel::is_full() const
 
 bool	Channel::is_invited(const Client* user) const
 {
-	(void)user;
-	return false;
+	return find_user(_invited, user) != _invited.end();
 }
 
 bool    Channel::validate_password(const std::string& password) const { return _password == password; }
@@ -153,6 +152,14 @@ std::vector<const Client*>::const_iterator  Channel::find_user(const std::vector
 			return it;
 	}
 	return list.end();
+}
+
+void    Channel::invite_user(const Client *issuer, const Client *target) {
+	if (find_user(_invited, target) == _invited.end()) {
+		_invited.push_back(target);
+		issuer->reply(RPL_INVITING(target->get_nick(), _name), 341);
+		issuer->send_to(*target, CMD_INVITE(target->get_nick(), _name));
+	}
 }
 
 std::vector<const Client*>::iterator    Channel::find_user(std::vector<const Client*>& list, const Client* elem)

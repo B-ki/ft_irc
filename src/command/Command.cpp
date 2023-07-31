@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Command.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/18 12:14:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 19:44:38 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "command/Command.h"
 #include "command/reply_command.h"
 #include "constant.h"
@@ -80,6 +68,7 @@ int Command::execute_command()
 		case JOIN: return execute_JOIN();
 		case PART: return execute_PART();
 		case KICK: return execute_KICK();
+		case INVITE: return execute_INVITE();
 		default: return -1;
 	}
 }
