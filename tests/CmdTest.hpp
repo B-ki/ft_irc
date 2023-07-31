@@ -12,14 +12,16 @@ class CmdTest
 		~CmdTest(void);
 		CmdTest& operator=(const CmdTest& rhs);
 
-		void send(const std::string& tested);
-		const std::string receive();
-		void stop();
+		void                create_client();
+		void                send(size_t id, const std::string& tested);
+		const std::string   receive(size_t id);
+		void                stop();
 
 	private:
-		Server      _server;
-		pthread_t   _server_thread_id;
-		int         _client_fd;
+		Server              _server;
+		std::string         _port;
+		pthread_t           _server_thread_id;
+		std::vector<int>    _clients_fd;
 };
 
 #endif

@@ -5,11 +5,12 @@
 void welcome_message()
 {
 	CmdTest cmd_test("5878", "password");
+	cmd_test.create_client();
 	std::string nick = "rmorel";
-	cmd_test.send("PASS password");
-	cmd_test.send("NICK " + nick);
-	cmd_test.send("USER " + nick);
-	assert_str(cmd_test.receive(), "001 " + nick + " :Welcome to the IRC Network");
+	cmd_test.send(1, "PASS password");
+	cmd_test.send(1, "NICK " + nick);
+	cmd_test.send(1, "USER " + nick);
+	assert_str(cmd_test.receive(1), "001 " + nick + " :Welcome to the IRC Network");
 	cmd_test.stop();
 }
 
