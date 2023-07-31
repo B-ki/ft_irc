@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 15:37:52 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 23:52:24 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 11:42:03 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,8 @@ int Message::parse_message(std::string str_to_parse)
 	if (int ret = parse_normal_parameters(normal_params))
 		return (ret);
 	std::string trailing_param(start + trailing_pos + 2, str_to_parse.end());
-	if (trailing_param.empty() == false 
-			&& trailing_param.find_first_not_of(' ') != std::string::npos)
-		return(this->add_parameter(trailing_param));
+	if (trailing_param.find_first_not_of(' ') == std::string::npos)
+		return(this->add_parameter(""));
+	return(this->add_parameter(trailing_param));
 	return (PARSING_SUCCESS);
 }
