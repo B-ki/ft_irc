@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:47:06 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 18:19:57 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 11:46:37 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void parsing_test_1(void)
 	std::vector<std::string> expected_params;
 	expected_params.push_back("*");
 	expected_params.push_back("LIST");
+	expected_params.push_back("");
 	expected_cmd = PRIVMSG;
 	parsing_test_cmd(expected_cmd, expected_params, expected_tags,
 				expected_prefix, message);
@@ -172,6 +173,7 @@ void parsing_test_8(void)
 	cmd_type expected_cmd;
 	std::vector<std::string> expected_params;
 	expected_cmd = KICK;
+	expected_params.push_back("");
 	parsing_test_cmd(expected_cmd, expected_params, expected_tags,
 				expected_prefix, message);
 }
@@ -330,25 +332,58 @@ void parsing_test_18(void)
 				expected_prefix, message);
 }
 
-void parsing_test(std::vector<Test*>& tests)
+void parsing_test_19(void)
 {
-	tests.push_back(new Test("Parsing 1", &parsing_test_1));
-	tests.push_back(new Test("Parsing 2", &parsing_test_2));
-	tests.push_back(new Test("Parsing 3", &parsing_test_3));
-	tests.push_back(new Test("Parsing 4", &parsing_test_4));
-	tests.push_back(new Test("Parsing 5", &parsing_test_5));
-	tests.push_back(new Test("Parsing 6", &parsing_test_6));
-	tests.push_back(new Test("Parsing 7", &parsing_test_7));
-	tests.push_back(new Test("Parsing 8", &parsing_test_8));
-	tests.push_back(new Test("Parsing 9", &parsing_test_9));
-	tests.push_back(new Test("Parsing 10", &parsing_test_10));
-	tests.push_back(new Test("Parsing 11", &parsing_test_11));
-	tests.push_back(new Test("Parsing 12", &parsing_test_12));
-	tests.push_back(new Test("Parsing 13", &parsing_test_13));
-	tests.push_back(new Test("Parsing 14", &parsing_test_14));
-	tests.push_back(new Test("Parsing 15", &parsing_test_15));
-	tests.push_back(new Test("Parsing 16", &parsing_test_16));
-	tests.push_back(new Test("Parsing 17", &parsing_test_17));
-	tests.push_back(new Test("Parsing 18", &parsing_test_18));
+	std::string tested_string("JOIN #oui :");
+
+	Message message;
+	message.parse_message(tested_string);
+	std::map<std::string, std::string> expected_tags;
+	std::string expected_prefix;
+	cmd_type expected_cmd = JOIN;
+	std::vector<std::string> expected_params;
+	expected_params.push_back("#oui");
+	expected_params.push_back("");
+	parsing_test_cmd(expected_cmd, expected_params, expected_tags,
+				expected_prefix, message);
 }
 
+void parsing_test_20(void)
+{
+	std::string tested_string("JOIN #oui : ");
+
+	Message message;
+	message.parse_message(tested_string);
+	std::map<std::string, std::string> expected_tags;
+	std::string expected_prefix;
+	cmd_type expected_cmd = JOIN;
+	std::vector<std::string> expected_params;
+	expected_params.push_back("#oui");
+	expected_params.push_back("");
+	parsing_test_cmd(expected_cmd, expected_params, expected_tags,
+				expected_prefix, message);
+}
+
+void parsing_test(std::vector<Test*>& tests)
+{
+	tests.push_back(new Test("parsing::[PRIVMSG * LIST :]", &parsing_test_1));
+	tests.push_back(new Test("parsing::[PRIVMSG * LS :multi-prefix sasl]", &parsing_test_2));
+	tests.push_back(new Test("parsing::[PRIVMSG :bla bla bla]", &parsing_test_3));
+	tests.push_back(new Test("parsing::[PRIVMSG           #chan    :Hey!]", &parsing_test_4));
+	tests.push_back(new Test("parsing::[PRIVMSG #chan Hey!]", &parsing_test_5));
+	tests.push_back(new Test("parsing::[PRIVMSG #chan ::-)]", &parsing_test_6));
+	tests.push_back(new Test("parsing::[PRIVMSG    ]", &parsing_test_7));
+	tests.push_back(new Test("parsing::[  KICK        :      ]", &parsing_test_8));
+	tests.push_back(new Test("parsing::[ MODE bla bla bla]", &parsing_test_9));
+	tests.push_back(new Test("parsing::[       PRIVMSG     bla   bla bla  ]", &parsing_test_10));
+	tests.push_back(new Test("parsing::[:SomeOp MODE #channel +oo SomeUser :AnotherUser]", &parsing_test_11));
+	tests.push_back(new Test("parsing::[:SomeOp MODE]", &parsing_test_12));
+	tests.push_back(new Test("parsing::[:SomeOp       MODE]", &parsing_test_13));
+	tests.push_back(new Test("parsing::[     :SomeOp MODE]", &parsing_test_14));
+	tests.push_back(new Test("parsing::[MODE]", &parsing_test_15));
+	tests.push_back(new Test("parsing::[MODE     ]", &parsing_test_16));
+	tests.push_back(new Test("parsing::[   MODE]", &parsing_test_17));
+	tests.push_back(new Test("parsing::[   NICK wrong:nick:name]", &parsing_test_18));
+	tests.push_back(new Test("parsing::[JOIN #oui :]", &parsing_test_19));
+	tests.push_back(new Test("parsing::[JOIN #oui : ]", &parsing_test_20));
+}
