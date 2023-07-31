@@ -74,6 +74,8 @@ SRCS	=	main.cpp \
 			command/KICK.cpp \
 			command/INVITE.cpp \
 			command/TOPIC.cpp \
+			command/PRIVMSG.cpp \
+			command/NOTICE.cpp \
 			management/Channel.cpp
 
 

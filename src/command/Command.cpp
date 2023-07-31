@@ -70,6 +70,8 @@ int Command::execute_command()
 		case KICK: return execute_KICK();
 		case INVITE: return execute_INVITE();
 		case TOPIC: return execute_TOPIC();
+		case PRIVMSG: return execute_PRIVMSG();
+		case NOTICE: return execute_NOTICE();
 		default: return -1;
 	}
 }
