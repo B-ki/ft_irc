@@ -14,6 +14,8 @@ int     Command::execute_PART() {
 				reply(ERR_NOTONCHANNEL(channels[i]), 442);
 			else
 				channel->part_user(_client, part_message);
+			if (channel->is_empty())
+				_server->delete_channel(channel->get_name());
 		}
 	}
 	return 0;

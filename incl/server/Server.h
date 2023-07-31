@@ -51,11 +51,12 @@ class	Server {
 		int 	    create_client();
 		void 	    print_clients();
 		bool        channel_exists(std::string name);
-		int         create_channel(const Client* client, const std::string& name);
 		bool        nick_already_used(const std::string& nick) const;
+		int         create_channel(Client* client, const std::string& name);
 		Channel*    get_channel(const std::string& name);
 		const Bot*  get_bot(const std::string& name) const;
 		bool        running() const;
+		void        delete_channel(const std::string& name);
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);

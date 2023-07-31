@@ -19,6 +19,8 @@ int     Command::execute_KICK() {
 			reply(ERR_USERNOTINCHANNEL(nicks[i], channel_name), 401);
 		else
 			channel->kick_user(_client, target, reason);
+		if (channel->is_empty())
+			_server->delete_channel(channel->get_name());
 	}
 	return 0;
 }

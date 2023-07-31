@@ -1,13 +1,6 @@
 #include "management/Channel.h"
-#include "error.h"
-#include "command/reply_command.h"
 
-Channel::Channel()
-: _name(), _admins(), _members(), _invite_only(false), _topic_restriction(true),
-_password_restriction(false), _max_users(10), _capacity_restriction(false)
-{}
-
-Channel::Channel(const Client* user, const std::string& name)
+Channel::Channel(Client* user, const std::string& name)
 : _name(name), _admins(), _members(), _invite_only(false), _topic_restriction(true),
 _password_restriction(false), _max_users(10), _capacity_restriction(false)
 {
@@ -68,10 +61,11 @@ void    Channel::set_topic(const Client& user, const std::string& topic)
 	}
 }
 
-void    Channel::add_user(const Client* user)
+void    Channel::add_user(Client* user)
 {
 	if (find_user(_members, user) == _members.end()) {
 		_members.push_back(user);
+		user->add_channel(_name);
 		send_all(user,  CMD_JOIN(_name));
 		if (!_topic.empty())
 			user->reply(RPL_TOPIC(_name, _topic), 332);
@@ -84,18 +78,19 @@ void    Channel::add_user(const Client* user)
 	}
 }
 
-void    Channel::remove_user(const Client* user)
+void    Channel::remove_user(Client* user)
 {
 	std::vector<const Client*>::iterator it = find_user(_members, user);
-	if (it != _members.end())
+	if (it != _members.end()) {
 		_members.erase(it);
+		user->remove_channel(_name);
+	}
 	it = find_user(_admins, user);
 	if (it != _admins.end())
 		_admins.erase(it);
-	// TODO : remove from invited list
-//	it = find_user(_invited, user);
-//	if (it != _invited.end())
-//		_invited.erase(it);
+	it = find_user(_invited, user);
+	if (it != _invited.end())
+		_invited.erase(it);
 }
 
 void    Channel::add_admin(const Client* user)
@@ -192,7 +187,7 @@ std::string Channel::get_nicks_list() const
 	return nicks_list;
 }
 
-void    Channel::part_user(const Client *user, const std::string &reason) {
+void    Channel::part_user(Client *user, const std::string &reason) {
 	std::vector<const Client*>::iterator it = find_user(_members, user);
 	if (it != _members.end()) {
 		send_all(user, CMD_PART(_name, reason));
@@ -200,10 +195,20 @@ void    Channel::part_user(const Client *user, const std::string &reason) {
 	}
 }
 
-void    Channel::kick_user(const Client *user, const Client* target, const std::string &reason) {
+void    Channel::kick_user(Client *user, const Client* target, const std::string &reason) {
 	std::vector<const Client*>::iterator it = find_user(_members, target);
 	if (it != _members.end()) {
 		send_all(user, CMD_KICK(_name, target->get_nick(), reason));
 		remove_user(user);
 	}
 }
+
+void    Channel::quit_user(Client *user, const std::string &reason) {
+	std::vector<const Client*>::iterator it = find_user(_members, user);
+	if (it != _members.end()) {
+		send_message(user, CMD_QUIT(reason));
+		remove_user(user);
+	}
+}
+
+bool    Channel::is_empty() const { return _members.empty(); }
