@@ -72,7 +72,9 @@ SRCS	=	main.cpp \
 			command/PART.cpp \
 			command/KICK.cpp \
 			command/INVITE.cpp \
+			command/TOPIC.cpp \
 			management/Channel.cpp
+
 
 T_SRCS	=	tests/main.cpp \
 			tests/parsing.cpp \

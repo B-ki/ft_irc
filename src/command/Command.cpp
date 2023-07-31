@@ -69,6 +69,7 @@ int Command::execute_command()
 		case PART: return execute_PART();
 		case KICK: return execute_KICK();
 		case INVITE: return execute_INVITE();
+		case TOPIC: return execute_TOPIC();
 		default: return -1;
 	}
 }

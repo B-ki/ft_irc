@@ -45,6 +45,7 @@ class Command
 		int execute_PART();
 		int execute_KICK();
 		int execute_INVITE();
+		int execute_TOPIC();
 
 		void    join_channel(const std::string& channel_name, const std::string& password);
 };
