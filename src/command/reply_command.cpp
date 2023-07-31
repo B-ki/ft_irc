@@ -9,6 +9,8 @@ std::string RPL_ISUPPORT(const std::string& tokens) { return tokens + " :are sup
 std::string RPL_MOTDSTART(const std::string& server_name) { return ":- " + server_name + " Message of the day -"; }
 std::string RPL_MOTD(const std::string& message) { return ":" + message; }
 std::string RPL_ENDOFMOTD() { return ":End of /MOTD command"; }
+std::string RPL_CHANNELMODEIS(const std::string& mode_list) { return mode_list; }
+std::string RPL_AWAY(const std::string& nick) { return nick + " :User is away"; }
 std::string RPL_TOPIC(const std::string& channel, const std::string& topic) { return channel + " :" + topic; }
 std::string RPL_NOTOPIC(const std::string& channel) { return channel + " :No topic is set"; }
 std::string RPL_TOPICWHOTIME(const std::string& channel, const std::string& nick, const std::string& timestamp) { return channel + " :" + nick + " " + timestamp; }

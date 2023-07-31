@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reply_command.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/18 15:35:40 by rmorel            #+#    #+#             */
+/*   Updated: 2023/08/01 23:03:01 by rmorel           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef REPLY_COMMAND_H
 #define REPLY_COMMAND_H 
 
@@ -11,6 +23,8 @@ std::string RPL_ISUPPORT(const std::string& tokens);
 std::string RPL_MOTDSTART(const std::string& server_name);
 std::string RPL_MOTD(const std::string& message);
 std::string RPL_ENDOFMOTD();
+std::string RPL_CHANNELMODEIS(const std::string& mode_list);
+std::string RPL_AWAY(const std::string& nick);
 std::string RPL_TOPIC(const std::string& channel, const std::string& topic);
 std::string RPL_NOTOPIC(const std::string& channel);
 std::string RPL_TOPICWHOTIME(const std::string& channel, const std::string& nick, const std::string& timestamp);

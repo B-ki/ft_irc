@@ -7,6 +7,7 @@
 namespace utils {
 	bool is_empty(const char* str);
 	std::vector<std::string> split(const std::string& str, const std::string& delim);
+	std::string itoa(size_t number);
 }
 
 #endif

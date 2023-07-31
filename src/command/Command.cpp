@@ -79,6 +79,7 @@ int Command::execute_command()
 		case TOPIC: return execute_TOPIC();
 		case PRIVMSG: return execute_PRIVMSG();
 		case NOTICE: return execute_NOTICE();
+		case MODE: return execute_MODE();
 		default: return -1;
 	}
 }
