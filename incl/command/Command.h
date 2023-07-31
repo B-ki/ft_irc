@@ -48,6 +48,7 @@ class Command
 		int execute_TOPIC();
 		int execute_PRIVMSG();
 		int execute_NOTICE();
+		int execute_MODE();
 
 		void    join_channel(const std::string& channel_name, const std::string& password);
 };
