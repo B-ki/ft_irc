@@ -16,7 +16,6 @@
 
 bool is_valid_nickname(std::string nick)
 {
-	std::cerr << nick << std::endl;
 	for (std::string::iterator it = nick.begin(); it != nick.end(); it++)
 	{
 		if (!isalpha(*it) && !isdigit(*it) && *it != '[' && *it != ']'
@@ -42,11 +41,8 @@ bool nick_already_used(std::string nick, std::map<int, Client>& list)
 
 int Command::execute_NICK()
 {
-	DEBUG("executing NICK");
 	if (!_client->has_given_password())
-		return reply(ERR_NOTREGISTERED(), 452);
-	if (_client->get_nick() != "*")
-		return reply(ERR_ALREADYREGISTERED(), 462);
+		return reply(ERR_NOTREGISTERED(), 451);
 	if (_message.get_parameters().empty())
 		return reply(ERR_NONICKNAMEGIVEN(), 431);
 	std::string nick = _message.get_parameters()[0];
@@ -54,15 +50,16 @@ int Command::execute_NICK()
 		return reply(ERR_ERRONEUSNICKNAME(nick), 432);
 	if (nick_already_used(nick, _server->get_client_list()))
 		return reply(ERR_NICKNAMEINUSE(nick), 433);
+	if (_client->get_nick() != "*") {
+		_client->set_nick(nick);
+		return 0;
+	}
 	_client->set_nick(nick);
-	if (_client->has_given_one_name()) {
+	if (_client->get_user() != "*") {
 		_client->set_authenticated(true);
 		welcome();
-		DEBUG("Welcome message ! Awesome !");
-	}
-	else {
+	} else {
 		_client->set_name_given(true);
-		DEBUG("Nick name given, need user now !");
 	}
 	return 0;
 }

@@ -109,7 +109,7 @@ void	Test::print_banner(void) const
 			sig = "SIGBUS";
 		else if (_exit_code == SIGPIPE)
 			sig = "SIGPIPE";
-		else if (_exit_code == SIGKILL)
+		else if (_exit_code == SIGUSR1)
 			sig = "TIMEOUT";
 		else
 			sig = "";

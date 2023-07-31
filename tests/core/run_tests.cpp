@@ -5,7 +5,7 @@ void 	__assert_str(const std::string& s1, const std::string& s2, const char *fil
 {
 	if (s1 != s2) {
 		std::cerr << "Assertion failed: (\"" << s1 << "\" != \"" << s2 << "\"), function ";
-		std::cerr << function << ", file" << file << ", line" << line << ".\n";
+		std::cerr << function << ", file" << file << ", line " << line << ".\n";
 		exit(2);
 	}
 }
