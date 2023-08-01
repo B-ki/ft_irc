@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/06 14:36:39 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 15:30:32 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef SERVER_H
 # define SERVER_H
 
@@ -67,18 +55,20 @@ class	Server {
 		bool        nick_already_used(const std::string& nick) const;
 		Channel*    get_channel(const std::string& name);
 		const Bot*  get_bot(const std::string& name) const;
+		bool        running() const;
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);
 		static bool		is_valid_password(const std::string& password);
 
 		// --- Public attributes ---
-		bool	_started;
+
 
 	private:
 		// -- Private attributes --
 		int						        _sockfd;
 		int						        _nb_clients;
+		bool	                        _started;
 		std::string				        _port;
 		std::string				        _password;
 		std::string				        _ip_version;

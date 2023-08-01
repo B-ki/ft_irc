@@ -1,11 +1,21 @@
 #include <iostream>
 #include <string>
-#include "server/Server.h"
 #include <cstdlib>
+#include <csignal>
+#include "server/Server.h"
+
+bool g_sig = true;
 
 void	usage(const std::string& prog_name)
 {
 	std::cerr << "Usage: " << prog_name << " <port> <password>\n";
+}
+
+void    handle_sigint(int sig)
+{
+	(void)sig;
+	INFO("SIGINT received, stoping server properly");
+	g_sig = false;
 }
 
 int	main(int ac, char **av)
@@ -24,7 +34,9 @@ int	main(int ac, char **av)
 	}
 	Server server = Server(av[1], av[2]);
 	server.start();
-	while(server._started)
+	signal(SIGINT, &handle_sigint);
+	while(server.running() && g_sig)
 		server.loop();
+	server.stop();
 	return 0;
 }

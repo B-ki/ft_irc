@@ -5,7 +5,7 @@
 static void*    start_server_loop(void* ptr)
 {
 	Server* server = (Server*)ptr;
-	while (server->_started)
+	while (server->running())
 		server->loop();
 	return NULL;
 }
