@@ -3,13 +3,15 @@
 #include <netdb.h>
 
 
-Client::Client() : _nick("*"), _user("*"), _buffer(), _authenticated(false), _channels()
+Client::Client() : _nick("*"), _user("*"), _buffer(), _authenticated(false),
+	_name_given(false), _pwd_ok(false)
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);
 }
 
-Client::Client(int fd) : _fd(fd), _nick("*"), _user("*"), _buffer(), _authenticated(false), _channels()
+Client::Client(int fd) : _fd(fd), _nick("*"), _user("*"), _buffer(),
+	_authenticated(false), _name_given(false), _pwd_ok(false)
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);

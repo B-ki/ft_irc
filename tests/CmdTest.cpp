@@ -77,6 +77,11 @@ void CmdTest::send(size_t id, const std::string& tested)
 	}
 }
 
+void CmdTest::print_content()
+{
+	_server.print_clients();
+}
+
 void CmdTest::stop()
 {
 	for (size_t i = 0; i < _clients_fd.size(); i++)

@@ -42,6 +42,7 @@ class Channel
 		void	kick_user(Client*user, const Client* target, const std::string& reason);
 		void    quit_user(Client* user, const std::string& reason);
 		void    add_admin(const Client* user);
+		void    remove_admin(const Client* user);
 		bool    is_admin(const Client* user) const;
 		bool    is_full() const;
 		bool    is_invited(const Client* user) const;

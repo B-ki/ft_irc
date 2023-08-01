@@ -12,6 +12,8 @@ struct ModeReply {
 	bool o_is_set;
 	std::string modestring;
 	std::vector<std::string> args;
+
+	ModeReply();
 };
 
 #endif
