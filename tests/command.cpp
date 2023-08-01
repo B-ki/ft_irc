@@ -1,17 +1,26 @@
 #include <cstring>
 #include "tests.h"
 #include "CmdTest.hpp"
+#include "utils.h"
 
 void    welcome_message()
 {
-	CmdTest cmd_test("5878", "password");
-	cmd_test.create_client();
+	CmdTest s("5878", "password");
+	s.create_client();
 	std::string nick = "rmorel";
-	cmd_test.send(1, "PASS password");
-	cmd_test.send(1, "NICK " + nick);
-	cmd_test.send(1, "USER " + nick + " 0 * :Romain Morel");
-	assert_str(cmd_test.receive(1), "001 " + nick + " :Welcome to the IRC Network");
-	cmd_test.stop();
+	s.send(1, "PASS password");
+	s.send(1, "NICK " + nick);
+	s.send(1, "USER " + nick + " 0 * :Romain Morel");
+	std::string expected = "001 rmorel :Welcome to the IRC Network\n";
+	expected += "002 rmorel :Your host is ft_irc, running version v1.0\n";
+	expected += "003 rmorel :This server was created " + s.get_server().get_date_time() + "\n";
+	expected += "004 rmorel ft_irc v1.0 n kilot\n";
+	expected += "005 rmorel CHANMODES=kilot CHANTYPES=# :are supported by this server\n";
+	expected += "375 rmorel :- ft_irc Message of the day -\n";
+	expected += "372 rmorel :Nothing important for now ;(\n";
+	expected += "376 rmorel :End of /MOTD command";
+	assert_str(s.receive(1), expected);
+	s.stop();
 }
 
 void    not_authenticated()
@@ -95,7 +104,7 @@ void    nick_change()
 	s.send(1, "NICK rmorel2");
 	assert_str(s.receive(1), ":rmorel!*@127.0.0.1 NICK :rmorel2");
 	s.send(1, "USER rmorel 0 * :Romain Morel");
-	assert_str(s.receive(1), "001 rmorel2 :Welcome to the IRC Network");
+	assert_str(utils::split(s.receive(1), "\n")[0], "001 rmorel2 :Welcome to the IRC Network");
 }
 
 void    user_not_enough_params()

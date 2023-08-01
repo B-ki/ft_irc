@@ -4,6 +4,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <utility>
+#include <ctime>
 
 //Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
 //	_port(DEFAULT_PORT), _password(DEFAULT_PASSWORD), _ip_version(), _hints(),
@@ -23,9 +24,10 @@
 //	_bots.insert(std::make_pair(bot->get_name(), bot));
 //}
 
-Server::Server(std::string port, std::string password)
-: _sockfd(-1), _nb_clients(0), _started(false), _port(port), _password(password), _ip_version(),
-_hints(), _servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
+Server::Server(const std::string& port, const std::string& password) :
+	_sockfd(-1), _nb_clients(0), _started(false), _created_at(time(NULL)), _port(port),
+	_password(password), _ip_version(""), _name(SERVER_NAME), _version(SERVER_VERSION),
+	_hints(), _servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
 {
 	INFO((std::string)"using the given port " + _port);
 	INFO((std::string)"using the given password '" + _password + "'");
@@ -209,7 +211,11 @@ Client* Server::get_client(int const fd)
 	return NULL;
 }
 
-void    Server::remove_fd(int start)
+const std::string&  Server::get_name() const { return _name; }
+
+const std::string&  Server::get_version() const { return _version; }
+
+void	Server::remove_fd(int start)
 {
 	for (int i=start + 1; i < _nb_clients; i++) {
 		_client_pfd_list[i - 1] = _client_pfd_list[i];
@@ -347,3 +353,19 @@ bool Server::nick_already_used(const std::string& nick) const
 bool    Server::running() const { return _started; }
 
 void Server::delete_channel(const std::string& name) { _channels.erase(name); }
+
+std::string  Server::get_date_time() const {
+	struct tm  tstruct = {};
+	char       buf[80];
+	tstruct = *localtime(&_created_at);
+	strftime(buf, sizeof(buf), "%X %d/%m/%Y", &tstruct);
+	return std::string(buf);
+}
+
+std::string Server::get_user_modes() const {
+	return "n";
+}
+
+std::string Server::get_channel_modes() const {
+	return "kilot";
+}
