@@ -33,6 +33,7 @@ int	main(int ac, char **av)
 		exit(3);
 	}
 	Server server = Server(av[1], av[2]);
+	server.write_logo();
 	server.start();
 	signal(SIGINT, &handle_sigint);
 	while(server.running() && g_sig)
