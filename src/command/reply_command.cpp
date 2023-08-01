@@ -21,3 +21,4 @@ std::string CMD_INVITE(const std::string& nick, const std::string& channel) { re
 std::string CMD_TOPIC(const std::string& channel, const std::string& topic) { return "TOPIC " + channel + " :" + topic; }
 std::string CMD_PRIVMSG(const std::string& channel, const std::string& message) { return "PRIVMSG " + channel + " :" + message; }
 std::string CMD_NOTICE(const std::string& channel, const std::string& message) { return "NOTICE " + channel + " :" + message; }
+std::string CMD_NICK(const std::string& nick) { return "NICK :" + nick; }

@@ -38,6 +38,7 @@ int Command::execute_NICK()
 	if (_server->nick_already_used(nick))
 		return reply(ERR_NICKNAMEINUSE(nick), 433);
 	if (_client->get_nick() != "*") {
+		_client->send_to(*_client, CMD_NICK(nick));
 		_client->set_nick(nick);
 		return 0;
 	}

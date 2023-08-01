@@ -20,5 +20,6 @@
 	std::string CMD_TOPIC(const std::string& channel, const std::string& topic);
 	std::string CMD_PRIVMSG(const std::string& channel, const std::string& message);
 	std::string CMD_NOTICE(const std::string& channel, const std::string& message);
+	std::string CMD_NICK(const std::string& nick);
 
 #endif 
