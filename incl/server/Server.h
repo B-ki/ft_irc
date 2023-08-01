@@ -30,6 +30,8 @@
 # include "Client.h"
 # include "management/Channel.h"
 # include "parsing/Message.h"
+# include "Bot.h"
+# include "RockPaperScissorsBot.h"
 
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
@@ -39,7 +41,7 @@
 class	Server {
 	public:
 		// -- Constructors --
-		Server();
+//		Server();
 		Server(std::string port, std::string password);
 //		Server(const Server& server);
 //		Server&	operator=(const Server& server);
@@ -62,7 +64,9 @@ class	Server {
 		void 	    print_clients();
 		bool        channel_exists(std::string name);
 		int         create_channel(const Client* client, const std::string& name);
+		bool        nick_already_used(const std::string& nick) const;
 		Channel*    get_channel(const std::string& name);
+		const Bot*  get_bot(const std::string& name) const;
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);
@@ -84,6 +88,7 @@ class	Server {
 		std::map<int, Client> 	        _client_list;
 		std::string			            _hostname;
 		std::map<std::string, Channel>  _channels;
+		std::map<std::string, Bot*>      _bots;
 
 		// -- Private functions --
 		int						handle_recv(int fd, int i);

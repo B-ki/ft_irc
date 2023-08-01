@@ -20,6 +20,11 @@ int Command::execute_PRIVMSG() {
 			else
 				channel->send_message(_client, CMD_PRIVMSG(target_name, message));
 		} else {
+			const Bot* bot = _server->get_bot(target_name);
+			if (bot) {
+				bot->reply_to(*_client, message);
+				continue;
+			}
 			Client* target = _server->get_client(target_name);
 			if (!target)
 				reply(ERR_NOSUCHNICK(target_name), 401);
