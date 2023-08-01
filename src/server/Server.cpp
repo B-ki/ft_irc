@@ -2,26 +2,26 @@
 #include "command/Command.h"
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <utility>
 
-Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
-	_port(DEFAULT_PORT), _password(DEFAULT_PASSWORD), _ip_version(), _hints(),
-	_servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
-{
-	INFO((std::string)"no port provided, using default port " + DEFAULT_PORT);
-	INFO((std::string)"setting password to the default '" + DEFAULT_PASSWORD + "'");
-	memset(&_hints, 0, sizeof(_hints));
-	_hints.ai_family = AF_INET;
-	_hints.ai_socktype = SOCK_STREAM;
-	_hints.ai_flags = AI_PASSIVE;
-	if (getaddrinfo(NULL, _port.c_str(), &_hints, &_servinfo) != 0) {
-		ERROR("could not get the server connection details");
-		exit(1);
-	}
-	memset(&_client_pfd_list, 0, sizeof(_client_pfd_list) * MAX_CONNEXIONS);
-}
+//Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
+//	_port(DEFAULT_PORT), _password(DEFAULT_PASSWORD), _ip_version(), _hints(),
+//	_servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
+//{
+//	INFO((std::string)"no port provided, using default port " + DEFAULT_PORT);
+//	INFO((std::string)"setting password to the default '" + DEFAULT_PASSWORD + "'");
+//	memset(&_hints, 0, sizeof(_hints));
+//	_hints.ai_family = AF_INET;
+//	_hints.ai_socktype = SOCK_STREAM;
+//	_hints.ai_flags = AI_PASSIVE;
+//	if (getaddrinfo(NULL, _port.c_str(), &_hints, &_servinfo) != 0) {
+//		ERROR("could not get the server connection details");
+//		exit(1);
+//	}
+//	Bot* bot = new RockPaperScissorsBot("rpsbot");
+//	_bots.insert(std::make_pair(bot->get_name(), bot));
+//}
 
 Server::Server(std::string port, std::string password) : _started(false), 
 	_sockfd(-1), _nb_clients(0), _port(port), _password(password), _ip_version(),
@@ -37,6 +37,8 @@ Server::Server(std::string port, std::string password) : _started(false),
 		ERROR("could not get the server connection details");
 		exit(1);
 	}
+	Bot* bot = new RockPaperScissorsBot("rpsbot");
+	_bots.insert(std::make_pair(bot->get_name(), bot));
 }
 
 //Server::Server(const Server& server)
@@ -255,20 +257,11 @@ Client* Server::get_client(std::string const nick)
 	return NULL;
 }
 
-std::map<int, Client>& 	Server::get_client_list()
-{
-	return _client_list;
-}
+std::map<int, Client>& 	Server::get_client_list() { return _client_list; }
 
-const std::string& Server::get_password() const
-{
-	return _password;
-}
+const std::string& Server::get_password() const { return _password; }
 
-const std::string& Server::get_hostname() const
-{
-	return _hostname;
-}
+const std::string& Server::get_hostname() const { return _hostname; }
 
 bool Server::is_valid_port(const std::string& port)
 {
@@ -316,4 +309,28 @@ Channel* Server::get_channel(const std::string& name)
 	} catch (std::out_of_range& e) {
 		return NULL;
 	}
+}
+
+const Bot*    Server::get_bot(const std::string &name) const {
+	try {
+		return _bots.at(name);
+	} catch (std::out_of_range& e) {
+		return NULL;
+	}
+}
+
+bool Server::nick_already_used(const std::string& nick) const
+{
+	if (!_client_list.empty()) {
+		std::map<int, Client>::const_iterator it = _client_list.begin();
+		for (; it != _client_list.end(); it++) {
+			if ((*it).second.get_nick() == nick)
+				return true;
+		}
+	}
+	if (!_bots.empty()) {
+		if (get_bot(nick) != NULL)
+			return true;
+	}
+	return false;
 }

@@ -26,19 +26,6 @@ bool is_valid_nickname(std::string nick)
 	return true;
 }
 
-bool nick_already_used(std::string nick, std::map<int, Client>& list)
-{
-	if (list.empty())
-		return false;
-	std::map<int, Client>::iterator it = list.begin();
-	for (; it != list.end(); it++)
-	{
-		if ((*it).second.get_nick() == nick)
-			return true;
-	}
-	return false;
-}
-
 int Command::execute_NICK()
 {
 	if (!_client->has_given_password())
@@ -48,7 +35,7 @@ int Command::execute_NICK()
 	std::string nick = _message.get_parameters()[0];
 	if (!is_valid_nickname(nick))
 		return reply(ERR_ERRONEUSNICKNAME(nick), 432);
-	if (nick_already_used(nick, _server->get_client_list()))
+	if (_server->nick_already_used(nick))
 		return reply(ERR_NICKNAMEINUSE(nick), 433);
 	if (_client->get_nick() != "*") {
 		_client->set_nick(nick);

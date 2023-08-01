@@ -63,6 +63,7 @@ SRCS	=	main.cpp \
 			server/Server.cpp \
 			server/Client.cpp \
 			server/Buffer.cpp \
+			server/RockPaperScissorsBot.cpp \
 			command/Command.cpp \
 			command/error_command.cpp \
 			command/reply_command.cpp \
