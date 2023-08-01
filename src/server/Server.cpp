@@ -23,9 +23,9 @@
 //	_bots.insert(std::make_pair(bot->get_name(), bot));
 //}
 
-Server::Server(std::string port, std::string password) : _started(false), 
-	_sockfd(-1), _nb_clients(0), _port(port), _password(password), _ip_version(),
-	_hints(), _servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
+Server::Server(std::string port, std::string password)
+: _sockfd(-1), _nb_clients(0), _started(false), _port(port), _password(password), _ip_version(),
+_hints(), _servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
 {
 	INFO((std::string)"using the given port " + _port);
 	INFO((std::string)"using the given password '" + _password + "'");
@@ -108,7 +108,7 @@ int Server::start()
 
 	_started = true;
 
-	pollfd server_pfd;
+	pollfd server_pfd = {};
 	server_pfd.fd = _sockfd;
 	server_pfd.events = POLLIN;
 	server_pfd.revents = 0;
@@ -142,8 +142,11 @@ int Server::handle_recv(int fd, int i)
 
 int Server::loop()
 {
-	int ret_poll = 0;
-	ret_poll = poll(_client_pfd_list, _nb_clients, -1);
+	if (!_started) {
+		ERROR("can't loop, server not started");
+		return -1;
+	}
+	int ret_poll = poll(_client_pfd_list, _nb_clients, -1);
 	if (ret_poll < 0) {
 		ERROR("poll error");
 		return 0;
@@ -183,7 +186,7 @@ int Server::create_client()
 	client.set_IP();
 	_client_list.insert(std::make_pair(client_fd, client));
 
-	pollfd new_client;
+	pollfd new_client = {};
 	new_client.fd = client_fd;
 	new_client.events = POLLIN;
 	_client_pfd_list[_nb_clients++] = new_client;
@@ -206,7 +209,7 @@ Client* Server::get_client(int const fd)
 	return NULL;
 }
 
-void Server::remove_fd(int start)
+void    Server::remove_fd(int start)
 {
 	for (int i=start + 1; i < _nb_clients; i++) {
 		_client_pfd_list[i - 1] = _client_pfd_list[i];
@@ -228,7 +231,7 @@ int Server::delete_client(int id)
 	return 0;
 }
 
-void Server::print_clients()
+void    Server::print_clients()
 {
 	std::cout << std::endl;
 	std::cout << std::setw(25) << std::setfill(' ');
@@ -263,7 +266,7 @@ const std::string& Server::get_password() const { return _password; }
 
 const std::string& Server::get_hostname() const { return _hostname; }
 
-bool Server::is_valid_port(const std::string& port)
+bool    Server::is_valid_port(const std::string& port)
 {
 	if (port.empty())
 		return false;
@@ -276,7 +279,7 @@ bool Server::is_valid_port(const std::string& port)
 	return true;
 }
 
-bool Server::is_valid_password(const std::string& password)
+bool    Server::is_valid_password(const std::string& password)
 {
 	if (password.size() < 1 || password.size() > 255)
 		return false;
@@ -287,7 +290,7 @@ bool Server::is_valid_password(const std::string& password)
 	return true;
 }
 
-bool Server::channel_exists(std::string name)
+bool    Server::channel_exists(std::string name)
 {
 	return _channels.find(name) != _channels.end();
 }
@@ -302,7 +305,7 @@ int Server::create_channel(const Client* client, const std::string& name)
 	return 0;
 }
 
-Channel* Server::get_channel(const std::string& name)
+Channel*    Server::get_channel(const std::string& name)
 {
 	try {
 		return &_channels.at(name);
@@ -334,3 +337,5 @@ bool Server::nick_already_used(const std::string& nick) const
 	}
 	return false;
 }
+
+bool    Server::running() const { return _started; }
