@@ -22,9 +22,18 @@ std::string ERR_NEEDMOREPARAMS(std::string command) { return command + " :Not en
 std::string ERR_ALREADYREGISTERED() { return ":You may not reregister"; }
 std::string ERR_PASSWDMISMATCH() { return ":Password incorrect"; }
 std::string ERR_CHANNELISFULL(std::string channel) { return channel + " :Cannot join channel (+l)"; }
+std::string ERR_UNKNOWNMODE(std::string modechar) { return modechar + " :is unknown mode char to me"; }
 std::string ERR_INVITEONLYCHAN(std::string channel) { return channel + " :Cannot join channel (+i)"; }
 std::string ERR_BANNEDFROMCHAN(std::string channel) { return channel + " :Cannot join channel (+b)"; }
 std::string ERR_BADCHANNELKEY(std::string channel) { return channel + " :Cannot join channel (+k)"; }
 std::string ERR_BADCHANMASK(std::string channel) { return channel + " :Invalid channel name"; }
 std::string ERR_CHANOPRIVSNEEDED(std::string channel) { return channel + " :You're not channel operator"; }
 std::string ERR_UNKNOWNCOMMAND(std::string command) { return command + " :Unknown command"; }
+std::string ERR_INVALIDKEY(std::string target) { return target + " :Key is not well-formed"; }
+std::string ERR_INVALIDMOREPARAM(std::string channel, std::string mode_string,
+		std::string parameter, std::string description)
+{
+	return channel + " " + mode_string + " " + parameter + " :" + description;
+}
+
+

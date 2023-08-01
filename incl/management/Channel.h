@@ -6,6 +6,8 @@
 # include "command/reply_command.h"
 # include "command/error_command.h"
 # include "error.h"
+# include <stdlib.h>
+# include "utils.h"
 
 class Channel
 {
@@ -32,6 +34,7 @@ class Channel
 		void    set_password_activation(bool password_activation);
 		void    set_password(const std::string& password);
 		void    set_topic(const Client& user, const std::string& topic);
+		void 	set_max_users(size_t max_users);
 
 		// -- Public Functions --
 		void    add_user(Client* user);
@@ -39,6 +42,7 @@ class Channel
 		void	kick_user(Client*user, const Client* target, const std::string& reason);
 		void    quit_user(Client* user, const std::string& reason);
 		void    add_admin(const Client* user);
+		void    remove_admin(const Client* user);
 		bool    is_admin(const Client* user) const;
 		bool    is_full() const;
 		bool    is_invited(const Client* user) const;
@@ -46,6 +50,8 @@ class Channel
 		bool    validate_password(const std::string& password) const;
 		void    invite_user(const Client* user, const Client* target);
 		bool    is_empty() const;
+
+		const std::string get_mode_list() const;
 
 
 		void    send_message(const Client* user, const std::string& message);

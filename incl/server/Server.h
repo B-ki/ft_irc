@@ -20,6 +20,8 @@
 # include "parsing/Message.h"
 # include "Bot.h"
 # include "RockPaperScissorsBot.h"
+# include <fstream>
+
 
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
@@ -64,6 +66,7 @@ class	Server {
 		std::string get_date_time() const;
 		std::string get_user_modes() const;
 		std::string get_channel_modes() const;
+		void 		write_logo() const;
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);

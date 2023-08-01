@@ -61,6 +61,8 @@ void    Channel::set_topic(const Client& user, const std::string& topic)
 	}
 }
 
+void 	Channel::set_max_users(size_t max_users) { _max_users = max_users; }
+
 void    Channel::add_user(Client* user)
 {
 	if (find_user(_members, user) == _members.end()) {
@@ -101,6 +103,14 @@ void    Channel::add_admin(const Client* user)
 		WARNING("User already administrator of channel");
 }
 
+void 	Channel::remove_admin(const Client* user)
+{
+	if (find_user(_admins, user) != _admins.end())
+		_admins.erase(find_user(_admins, user));
+	else
+		WARNING("User is not administrator of channel");
+}
+
 bool    Channel::is_admin(const Client* user) const
 {
 	return find_user(_admins, user) != _admins.end();
@@ -130,7 +140,7 @@ void 	Channel::send_all(const Client* user, const std::string& message)
 
 bool    Channel::is_full() const
 {
-	if (!_capacity_restriction)
+	if (_max_users == 0)
 		return false;
 	return _members.size() >= _max_users;
 }
@@ -212,3 +222,28 @@ void    Channel::quit_user(Client *user, const std::string &reason) {
 }
 
 bool    Channel::is_empty() const { return _members.empty(); }
+
+const std::string Channel::get_mode_list() const
+{
+	std::string mode_list = _name + " +";
+	std::vector<std::string> args;
+	
+	if (_topic_restriction)
+		mode_list += "t";
+	if (_invite_only)
+		mode_list += "i";
+	if (_capacity_restriction) {
+		mode_list += "l";
+		args.push_back(utils::itoa(_max_users));
+	}
+	if (_password_restriction) {
+		mode_list += "k";
+		args.push_back(_password);
+	}
+	if (args.empty())
+		return mode_list;
+	for (std::vector<std::string>::const_iterator it = args.begin();
+			it != args.end(); it++)
+		mode_list += " " + *it;
+	return mode_list;
+}

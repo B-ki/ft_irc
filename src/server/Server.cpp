@@ -369,3 +369,13 @@ std::string Server::get_user_modes() const {
 std::string Server::get_channel_modes() const {
 	return "kilot";
 }
+
+void 	Server::write_logo() const
+{
+	std::string line;
+	std::ifstream infile("assets/logo.txt");
+	while (std::getline(infile, line))
+	{
+		std::cout << line << std::endl;
+	}	
+}

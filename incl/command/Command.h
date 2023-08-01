@@ -6,6 +6,7 @@
 # include "utils.h"
 # include "command/error_command.h"
 # include "command/reply_command.h"
+# include "struct.h"
 
 
 class Command
@@ -48,6 +49,9 @@ class Command
 		int execute_TOPIC();
 		int execute_PRIVMSG();
 		int execute_NOTICE();
+		int execute_MODE();
+		int user_MODE(const std::string& target);
+		int channel_MODE(const std::string& target);
 
 		void    join_channel(const std::string& channel_name, const std::string& password);
 };

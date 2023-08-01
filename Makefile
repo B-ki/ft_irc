@@ -58,6 +58,7 @@ SRCS	=	main.cpp \
 			utils/log.cpp \
 			utils/split.cpp \
 			utils/is_empty.cpp \
+			utils/itoa.cpp \
 			parsing/Message.cpp \
 			parsing/Message_parsing.cpp \
 			server/Server.cpp \
@@ -77,6 +78,8 @@ SRCS	=	main.cpp \
 			command/TOPIC.cpp \
 			command/PRIVMSG.cpp \
 			command/NOTICE.cpp \
+			command/MODE.cpp \
+			command/Mode.cpp \
 			management/Channel.cpp
 
 
