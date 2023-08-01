@@ -24,13 +24,15 @@
 # define DEFAULT_PORT "6667"
 # define DEFAULT_PASSWORD "password"
 # define SERVER_HOSTNAME "ft_irc.42.fr"
+# define SERVER_NAME "ft_irc"
+# define SERVER_VERSION "v1.0"
 # define MAX_CONNEXIONS 10
 
 class	Server {
 	public:
 		// -- Constructors --
-//		Server();
-		Server(std::string port, std::string password);
+		// Server();
+		Server(const std::string& port, const std::string& password);
 //		Server(const Server& server);
 //		Server&	operator=(const Server& server);
 
@@ -43,6 +45,8 @@ class	Server {
 		const std::string& 		get_password() const;
 		std::map<int, Client>& 	get_client_list();
 		const std::string&      get_hostname() const;
+		const std::string&      get_name() const;
+		const std::string&      get_version() const;
 
 		// -- Public Functions --
 		int		    start();
@@ -57,6 +61,9 @@ class	Server {
 		const Bot*  get_bot(const std::string& name) const;
 		bool        running() const;
 		void        delete_channel(const std::string& name);
+		std::string get_date_time() const;
+		std::string get_user_modes() const;
+		std::string get_channel_modes() const;
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);
@@ -70,16 +77,19 @@ class	Server {
 		int						        _sockfd;
 		int						        _nb_clients;
 		bool	                        _started;
+		time_t                          _created_at;
 		std::string				        _port;
 		std::string				        _password;
 		std::string				        _ip_version;
+		std::string 				    _name;
+		std::string 				    _version;
 		struct addrinfo			        _hints;
 		struct addrinfo*		        _servinfo;
 		pollfd 	                        _client_pfd_list[MAX_CONNEXIONS];
 		std::map<int, Client> 	        _client_list;
 		std::string			            _hostname;
 		std::map<std::string, Channel>  _channels;
-		std::map<std::string, Bot*>      _bots;
+		std::map<std::string, Bot*>     _bots;
 
 		// -- Private functions --
 		int						handle_recv(int fd, int i);

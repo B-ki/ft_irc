@@ -16,6 +16,7 @@ class CmdTest
 		void                send(size_t id, const std::string& tested);
 		const std::string   receive(size_t id);
 		void                stop();
+		Server&             get_server();
 
 	private:
 		Server              _server;

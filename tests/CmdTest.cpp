@@ -51,7 +51,7 @@ const std::string CmdTest::receive(size_t id)
 	}
 	id--;
 	char _buf[1024 + 1] = {0};
-	usleep(1000); // To be sure the server have time to send the message
+	usleep(5000); // To be sure the server have time to send the message
 	ssize_t num_bytes = recv(_clients_fd[id], _buf, sizeof(_buf), 0);
 	if (num_bytes <= 0 && errno != EAGAIN) {
 		ERROR(std::string("Cannot read from server: ") + strerror(errno));
@@ -84,3 +84,5 @@ void CmdTest::stop()
 	_server.stop();
 	pthread_join(_server_thread_id, NULL);
 }
+
+Server& CmdTest::get_server() { return _server; }
