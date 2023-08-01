@@ -1,0 +1,552 @@
+<< CAP LS
+<< NICK rmorel
+<< USER rmorel rmorel irc.dal.net :Romain MOREL
+>> :bitcoin.uk.eu.dal.net NOTICE AUTH :*** Looking up your hostname...
+>> :bitcoin.uk.eu.dal.net NOTICE AUTH :*** Found your hostname
+>> :bitcoin.uk.eu.dal.net 001 rmorel :Welcome to the DALnet IRC Network rmorel!~rmorel@62.210.33.41
+<< MODE rmorel +i
+>> :bitcoin.uk.eu.dal.net 002 rmorel :Your host is bitcoin.uk.eu.dal.net, running version bahamut-2.2.2
+>> :bitcoin.uk.eu.dal.net 003 rmorel :This server was created Sat 8 Oct 2022 at 14:41:03 BST
+>> :bitcoin.uk.eu.dal.net 004 rmorel bitcoin.uk.eu.dal.net bahamut-2.2.2 aAbcCdefFghHiIjkKmnoOPrRsSwxXy AbceiIjklLmMnoOpPrRsStv beIjklov
+>> :bitcoin.uk.eu.dal.net 005 rmorel NETWORK=DALnet SAFELIST MAXBANS=200 MAXCHANNELS=50 CHANNELLEN=32 KICKLEN=307 NICKLEN=30 TOPICLEN=307 MODES=6 CHANTYPES=# CHANLIMIT=#:50 PREFIX=(ohv)@%+ STATUSMSG=@%+ :are available on this server
+>> :bitcoin.uk.eu.dal.net 005 rmorel CASEMAPPING=ascii WATCH=128 SILENCE=10 ELIST=cmntu EXCEPTS INVEX CHANMODES=beI,k,jl,ciPAmMnOprRsSt MAXLIST=b:200,e:100,I:100 TARGMAX=DCCALLOW:,JOIN:,KICK:4,KILL:20,NOTICE:20,PART:,PRIVMSG:20,WHOIS:,WHOWAS: :are available on this server
+>> :bitcoin.uk.eu.dal.net 251 rmorel :There are 83 users and 7277 invisible on 37 servers
+>> :bitcoin.uk.eu.dal.net 252 rmorel 75 :IRC Operators online
+>> :bitcoin.uk.eu.dal.net 254 rmorel 3835 :channels formed
+>> :bitcoin.uk.eu.dal.net 255 rmorel :I have 295 clients and 1 servers
+>> :bitcoin.uk.eu.dal.net 265 rmorel :Current local users: 295 Max: 4001
+>> :bitcoin.uk.eu.dal.net 266 rmorel :Current global users: 7360 Max: 12809
+>> :bitcoin.uk.eu.dal.net NOTICE rmorel :*** Notice -- motd was last changed at 9/11/2017 12:51
+>> :bitcoin.uk.eu.dal.net 375 rmorel :- bitcoin.uk.eu.dal.net Message of the Day - 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-9/11/2017 12:51
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-                 [ bitcoin.uk.eu.dal.net    ]
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-                 [ Accessible via...        ]
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-                 [ ipv4: bitcoin.dal.net    ]
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- Thank you to Private Internet Access (https://www.privateinternetaccess.com) 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- for sponsoring this server.
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- Welcome to DALnet!  By connecting to this network, you agree to abide
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- by its acceptable use policy, available here: http://www.dal.net/aup
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- Server Policies:
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-    *   We reserve the right to deny access to this server without
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-        warning or explanation
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-    *   No malicious bots, including flood and nick/channel chasers
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-    *   No channel filler bots/clients/psybncs
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-          - A channel filler is a client, bnc, or bot which is
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-            connected just to fill a channel and make it look
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-            bigger
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-    *   Operator impersonation, spamming, or any other abuse will
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-        cause you to be banned from this server
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-    *   Abide by DALnet's AUP (www.dal.net/aup)
+>> :bitcoin.uk.eu.dal.net 372 rmorel :-    *   Please have fun and enjoy DALnet!
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- Server Administrator: tyler
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- Thank you to Private Internet Access (https://www.privateinternetaccess.com) for sponsori
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- ng this server.
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- For IRCop assistance, please /join #operhelp or message one of our
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- friendly server staff listed above.
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- For multilingual information:  <http://docs.dal.net/>
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- 
+>> :bitcoin.uk.eu.dal.net 372 rmorel :- Thank you for using DALnet!  We hope you have a pleasant day.
+>> :bitcoin.uk.eu.dal.net 376 rmorel :End of /MOTD command.
+>> :rmorel MODE rmorel :+iH
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :rmorel
+--> lag pong
+<< NICK arthur
+>> :bitcoin.uk.eu.dal.net 433 rmorel arthur :Nickname is already in use.
+<< NICK arthur__
+>> :rmorel!~rmorel@3979-dced-ed2c-7910-289.210.62.ip NICK :arthur__
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :arthur__
+--> lag pong
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :arthur__
+--> lag pong
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :arthur__
+--> lag pong
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :arthur__
+--> lag pong
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :arthur__
+--> lag pong
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :arthur__
+--> lag pong
+<< PING bitcoin.uk.eu.dal.net
+>> :bitcoin.uk.eu.dal.net PONG bitcoin.uk.eu.dal.net :arthur__
+--> lag pong
+<< QUIT :leaving
+<< CAP LS
+<< NICK rmorel
+<< USER rmorel rmorel irc.dal.net :Romain MOREL
+>> :hash.ix.nl.dal.net NOTICE AUTH :*** Looking up your hostname...
+>> :hash.ix.nl.dal.net NOTICE AUTH :*** Checking Ident
+>> :hash.ix.nl.dal.net NOTICE AUTH :*** Found your hostname
+>> :hash.ix.nl.dal.net NOTICE AUTH :*** No Ident response
+>> :hash.ix.nl.dal.net 001 rmorel :Welcome to the DALnet IRC Network rmorel!~rmorel@62.210.33.41
+<< MODE rmorel +i
+>> :hash.ix.nl.dal.net 002 rmorel :Your host is hash.ix.nl.dal.net, running version bahamut-2.2.2
+>> :hash.ix.nl.dal.net 003 rmorel :This server was created Tue Aug 23 2022 at 04:51:39 AM UTC
+>> :hash.ix.nl.dal.net 004 rmorel hash.ix.nl.dal.net bahamut-2.2.2 aAbcCdefFghHiIjkKmnoOPrRsSwxXy AbceiIjklLmMnoOpPrRsStv beIjklov
+>> :hash.ix.nl.dal.net 005 rmorel NETWORK=DALnet SAFELIST MAXBANS=200 MAXCHANNELS=20 CHANNELLEN=32 KICKLEN=307 NICKLEN=30 TOPICLEN=307 MODES=6 CHANTYPES=# CHANLIMIT=#:20 PREFIX=(ohv)@%+ STATUSMSG=@%+ :are available on this server
+>> :hash.ix.nl.dal.net 005 rmorel CASEMAPPING=ascii WATCH=128 SILENCE=10 ELIST=cmntu EXCEPTS INVEX CHANMODES=beI,k,jl,ciPAmMnOprRsSt MAXLIST=b:200,e:100,I:100 TARGMAX=DCCALLOW:,JOIN:,KICK:4,KILL:20,NOTICE:20,PART:,PRIVMSG:20,WHOIS:,WHOWAS: :are available on this server
+>> :hash.ix.nl.dal.net 251 rmorel :There are 82 users and 7411 invisible on 37 servers
+>> :hash.ix.nl.dal.net 252 rmorel 74 :IRC Operators online
+>> :hash.ix.nl.dal.net 254 rmorel 3844 :channels formed
+>> :hash.ix.nl.dal.net 255 rmorel :I have 15 clients and 1 servers
+>> :hash.ix.nl.dal.net 265 rmorel :Current local users: 15 Max: 93
+>> :hash.ix.nl.dal.net 266 rmorel :Current global users: 7493 Max: 12060
+>> :hash.ix.nl.dal.net NOTICE rmorel :*** Notice -- motd was last changed at 20/7/2013 17:17
+>> :hash.ix.nl.dal.net 375 rmorel :- hash.ix.nl.dal.net Message of the Day - 
+>> :hash.ix.nl.dal.net 372 rmorel :-20/7/2013 17:17
+>> :hash.ix.nl.dal.net 372 rmorel :- Welcome to DALnet!
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- This server is hosted by Sara in Amsterdam, Nederlands.
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- NL-IX has been gracious enough to donate the access for the
+>> :hash.ix.nl.dal.net 372 rmorel :- DALNet IX server concept project.
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- For more information about NL-IX services, please visit
+>> :hash.ix.nl.dal.net 372 rmorel :- http://www.nl-ix.net/
+>> :hash.ix.nl.dal.net 372 rmorel :-               _               _     
+>> :hash.ix.nl.dal.net 372 rmorel :-              | |             | |    
+>> :hash.ix.nl.dal.net 372 rmorel :-              | |__   __ _ ___| |__  
+>> :hash.ix.nl.dal.net 372 rmorel :-              | '_ \ / _` / __| '_ \ 
+>> :hash.ix.nl.dal.net 372 rmorel :-              | | | | (_| \__ \ | | |
+>> :hash.ix.nl.dal.net 372 rmorel :-              |_| |_|\__,_|___/_| |_|
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :-                     SERVER RULES:
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :-       IMPERSONATION, CLONING, SPAMMING, FLOODING,
+>> :hash.ix.nl.dal.net 372 rmorel :-             OR ANY OTHER KIND OF ABUSE CAN
+>> :hash.ix.nl.dal.net 372 rmorel :-        AND WILL CAUSE YOU TO BE BANNED FROM THIS
+>> :hash.ix.nl.dal.net 372 rmorel :-                SERVER AT ANY GIVEN TIME
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- We reserve the right to deny access to this server without
+>> :hash.ix.nl.dal.net 372 rmorel :- warning or explanation.  Usage is governed by the DALnet
+>> :hash.ix.nl.dal.net 372 rmorel :- AUP at http://www.dal.net/aup/
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- Server Administrator:       RuneB
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- IRC Operators:              kfoo
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- * For general help:              /join #help           *
+>> :hash.ix.nl.dal.net 372 rmorel :- * For help with IRC:             /join #irchelp        *
+>> :hash.ix.nl.dal.net 372 rmorel :- * For help with Services:        /join #DALnetHelp     *
+>> :hash.ix.nl.dal.net 372 rmorel :- * For IRCop/CSop assistance:     /join #OperHelp       *
+>> :hash.ix.nl.dal.net 372 rmorel :- * For multilingual information:  http://docs.dal.net/  *
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- For assistance with trojan or virus removal please /join #NoHack
+>> :hash.ix.nl.dal.net 372 rmorel :- 
+>> :hash.ix.nl.dal.net 372 rmorel :- To help prevent abuse, this server will check your PC for open proxy
+>> :hash.ix.nl.dal.net 372 rmorel :- servers when you connect. If you do not want this test performed,
+>> :hash.ix.nl.dal.net 372 rmorel :- do not connect.
+>> :hash.ix.nl.dal.net 376 rmorel :End of /MOTD command.
+>> :hash.ix.nl.dal.net NOTICE rmorel :*** Notice -- This server runs an open proxy monitor to prevent abuse.
+>> :hash.ix.nl.dal.net NOTICE rmorel :*** Notice -- If you see connections on various ports from irc.dal.net
+>> :hash.ix.nl.dal.net NOTICE rmorel :*** Notice -- please disregard them, as they are the monitor in action.
+>> :hash.ix.nl.dal.net NOTICE rmorel :*** Notice -- For more information please visit http://kline.dal.net/proxy/
+>> :rmorel MODE rmorel :+iH
+<< PING hash.ix.nl.dal.net
+>> :hash.ix.nl.dal.net PONG hash.ix.nl.dal.net :rmorel
+--> lag pong
+<< JOIN #linux
+>> :rmorel!~rmorel@3979-dced-ed2c-7910-289.210.62.ip JOIN :#linux
+>> :hash.ix.nl.dal.net 332 rmorel #linux :Welcome to #linux! Behave like an adult... even if you aren't one. Register to speak. Have a great day! | RIP Zombo/_popeye_ 1964-2022 :(
+>> :hash.ix.nl.dal.net 333 rmorel #linux simmy!simmy@staff.dalnet 1648660079
+>> :hash.ix.nl.dal.net 353 rmorel = #linux :rmorel roofy_ Murray DTC @RuneB Drugdealer barnito Guest53037 gry chalcedony Mobscene erliana @twkm @kfoo B1LL- unix sirfcksalot Doma Scort-16v nixer zwei liber nappy MattiMech pgreptom k0t3x l_il rawbert1 depeche Mag ksx4system Guest69718 oze jeian pauly Henry- keropok JenKinZ ice-nine guppy _willo_2 Ritalin {o_o} Priyanka Robdgreat Ahnberg simmy Abrax `ryban FireBreath_ oldcrow opie4624 Kalpin deegan Om_Peci_Miring 
+>> :hash.ix.nl.dal.net 353 rmorel = #linux :ld Fredrik Angelic4` poutine n0di barax prg_ patrick skypioneer _ReVoLt_ sith jetjaguar tessier_ MR_SOHAIB Riviera PaulReubens benalb Nando slackware xasoso Guest63278 Guest87402 plarp k mianosm zort DkrTremos retkam Hobbyboy ikiryo_ agrajag 
+>> :hash.ix.nl.dal.net 366 rmorel #linux :End of /NAMES list.
+<< MODE #linux
+>> :hash.ix.nl.dal.net 324 rmorel #linux +tncj 2:6
+--> chanquery mode
+<< WHO #linux
+>> :hash.ix.nl.dal.net 329 rmorel #linux 1043150273
+--> event 329
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~rmorel 3979-dced-ed2c-7910-289.210.62.ip hash.ix.nl.dal.net rmorel H :0 Romain MOREL
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~roofy 7be1-4b89-1519-20b6-edb8.spectrum.com lair.nl.eu.dal.net roofy_ H :4 realname
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~m7501 a98-6cd0-fb6f-92ac-aa61.90.128.ip sakura.jp.as.dal.net Murray H :4 m
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux dtc staff.dalnet oper-e.dal.net DTC H* :3 DTC
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux RuneB dalnet midnight.hub.dal.net RuneB H*@ :2 .
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux DruGs 8333-558-6846-bcbb-eb7.c847.6400.2605.ip sakura.jp.as.dal.net Drugdealer G :4 14,1 How I can help you?! 
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~barnito 3e4a-c873-2d76-9736-c754.res.rr.com nonstop.ix.me.dal.net barnito H :4 barnito
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Apeiron f5af-3636-e0fa-47dd-c1d.215.185.ip punch.wa.us.dal.net Guest53037 H :3 Tsukasa
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux quasselcor 7420-9c45-6349-5174-aa18.1002.c400.2400.ip lair.nl.eu.dal.net gry H :4 G. L.
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux chalcedony staff.dalnet oper-e.dal.net chalcedony H* :3 Thesaurus
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux Mobscene dalnet bifrost.ca.us.dal.net Mobscene H* :2 Charlie Root
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux erliana 2163-8ec9-2640-c6a-82e8.251.198.ip bifrost.ca.us.dal.net erliana H :2 erliana
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux twkm rfc1459.net bifrost.ca.us.dal.net twkm G@ :2 "those who know me have no need of my name"
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux kfoo staff.dalnet oper-e.dal.net kfoo H*@ :3 Sidious
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~UN1X d1f-4625-c79c-803-aa49.100.78.ip loyalty.ix.us.dal.net B1LL- H :4 9,1 ls | grep life | awk '{print "rm -r "$1}'
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux unix unix.69.mu lair.nl.eu.dal.net unix H :4 14U13.15n6.14i13.15x
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~metbsd 243d-4bdf-6a16-8181-efe2.119.174.ip sakura.jp.as.dal.net sirfcksalot H :4 zorro wip
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Doma 67-61e9-7ab5-5635-3c8a.customer.lyse.net nonstop.ix.me.dal.net Doma H :4 hendelse
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Arcoverde fda4-4433-a456-6e15-2764.95.179.ip choopa.nj.us.dal.net Scort-16v H :4 Unknown
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Sequencer 7a6f-2efa-f987-6791-7cb6.23a0.bc8.2001.ip lair.nl.eu.dal.net nixer H :4 Sequencer
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Zweihande 9975-96b0-c588-f3df-986d.ext.zweihander.me choopa.nj.us.dal.net zwei G :4 Zweihänder
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~liber d51e-5ee0-eaf-8d54-26c9.subs.proxad.net nonstop.ix.me.dal.net liber H :4 liber
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~nappy 5329-1c3c-acf9-a330-879a.2134.c206.2a02.ip sakura.jp.as.dal.net nappy H :4 nappy
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~garrett a4a0-81e7-9ad1-80b9-486d.189.65.ip serenity.fl.us.dal.net MattiMech H :4 Mathilda Mechanica
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~nowhou f27a-cb65-443f-c3e-c451.111.204.ip nonstop.ix.me.dal.net pgreptom G :4 ubunh0
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~k0t3x a166-2874-b72-d0c4-6da4.3.192.ip sakura.jp.as.dal.net k0t3x H :4 who me?
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~ww c4d1-88a7-af6-be1e-35e5.76.45.ip nonstop.ix.me.dal.net l_il H :4 ww
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~rawbert e360-883-c83c-d724-bfe7.compute.amazonaws.com serenity.fl.us.dal.net rawbert1 H :4 rawbert
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~dm 5960-10fb-152a-1e57-fe1e.thunderirc.net halcyon.il.us.dal.net depeche H :4 empty
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~zero-one c198-c497-a519-7d9-f262.awfulnet.org halcyon.il.us.dal.net Mag G :4 zero-one
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~ksx4syste 1988-dbfd-2481-2296-24ee.mgst.eu lair.nl.eu.dal.net ksx4system G :4 Krzysztof Staniorowski
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~juco 7980-a3c0-7513-5f30-ba21.62.178.ip choopa.nj.us.dal.net Guest69718 G :4 Julian
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~oze 54d6-da95-13af-5273-47ed.49.46.ip lair.nl.eu.dal.net oze H :4 NULL
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux jeian dalnet midnight.hub.dal.net jeian H* :2 jeian
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~ahuh 4ecf-5cf-d4b7-1d58-3878.1002.c400.2400.ip lair.nl.eu.dal.net pauly G :4 ZNC - https://znc.in
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~admin e69-7f5a-316-ba94-6c3.70.20.ip sakura.jp.as.dal.net Henry- H :4 8,1¯8|4H15E004X8|8,1¯8
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~keropok 8597-bb89-4041-e3a6-9b37.19.146.ip halcyon.il.us.dal.net keropok H :4 https://www.myspace.com/~keropok
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux jenlord 30c9-673a-6d3-c1d1-4de.Hote.Haen.0rg.nu jingo.ix.us.dal.net JenKinZ G :4 0,1-I Exist In A WorLd BeYond YourS-
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux invictus 108e-e64b-8e4-c268-b872.sdf.org serenity.fl.us.dal.net ice-nine G :4 Ian
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux guppy dalnet halcyon.il.us.dal.net guppy G* :4 guppy
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~willo f6a4-fb45-c433-eaba-71a6.compute.amazonaws.com halcyon.il.us.dal.net _willo_2 G :4 willo
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Ritalin ba13-17d6-a246-d097-2045.148.54.ip choopa.nj.us.dal.net Ritalin G :4 Ritalin
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~debian ee59-386d-44b0-660-1c65.75.51.ip choopa.nj.us.dal.net {o_o} H :4 Never laugh at live dragons.
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux priyanka staff.dalnet oper-e.dal.net Priyanka H :3 The fallen shall rise again
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux Robdgreat staff.dalnet oper-e.dal.net Robdgreat H* :3 "St. Asaph the Caffeinated, POEE"
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ahnberg staff.dalnet oper-e.dal.net Ahnberg H* :3 The Ancient One.
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux simmy staff.dalnet oper-e.dal.net simmy H :3 Not A Chick! Stop messaging me!
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Abrax cdb3-2be5-620-4a92-3f78.99.139.ip halcyon.il.us.dal.net Abrax H :4 /join #videogames
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ryban ac39-5259-7fa8-d479-1dff.117.185.ip serenity.fl.us.dal.net `ryban H :4 Explorer!
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~quassel 63.142.248.51 lair.nl.eu.dal.net FireBreath_ G :4 FireBreath
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux oldcrow dalnet halcyon.il.us.dal.net oldcrow H :4 the old crow
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux sid3423 id-3423.ilkley.irccloud.com lair.nl.eu.dal.net opie4624 H :4 Andrew Kraut
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~kalpin 2001:19f0:6001:256:5400:ff:cabe:cabe lair.nl.eu.dal.net Kalpin G :4 Kalpin Erlangga Silaen
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~deegan a5c6-cb88-7e9f-7a5-796d.for.leibowitz.nl sakura.jp.as.dal.net deegan H :4 deegan
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux mrerwin c16b-4933-5950-de9d-4db9.2.180.2604.ip sakura.jp.as.dal.net Om_Peci_Miring H :4 Erwin
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux dark b38b-5f79-637f-dd43-bf64.c10.150.2610.ip sakura.jp.as.dal.net ld H :4 ld
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux fredrik a85c-d32d-974-e2fb-9eb0.403.41d0.2001.ip sakura.jp.as.dal.net Fredrik G :4 Free ZNC from ZNC.BG
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ryanne 7ed5-1e6c-f7f5-385a-74e.199.198.ip redemption.ix.us.dal.net Angelic4` G :4 http://angelic.flexnet.org
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~poutine 6cf8-236-c34-d3a5-31cd.183.54.ip serenity.fl.us.dal.net poutine H :4 poutine
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~plokz b9ea-90cb-e756-61bd-624.xshellz.com punch.wa.us.dal.net n0di H :3 plokz
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~vps 23ad-af60-fe4-2cb0-c48e.vblack.us punch.wa.us.dal.net barax H :3 barax
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~prg 2b11-4159-17e0-273b-109e.156.104.ip punch.wa.us.dal.net prg_ H :3 prg
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux spectre tilde.team lion.tx.us.dal.net patrick G :2 enigma
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux raaau 4e9-e459-9f44-17ab-23b9.oddprotocol.org lion.tx.us.dal.net skypioneer H :2 raau
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux test 397-deb0-ffd9-34f9-b8b8.is.chickenkiller.com lion.tx.us.dal.net _ReVoLt_ H :2 test
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux sith the-darkside.org lion.tx.us.dal.net sith G :2 the dark side
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~jetjaguar c77b-b7ad-9a7c-d682-e67b.sdf.org lion.tx.us.dal.net jetjaguar H :2 jetjaguar
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~treed c090-9d2c-888e-66f5-c94.amazonaws.com lion.tx.us.dal.net tessier_ H :2 Tracy R Reed
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux MR_SOHAIB MR.SOHAIB.administratooor.info lion.tx.us.dal.net MR_SOHAIB G :2 8,1Powered by #bouncers
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Riviera 2a03:b0c0:1:d0::10:b001 lion.tx.us.dal.net Riviera H :2 :)
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~Vin rekt.fidsah.org lion.tx.us.dal.net PaulReubens H :2 peaceful
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~yeiw0Oogh 37.139.13.175 lion.tx.us.dal.net benalb H :2 yeiw0Ooghoo
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux nando dalnet lion.tx.us.dal.net Nando G* :2 Keep calm and let Nando handle it
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux slackware 6046-2a96-1bfa-5f5c-f96.c3e7.6400.2605.ip atw.hu.eu.dal.net slackware H :4 slackware
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~xasoso 89bf-e1c7-68fe-6efc-7a77.37.49.ip atw.hu.eu.dal.net xasoso G :4 xasoso
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux russell bc74-a79d-88d5-a217-ff46.up.for-some.fun atw.hu.eu.dal.net Guest63278 H :4 Russell John
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux sea 41c2-6022-2c35-a62e-10f5.214.95.ip atw.hu.eu.dal.net Guest87402 H :4 nemo dat quod non habet
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux sid131991 63bf-36bc-1beb-b06a-3ab4.hampstead.irccloud.com atw.hu.eu.dal.net plarp G :4 plarp
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux klb dalnet ninja.hub.dal.net k H* :2 Kevin
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~mianosm 8a59-d044-4829-c62b-afb1.241.192.ip atw.hu.eu.dal.net mianosm H :4 Unknown
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~hbunting 28be-e67c-f74a-cea5-163.52.13.ip bitcoin.uk.eu.dal.net zort G :4 Holbrook Bunting
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux server 6757-f9b3-e135-fa91-c637.2002.270.2a01.ip atw.hu.eu.dal.net DkrTremos G :4 server test
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~quassel a764-a720-ba60-c72c-2458.c012.4f8.2a01.ip atw.hu.eu.dal.net retkam G :4 retkam
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux Hobbyboy 255e-2ffe-ad75-75bf-43af.hobbyboy.co.uk atw.hu.eu.dal.net Hobbyboy G :4 Andrew
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux sid109660 cd92-88c4-4ed3-55f4-7440.uxbridge.irccloud.com atw.hu.eu.dal.net ikiryo_ G :4 ikiryo_
+--> silent event who
+>> :hash.ix.nl.dal.net 352 rmorel #linux ~agrajag galene.dead4cheap.com atw.hu.eu.dal.net agrajag H :4 agrajag
+--> silent event who
+>> :hash.ix.nl.dal.net 315 rmorel #linux :End of /WHO list.
+--> chanquery who end
+<< MODE #linux b
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@34.102.101.133 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@d1d3-1266-7e65-f6f5-9835.27.173.ip diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@c213-89-186-50.bredband.tele2.se diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@88.240.3.216 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@2001:448a:1082:ac23:* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux plokz-!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux makc!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@*.helmsley.irccloud.com diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@107-143-44-225.lightspeed.dybhfl.sbcglobal.net diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@go.resolvemyname.com diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@c83-251-157-100.bredband.comhem.se diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@77.16.69.211.tmi.telenormobil.no diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux weedKid!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@5.141.244.96 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@194.213.212.26 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@116.74.104.233 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux rootaka!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@51.15.0.144 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*c0mrade@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux CODE`RED!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@ip-99-203-43-175.pools.cgn.spcsdns.net diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!~DTXSAT@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *rape*!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@95.178.16.81 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux urgh!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux Koweit!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@pool-108-17-137-192.nrflva.fios.verizon.net diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@aoi.southtownarcade.com diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@krzx.org diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@2600:1003:* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*fres07@*orange.fr diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*nomail@*.dynamic.caiway.nl diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@196.40.114.250 diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux cephas3524*!*@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*@75d6-548c-2ec-f4ce-01f.14.76.ip diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*uid173890@* diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 367 rmorel #linux *!*0day@*.1083.448a.2001.ip diamond.hub.dal.net 1690692416
+--> chanquery ban
+>> :hash.ix.nl.dal.net 368 rmorel #linux :End of Channel Ban List
+--> chanquery ban end
+>> :services.dal.net 328 rmorel #linux :http://dalnet.linuxphreak.net/
+<< PING hash.ix.nl.dal.net
+>> :hash.ix.nl.dal.net PONG hash.ix.nl.dal.net :rmorel
+--> lag pong
+<< MODE #linux +i
+>> :hash.ix.nl.dal.net 482 rmorel #linux :You're not channel operator
+<< QUIT :leaving
+<< CAP LS
+<< NICK rmorel
+<< USER rmorel rmorel irc.dal.net :Romain MOREL
+>> :sakura.jp.as.dal.net NOTICE AUTH :*** Looking up your hostname...
+>> :sakura.jp.as.dal.net NOTICE AUTH :*** Checking Ident
+>> :sakura.jp.as.dal.net NOTICE AUTH :*** Couldn't look up your hostname
+>> :sakura.jp.as.dal.net NOTICE AUTH :*** No Ident response
+>> :sakura.jp.as.dal.net 001 rmorel :Welcome to the DALnet IRC Network rmorel!~rmorel@62.210.33.41
+<< MODE rmorel +i
+>> :sakura.jp.as.dal.net 002 rmorel :Your host is sakura.jp.as.dal.net, running version bahamut-2.2.2
+>> :sakura.jp.as.dal.net 003 rmorel :This server was created Tue 23 Aug UTC at 2022 02:59:44 AM
+>> :sakura.jp.as.dal.net 004 rmorel sakura.jp.as.dal.net bahamut-2.2.2 aAbcCdefFghHiIjkKmnoOPrRsSwxXy AbceiIjklLmMnoOpPrRsStv beIjklov
+>> :sakura.jp.as.dal.net 005 rmorel NETWORK=DALnet SAFELIST MAXBANS=200 MAXCHANNELS=50 CHANNELLEN=32 KICKLEN=307 NICKLEN=30 TOPICLEN=307 MODES=6 CHANTYPES=# CHANLIMIT=#:50 PREFIX=(ohv)@%+ STATUSMSG=@%+ :are available on this server
+>> :sakura.jp.as.dal.net 005 rmorel CASEMAPPING=ascii WATCH=128 SILENCE=10 ELIST=cmntu EXCEPTS INVEX CHANMODES=beI,k,jl,ciPAmMnOprRsSt MAXLIST=b:200,e:100,I:100 TARGMAX=DCCALLOW:,JOIN:,KICK:4,KILL:20,NOTICE:20,PART:,PRIVMSG:20,WHOIS:,WHOWAS: :are available on this server
+>> :sakura.jp.as.dal.net 251 rmorel :There are 82 users and 7400 invisible on 37 servers
+>> :sakura.jp.as.dal.net 252 rmorel 74 :IRC Operators online
+>> :sakura.jp.as.dal.net 254 rmorel 3845 :channels formed
+>> :sakura.jp.as.dal.net 255 rmorel :I have 1195 clients and 1 servers
+>> :sakura.jp.as.dal.net 265 rmorel :Current local users: 1195 Max: 3677
+>> :sakura.jp.as.dal.net 266 rmorel :Current global users: 7482 Max: 12059
+>> :sakura.jp.as.dal.net NOTICE rmorel :*** Notice -- motd was last changed at 26/11/2020 19:53
+>> :sakura.jp.as.dal.net 375 rmorel :- sakura.jp.as.dal.net Message of the Day - 
+>> :sakura.jp.as.dal.net 372 rmorel :-26/11/2020 19:53
+>> :sakura.jp.as.dal.net 372 rmorel :- =====================================================================
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- Server: sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net 372 rmorel :- Plaintext ports: 6660 - 6669, 7000
+>> :sakura.jp.as.dal.net 372 rmorel :- SSL/TLS port: 6697
+>> :sakura.jp.as.dal.net 372 rmorel :- Both IPv4 and IPv6 are supported on this server
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- Server Administrator: xPsycho (xpsycho@DAL.net)
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :-            __.--~~.,-.__
+>> :sakura.jp.as.dal.net 372 rmorel :-            `~-._.-(`-.__`-.
+>> :sakura.jp.as.dal.net 372 rmorel :-                    \    `~~`
+>> :sakura.jp.as.dal.net 372 rmorel :-               .--./ \ 
+>> :sakura.jp.as.dal.net 372 rmorel :-              /#   \  \.--.
+>> :sakura.jp.as.dal.net 372 rmorel :-              \    /  /#   \ 
+>> :sakura.jp.as.dal.net 372 rmorel :-          jgs  '--'   \    /
+>> :sakura.jp.as.dal.net 372 rmorel :-                       '--'
+>> :sakura.jp.as.dal.net 372 rmorel :-                                                                                        
+>> :sakura.jp.as.dal.net 372 rmorel :- This server is proudly sponsored by DataPacket.com
+>> :sakura.jp.as.dal.net 372 rmorel :-       <https://www.datapacket.com/>
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- =====================================================================
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- Welcome to DALnet!  By connecting to this network, you agree to abide
+>> :sakura.jp.as.dal.net 372 rmorel :- by its acceptable use policy available at: https://www.dal.net/aup
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- We reserve the right to deny access to this server to anyone at any
+>> :sakura.jp.as.dal.net 372 rmorel :- time without warning or explanation.
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- To help prevent abuse, this server will check your PC for open proxy
+>> :sakura.jp.as.dal.net 372 rmorel :- servers when you connect. If you do not want this test performed, do
+>> :sakura.jp.as.dal.net 372 rmorel :- not connect.
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- =====================================================================
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- If you need general IRC assistance or help with services commands,
+>> :sakura.jp.as.dal.net 372 rmorel :- please view our multilingual documentation at http://docs.dal.net/
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- If your question is not answered after reading our documention,
+>> :sakura.jp.as.dal.net 372 rmorel :- please /join #help for general questions or /join #OperHelp if you
+>> :sakura.jp.as.dal.net 372 rmorel :- require the immediate assistance of an IRC Operator.
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- =====================================================================
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- Thank you, and enjoy your day!
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 372 rmorel :- =====================================================================
+>> :sakura.jp.as.dal.net 372 rmorel :- 
+>> :sakura.jp.as.dal.net 376 rmorel :End of /MOTD command.
+>> :rmorel MODE rmorel :+iH
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< JOIN #newchanrmorel
+>> :rmorel!~rmorel@3979-dced-ed2c-7910-289.210.62.ip JOIN :#newchanrmorel
+>> :sakura.jp.as.dal.net 353 rmorel = #newchanrmorel :@rmorel 
+>> :sakura.jp.as.dal.net 366 rmorel #newchanrmorel :End of /NAMES list.
+<< MODE #newchanrmorel
+>> :sakura.jp.as.dal.net 324 rmorel #newchanrmorel + 
+--> chanquery mode
+<< WHO #newchanrmorel
+>> :sakura.jp.as.dal.net 329 rmorel #newchanrmorel 1690900148
+--> event 329
+>> :sakura.jp.as.dal.net 352 rmorel #newchanrmorel ~rmorel 3979-dced-ed2c-7910-289.210.62.ip sakura.jp.as.dal.net rmorel H@ :0 Romain MOREL
+--> silent event who
+>> :sakura.jp.as.dal.net 315 rmorel #newchanrmorel :End of /WHO list.
+--> chanquery who end
+<< MODE #newchanrmorel b
+>> :sakura.jp.as.dal.net 368 rmorel #newchanrmorel :End of Channel Ban List
+--> chanquery ban end
+<< MODE #newchanrmorel +i
+>> :rmorel!~rmorel@3979-dced-ed2c-7910-289.210.62.ip MODE #newchanrmorel +i 
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong
+<< PING sakura.jp.as.dal.net
+>> :sakura.jp.as.dal.net PONG sakura.jp.as.dal.net :rmorel
+--> lag pong

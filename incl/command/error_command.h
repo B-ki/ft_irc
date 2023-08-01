@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 22:20:37 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/28 17:15:39 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/08/01 15:56:32 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,16 @@
 	std::string ERR_ALREADYREGISTERED();
 	std::string ERR_PASSWDMISMATCH();
 	std::string ERR_CHANNELISFULL(std::string channel);
+	std::string ERR_UNKNOWNMODE(std::string modechar);
 	std::string ERR_INVITEONLYCHAN(std::string channel);
 	std::string ERR_BANNEDFROMCHAN(std::string channel);
 	std::string ERR_BADCHANNELKEY(std::string channel);
 	std::string ERR_BADCHANMASK(std::string mask);
 	std::string ERR_CHANOPRIVSNEEDED(std::string channel);
 	std::string ERR_UNKNOWNCOMMAND(std::string command);
+	std::string ERR_INVALIDKEY(std::string target);
+	std::string ERR_INVALIDMOREPARAM(std::string channel,
+			std::string mode_string, std::string parameter, 
+			std::string description);
 
 #endif

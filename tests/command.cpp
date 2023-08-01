@@ -305,6 +305,19 @@ void    topic_change_no_privileges()
 	assert_str(s.receive(2), "482 rmorel #linux :You're not channel operator");
 }
 
+void 	mode_test()
+{
+	CmdTest s("5878", "password");
+	s.create_client();
+	s.send(1, "PASS password");
+	s.send(1, "NICK apigeon");
+	s.send(1, "USER arthur 0 * :Arthur Pigeon");
+	s.send(1, "JOIN #linux");
+	s.receive(1);
+	s.send(1, "MODE +i");
+	assert_str(s.receive(1), "MODE #linux +i");
+}
+
 void command_test_all(std::vector<Test*>& tests)
 {
 	tests.push_back(new Test("command::welcome_message", &welcome_message));
@@ -329,5 +342,6 @@ void command_test_all(std::vector<Test*>& tests)
 	tests.push_back(new Test("command::TOPIC::no_such_channel", &topic_no_such_channel));
 	tests.push_back(new Test("command::TOPIC::get_info", &topic_get_info));
 	tests.push_back(new Test("command::TOPIC::change_no_privileges", &topic_change_no_privileges));
+	tests.push_back(new Test("command::MODE::invite", &mode_test));
 	// TODO tests for INVITE, PART, KICK
 }

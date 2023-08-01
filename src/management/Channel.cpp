@@ -103,6 +103,14 @@ void    Channel::add_admin(const Client* user)
 		WARNING("User already administrator of channel");
 }
 
+void 	Channel::remove_admin(const Client* user)
+{
+	if (find_user(_admins, user) == _admins.end())
+		_admins.erase(find_user(_admins, user));
+	else
+		WARNING("User is not administrator of channel");
+}
+
 bool    Channel::is_admin(const Client* user) const
 {
 	return find_user(_admins, user) != _admins.end();

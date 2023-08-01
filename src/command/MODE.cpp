@@ -6,38 +6,44 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:21:22 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/31 19:33:09 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/08/01 16:30:41 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command/Command.h"
+#include "command/error_command.h"
 #include "command/reply_command.h"
 #include "struct.h"
 
-//static bool is_valid_channel_name(const std::string& channel_name)
-//{
-//	if (channel_name.empty())
-//		return false;
-//	if (channel_name[0] != '#')
-//		return false;
-//	for (std::string::const_iterator it = channel_name.begin() + 1; it != channel_name.end(); it++) {
-//		if (!isalpha(*it) && !isdigit(*it) && *it != '_' && *it != '-')
-//			return false;
-//	}
-//	return true;
-//}
+static bool is_valid_password(const std::string& password)
+{
+	if (password.empty())
+		return false;
+	if (password.size() > 24)
+		return false;
+	for (std::string::const_iterator it = password.begin() + 1;
+			it != password.end(); it++) {
+		if (!isalpha(*it) && !isdigit(*it) && *it != '_' && *it != '-'
+				&& *it != '$' && '@' && *it != '#')
+			return false;
+	}
+	return true;
+}
 
+/*
 static bool is_mode(char c)
 {
 	if (c == 't' || c == 'o' || c == 'k' || c == 'i' || c == 'l')
 		return true;
 	return false;
 }
+*/
 
 static bool is_valid_modestring(const std::string& modestring)
 {
-	if (modestring.size() < 2)
+	if (modestring.empty() || (modestring[0] != '+' && modestring[0] != '-'))
 		return false;
+	/*
 	for (std::string::const_iterator it = modestring.begin() + 1;
 			it != modestring.end(); it++)
 	{
@@ -49,6 +55,7 @@ static bool is_valid_modestring(const std::string& modestring)
 		while (it != modestring.end() && is_mode(*it))
 			it++;
 	}
+	*/
 	return true;
 }
 
@@ -68,8 +75,9 @@ int Command::execute_MODE()
 		WARNING("MODE - Invalid modestring : " << modestring);
 		return -1;
 	}
+	if (!target->is_admin(_client))
+		return reply(ERR_CHANOPRIVSNEEDED(target->get_name()), 482);
 	bool operand;
-
 	ModeReply manager;
 	std::vector<std::string>::const_iterator arg = _message.get_parameters().begin();
 	arg += 2;
@@ -96,18 +104,21 @@ int Command::execute_MODE()
 			{
 				manager.k_is_set = true;
 				if (operand == true && arg != end_of_args) {
-					// TODO is_valid_password(*arg) && reply
-					target->set_password_activation(true);
-					target->set_password(*arg);
-					manager.modestring += "+k";
-					manager.args.push_back(*arg);
+					if (is_valid_password(*arg)) {
+						target->set_password_activation(true);
+						target->set_password(*arg);
+						manager.modestring += "+k";
+						manager.args.push_back(*arg);
+					}
+					else
+						reply(ERR_INVALIDKEY(target->get_name()), 525);
 				}
-				else {//if (operand == false) 
+				else { 
 					manager.modestring += "-k";
 					target->set_password_activation(false);
 				}
 			}
-			arg++; // if an opt k is there, skip one arg
+			arg++;
 		}
 		else if (*it == 'l') {
 			if (manager.l_is_set == false)
@@ -126,10 +137,29 @@ int Command::execute_MODE()
 			arg++;
 		}
 		else if (*it == 'o') {
-			// TO DO operator management
+			if (manager.o_is_set == false && arg != end_of_args) {
+				manager.o_is_set = true;
+				Client* client = _server->get_client(*arg);
+				if (!client)
+					reply(ERR_NOSUCHNICK(*arg), 401);
+				else if (!target->is_in_channel(client))
+					reply(ERR_USERNOTINCHANNEL(*arg, target->get_name()), 441);
+				else if (operand == true) {
+					target->add_admin(client);
+					manager.modestring += "+o";
+					manager.args.push_back(*arg);
+				}
+				else {
+					target->remove_admin(client);
+					manager.modestring += "-o";
+					manager.args.push_back(*arg);
+				}
+			}
 		}
 		else {
-			// TO DO ERROR 472 is unknown mode char to me
+			std::string modechar;
+			modechar += *it;
+			reply(ERR_UNKNOWNMODE(modechar), 472);
 		}
 	}
 	return 0;
