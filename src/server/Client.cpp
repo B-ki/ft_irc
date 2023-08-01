@@ -3,13 +3,13 @@
 #include <netdb.h>
 
 
-Client::Client() : _nick("*"), _user("*"), _buffer(), _authenticated(false)
+Client::Client() : _nick("*"), _user("*"), _buffer(), _authenticated(false), _channels()
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);
 }
 
-Client::Client(int fd) : _fd(fd), _nick("*"), _user("*"), _buffer(), _authenticated(false)
+Client::Client(int fd) : _fd(fd), _nick("*"), _user("*"), _buffer(), _authenticated(false), _channels()
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);
@@ -68,6 +68,8 @@ const std::string Client::get_source() const
 	return ":" + _nick + "!" + _user + "@" + get_IP();
 }
 
+const std::vector<std::string>& Client::get_channels() const { return _channels; }
+
 bool Client::is_authenticated() const {	return _authenticated; }
 
 bool Client::has_given_password() const { return _pwd_ok; }
@@ -93,6 +95,20 @@ void Client::set_authenticated(const bool value) { _authenticated = value; }
 void Client::set_password_ok(const bool value) {	_pwd_ok = value; }
 
 void Client::set_name_given(const bool value) {	_name_given = value; }
+
+void Client::add_channel(const std::string &channel) { _channels.push_back(channel); }
+
+void Client::remove_channel(const std::string &channel)
+{
+	std::vector<std::string>::iterator it = _channels.begin();
+	while (it != _channels.end()) {
+		if (*it == channel) {
+			_channels.erase(it);
+			return;
+		}
+		++it;
+	}
+}
 
 int Client::read_buffer() {
 	if (_buffer.receive(_fd) <= 0) {

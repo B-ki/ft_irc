@@ -93,6 +93,7 @@ void    nick_change()
 	s.send(1, "PASS password");
 	s.send(1, "NICK rmorel");
 	s.send(1, "NICK rmorel2");
+	assert_str(s.receive(1), ":rmorel!*@127.0.0.1 NICK :rmorel2");
 	s.send(1, "USER rmorel 0 * :Romain Morel");
 	assert_str(s.receive(1), "001 rmorel2 :Welcome to the IRC Network");
 }

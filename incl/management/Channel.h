@@ -1,15 +1,17 @@
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP 
 
-# include "server/Client.h"
 # include <vector>
+# include "server/Client.h"
+# include "command/reply_command.h"
+# include "command/error_command.h"
+# include "error.h"
 
 class Channel
 {
 	public:
 		// -- Public Constructors --
-		Channel();
-		Channel(const Client* user, const std::string& name);
+		Channel(Client* user, const std::string& name);
 		Channel(const Channel& other);
 		~Channel();
 		Channel& operator=(const Channel& other);
@@ -32,18 +34,18 @@ class Channel
 		void    set_topic(const Client& user, const std::string& topic);
 
 		// -- Public Functions --
-		void    add_user(const Client* user);
-		void    part_user(const Client* user, const std::string& reason);
-		void	kick_user(const Client*user, const Client* target, const std::string& reason);
-		void    quit_user(const Client* user, const std::string& reason);
+		void    add_user(Client* user);
+		void    part_user(Client* user, const std::string& reason);
+		void	kick_user(Client*user, const Client* target, const std::string& reason);
+		void    quit_user(Client* user, const std::string& reason);
 		void    add_admin(const Client* user);
-		void    remove_admin(const Client* user);
 		bool    is_admin(const Client* user) const;
 		bool    is_full() const;
 		bool    is_invited(const Client* user) const;
 		bool    is_in_channel(const Client* user) const;
 		bool    validate_password(const std::string& password) const;
 		void    invite_user(const Client* user, const Client* target);
+		bool    is_empty() const;
 
 
 		void    send_message(const Client* user, const std::string& message);
@@ -68,7 +70,7 @@ class Channel
 		std::vector<const Client*>::const_iterator  find_user(const std::vector<const Client*>& list, const Client* elem) const;
 		std::vector<const Client*>::iterator        find_user(std::vector<const Client*>& list, const Client* elem);
 		std::string                                 get_nicks_list() const;
-		void                                        remove_user(const Client* user);
+		void                                        remove_user(Client* user);
 };
 
 #endif

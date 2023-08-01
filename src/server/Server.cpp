@@ -224,6 +224,12 @@ int Server::delete_client(int id)
 	Client* client = get_client(client_fd);
 	std::cout << "Removing client fd : " << client_fd; 
 	std::cout << ", IP : " << client->get_IP() << std::endl;
+	const std::vector<std::string>& channels = client->get_channels();
+	for (size_t i=0; i < channels.size(); i++) {
+		Channel* channel = get_channel(channels[i]);
+		if (channel != NULL)
+			channel->quit_user(client, "Connection closed");
+	}
 	_client_list.erase(client->get_fd());
 	remove_fd(id);
 	close(client_fd);
@@ -295,7 +301,7 @@ bool    Server::channel_exists(std::string name)
 	return _channels.find(name) != _channels.end();
 }
 
-int Server::create_channel(const Client* client, const std::string& name)
+int Server::create_channel(Client* client, const std::string& name)
 {
 	Channel channel(client, name);
 	if (channel_exists(name)) {
@@ -339,3 +345,5 @@ bool Server::nick_already_used(const std::string& nick) const
 }
 
 bool    Server::running() const { return _started; }
+
+void Server::delete_channel(const std::string& name) { _channels.erase(name); }
