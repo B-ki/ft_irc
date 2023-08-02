@@ -14,7 +14,7 @@ int     Command::execute_KICK() {
 	const std::vector<std::string>& nicks = utils::split(_message.get_parameters()[1], ",");
 	const std::string& reason = _message.get_parameters().size() > 2 ? _message.get_parameters()[2] : _client->get_nick();
 	for (size_t i = 0; i < nicks.size(); i++) {
-		const Client* target = _server->get_client(nicks[i]);
+		Client* target = _server->get_client(nicks[i]);
 		if (!target || !channel->is_in_channel(target))
 			reply(ERR_USERNOTINCHANNEL(nicks[i], channel_name), 401);
 		else

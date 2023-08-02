@@ -18,6 +18,5 @@ int Command::execute_INVITE() {
 	if (channel->is_in_channel(target))
 		return reply(ERR_USERONCHANNEL(nickname, channel_name), 443);
 	channel->invite_user(_client, target);
-	// TODO test invite command
 	return 0;
 }

@@ -42,7 +42,7 @@ class Channel
 		// -- Public Functions --
 		void    add_user(Client* user);
 		void    part_user(Client* user, const std::string& reason);
-		void	kick_user(Client*user, const Client* target, const std::string& reason);
+		void	kick_user(Client*user, Client* target, const std::string& reason);
 		void    quit_user(Client* user, const std::string& reason);
 		void    add_admin(const Client* user);
 		void    remove_admin(const Client* user);
