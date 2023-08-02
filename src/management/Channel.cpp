@@ -199,11 +199,11 @@ void    Channel::part_user(Client *user, const std::string &reason) {
 	}
 }
 
-void    Channel::kick_user(Client *user, const Client* target, const std::string &reason) {
+void    Channel::kick_user(Client *user, Client* target, const std::string &reason) {
 	std::vector<const Client*>::iterator it = find_user(_members, target);
 	if (it != _members.end()) {
 		send_all(user, CMD_KICK(_name, target->get_nick(), reason));
-		remove_user(user);
+		remove_user(target);
 	}
 }
 
