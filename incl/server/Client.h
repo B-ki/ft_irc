@@ -15,8 +15,8 @@ class Client
 		// -- Constructors --
 		Client();
 		Client(int fd);
-		//Client(const Client& other);
-		//Client& operator=(const Client& other);
+		Client(const Client& other);
+		Client& operator=(const Client& other);
 
 		// -- Destructors --
 		~Client();

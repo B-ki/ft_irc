@@ -79,7 +79,7 @@ SRCS	=	main.cpp \
 			command/PRIVMSG.cpp \
 			command/NOTICE.cpp \
 			command/MODE.cpp \
-			command/Mode.cpp \
+			command/ModeParser.cpp \
 			management/Channel.cpp
 
 

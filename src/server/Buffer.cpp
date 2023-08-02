@@ -2,18 +2,10 @@
 #include "server/Server.h"
 
 
-Buffer::Buffer() : _str(), _length(0)
-{
-}
+Buffer::Buffer() : _str(), _length(0) {}
 
 Buffer::Buffer(const Buffer& other) : _length(other._length)
-{
-	std::strcpy(_str, other._str);
-}
-
-Buffer::~Buffer()
-{
-}
+{ std::strcpy(_str, other._str); }
 
 Buffer& Buffer::operator=(const Buffer& other)
 {
@@ -23,6 +15,8 @@ Buffer& Buffer::operator=(const Buffer& other)
 	}
 	return *this;
 }
+
+Buffer::~Buffer() {}
 
 int Buffer::get_length() const { return _length; }
 

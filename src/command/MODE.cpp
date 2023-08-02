@@ -14,7 +14,7 @@
 #include "command/error_command.h"
 #include "command/reply_command.h"
 #include "struct.h"
-#include "command/Mode.hpp"
+#include "command/ModeParser.hpp"
 
 ModeReply::ModeReply()
 {
@@ -52,7 +52,7 @@ int Command::execute_MODE()
 		return reply(ERR_NOSUCHCHANNEL(_message.get_parameters()[0]), 403);
 	if (_message.get_parameters().size() == 1)
 		return reply(RPL_CHANNELMODEIS(target->get_mode_list()), 324); 
-	Mode mode(_message.get_parameters()[1], target, _server, _client);
+	ModeParser mode(_message.get_parameters()[1], target, _server, _client);
 	mode.set_arg(_message.get_parameters().begin());
 	mode.set_end_of_arg(_message.get_parameters().end());
 	return mode.execute();

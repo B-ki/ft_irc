@@ -1,64 +1,36 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Mode.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/01 18:37:43 by rmorel            #+#    #+#             */
-/*   Updated: 2023/08/01 21:39:53 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "command/Mode.hpp"
+#include "command/ModeParser.hpp"
 #include "command/error_command.h"
 #include "command/reply_command.h"
 
-Mode::Mode(std::string modestring, Channel* target, Server* server,
+ModeParser::ModeParser(std::string modestring, Channel* target, Server* server,
 		Client* client) : _target(target), _modestring(modestring),
 	_arg(), _end_of_args(), _operand(false), _t_is_set(false), _i_is_set(false),
 	_l_is_set(false), _k_is_set(false), _o_is_set(false), _modestring_reply(),
 	_args_reply(), _server(server), _client(client)
-{
-}
+{}
 
-Mode::~Mode() {}
+ModeParser::~ModeParser() {}
 
-bool 	Mode::t_is_set() const { return _t_is_set; };
-bool 	Mode::i_is_set() const { return _i_is_set; };
-bool 	Mode::l_is_set() const { return _l_is_set; };
-bool 	Mode::k_is_set() const { return _k_is_set; };
-bool 	Mode::o_is_set() const { return _o_is_set; };
+bool 	ModeParser::t_is_set() const { return _t_is_set; }
+bool 	ModeParser::i_is_set() const { return _i_is_set; }
+bool 	ModeParser::l_is_set() const { return _l_is_set; }
+bool 	ModeParser::k_is_set() const { return _k_is_set; }
+bool 	ModeParser::o_is_set() const { return _o_is_set; }
 
-void 	Mode::add_to_modestring_reply(const std::string& mode)
-{
-	_modestring_reply += mode;
-}
+void 	ModeParser::add_to_modestring_reply(const std::string& mode) { _modestring_reply += mode; }
 
-void 	Mode::add_to_args_reply(const std::string& arg)
-{
-	_args_reply.push_back(arg);
-}
+void 	ModeParser::add_to_args_reply(const std::string& arg) { _args_reply.push_back(arg); }
 
-bool 	Mode::no_more_args() const
-{
-	return _arg == _end_of_args;
-}
+bool 	ModeParser::no_more_args() const { return _arg == _end_of_args; }
 
-const std::string& 		Mode::get_target_name()
-{
-	return _target->get_name();
-}
+const std::string& 		ModeParser::get_target_name() { return _target->get_name(); }
 
-std::string Mode::MODE_reply()
+std::string ModeParser::MODE_reply()
 {
 	std::string reply;
 	reply += "MODE " + get_target_name() + " " + _modestring_reply;
-	for (std::vector<std::string>::const_iterator it = _args_reply.begin();
-			it != _args_reply.end(); it++)
-	{
+	for (std::vector<std::string>::const_iterator it = _args_reply.begin(); it != _args_reply.end(); it++)
 		reply += " " + *it;
-	}
 	return reply;
 }
 
@@ -70,8 +42,7 @@ static bool is_valid_password(const std::string& password)
 		return false;
 	for (std::string::const_iterator it = password.begin() + 1;
 			it != password.end(); it++) {
-		if (!isalpha(*it) && !isdigit(*it) && *it != '_' && *it != '-'
-				&& *it != '$' && '@' && *it != '#')
+		if (!isalpha(*it) && !isdigit(*it) && *it != '_' && *it != '-' && *it != '$' && '@' && *it != '#')
 			return false;
 	}
 	return true;
@@ -84,48 +55,47 @@ static bool is_valid_modestring(const std::string& modestring)
 	return true;
 }
 
-void 	Mode::set_arg(std::vector<std::string>::const_iterator arg)
+void 	ModeParser::set_arg(std::vector<std::string>::const_iterator arg)
 {
 	_arg = arg;
 	_arg += 2;
 }
 
-void 	Mode::set_end_of_arg(std::vector<std::string>::const_iterator end)
+void 	ModeParser::set_end_of_arg(std::vector<std::string>::const_iterator end)
 {
 	_end_of_args = end;
 }
 
-int Mode::reply(std::string message, int code)
+int ModeParser::reply(std::string message, int code)
 {
 	if (_client == NULL)
 		return -1;
 	return _client->reply(message, code);
 }
 
-void Mode::protected_topic_mode()
+void ModeParser::protected_topic_mode()
 {
-	if (_t_is_set == false) {
+	if (!_t_is_set) {
 		_operand ? add_to_modestring_reply("+t") : add_to_modestring_reply("-t");
 		_t_is_set = true;
 		_target->set_topic_restriction(_operand);
 	}
 }
 
-void Mode::invite_only_channel_mode()
+void ModeParser::invite_only_channel_mode()
 {
-	if (_i_is_set == false) {
+	if (!_i_is_set) {
 		_operand ? add_to_modestring_reply("+i") : add_to_modestring_reply("-i");
 		_i_is_set = true;
 		_target->set_invite_only(_operand);
 	}
 }
 
-void Mode::client_limit_mode()
+void ModeParser::client_limit_mode()
 {
-	if (_l_is_set == false)
+	if (!_l_is_set)
 	{
-		if (_operand == true && no_more_args()
-				&& std::atoi((*_arg).c_str())) {
+		if (_operand && no_more_args() && std::atoi((*_arg).c_str())) {
 			_target->set_max_users(std::atoi((*_arg).c_str()));
 			add_to_modestring_reply("+l");
 			add_to_args_reply(*_arg);
@@ -138,12 +108,12 @@ void Mode::client_limit_mode()
 	_arg++;
 }
 
-void Mode::key_channel_mode()
+void ModeParser::key_channel_mode()
 {
-	if (_k_is_set == false) // ie no password set yet
+	if (!_k_is_set) // ie no password set yet
 	{
 		_k_is_set = true;
-		if (_operand == true && no_more_args()) {
+		if (_operand && no_more_args()) {
 			if (is_valid_password(*_arg)) {
 				_target->set_password_activation(true);
 				_target->set_password(*_arg);
@@ -161,16 +131,16 @@ void Mode::key_channel_mode()
 	_arg++;
 }
 
-void Mode::oper_user_mode()
+void ModeParser::oper_user_mode()
 {
-	if (_o_is_set == false && no_more_args()) {
+	if (!_o_is_set && no_more_args()) {
 		_o_is_set = true;
 		Client* client = _server->get_client(*_arg);
 		if (!client)
 			reply(ERR_NOSUCHNICK(*_arg), 401);
 		else if (!_target->is_in_channel(client))
 			reply(ERR_USERNOTINCHANNEL(*_arg, get_target_name()), 441);
-		else if (_operand == true) {
+		else if (_operand) {
 			_target->add_admin(client);
 			add_to_modestring_reply("+o");
 			add_to_args_reply(*_arg);
@@ -183,7 +153,7 @@ void Mode::oper_user_mode()
 	}
 }
 
-int Mode::execute()
+int ModeParser::execute()
 {
 	if (!is_valid_modestring(_modestring)) {
 		WARNING("MODE - Invalid modestring : " << _modestring);

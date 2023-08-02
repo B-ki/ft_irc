@@ -50,6 +50,7 @@ class Command
 		int execute_PRIVMSG();
 		int execute_NOTICE();
 		int execute_MODE();
+
 		int user_MODE(const std::string& target);
 		int channel_MODE(const std::string& target);
 
