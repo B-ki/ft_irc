@@ -47,6 +47,12 @@ int Command::welcome()
 	reply(RPL_MYINFO(_server->get_name(), _server->get_version(), _server->get_user_modes(), _server->get_channel_modes()), 004);
 	reply(RPL_ISUPPORT("CHANMODES=" + _server->get_channel_modes() + " CHANTYPES=#"), 005);
 	reply(RPL_MOTDSTART(_server->get_name()), 375);
+	std::string line;
+	std::ifstream infile("assets/logo.txt");
+	if (_server->is_sending_welcome_msg()) {
+		while (std::getline(infile, line))
+			reply(RPL_MOTD(line), 372);
+	}
 	reply(RPL_MOTD("Nothing important for now ;("), 372);
 	reply(RPL_ENDOFMOTD(), 376);
 	return 1;

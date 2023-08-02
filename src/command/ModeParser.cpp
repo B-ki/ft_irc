@@ -95,7 +95,7 @@ void ModeParser::client_limit_mode()
 {
 	if (!_l_is_set)
 	{
-		if (_operand && no_more_args() && std::atoi((*_arg).c_str())) {
+		if (_operand && !no_more_args() && std::atoi((*_arg).c_str())) {
 			_target->set_max_users(std::atoi((*_arg).c_str()));
 			add_to_modestring_reply("+l");
 			add_to_args_reply(*_arg);
@@ -113,7 +113,7 @@ void ModeParser::key_channel_mode()
 	if (!_k_is_set) // ie no password set yet
 	{
 		_k_is_set = true;
-		if (_operand && no_more_args()) {
+		if (_operand && !no_more_args()) {
 			if (is_valid_password(*_arg)) {
 				_target->set_password_activation(true);
 				_target->set_password(*_arg);
@@ -133,11 +133,11 @@ void ModeParser::key_channel_mode()
 
 void ModeParser::oper_user_mode()
 {
-	if (!_o_is_set && no_more_args()) {
+	if (!_o_is_set && !no_more_args()) {
 		_o_is_set = true;
 		Client* client = _server->get_client(*_arg);
 		if (!client)
-			reply(ERR_NOSUCHNICK(*_arg), 401);
+			reply(ERR_USERNOTINCHANNEL(*_arg, get_target_name()), 441);
 		else if (!_target->is_in_channel(client))
 			reply(ERR_USERNOTINCHANNEL(*_arg, get_target_name()), 441);
 		else if (_operand) {
@@ -184,7 +184,8 @@ int ModeParser::execute()
 			reply(ERR_UNKNOWNMODE(modechar), 472);
 		}
 	}
-	if (!_modestring.empty())
+	if (!_modestring_reply.empty()) {
 		_client->send_to(*_client, MODE_reply());
+	}
 	return 0;
 }

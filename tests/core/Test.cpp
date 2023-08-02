@@ -9,7 +9,7 @@ Test::Test(void)
 	_time = 0;
 	_failed = false;
 	_stdout = 1;
-	_stdout = 2;
+	_stderr = 2;
 }
 
 Test::Test(std::string name, fun_ptr fun)
@@ -21,7 +21,7 @@ Test::Test(std::string name, fun_ptr fun)
 	_time = 0;
 	_failed = false;
 	_stdout = 1;
-	_stdout = 2;
+	_stderr = 2;
 }
 
 Test::Test(const Test& test)
@@ -38,6 +38,8 @@ Test& Test::operator=(const Test& test)
 		_status = test._status;
 		_time = test._time;
 		_failed = test._failed;
+		_stdout = test._stdout;
+		_stderr = test._stderr;
 	}
 	return *this;
 }

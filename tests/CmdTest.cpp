@@ -1,4 +1,5 @@
 #include "CmdTest.hpp"
+#include <cstddef>
 #include <pthread.h>
 #include <errno.h>
 
@@ -17,6 +18,7 @@ static void*    start_server_loop(void* ptr)
 CmdTest::CmdTest(const std::string& port, const std::string& password) : _server(port, password), _port(port), _clients_fd()
 {
 	_server.start();
+	_server.send_welcome_msg(false);
 	pthread_create(&_server_thread_id, NULL, &start_server_loop, (void*)&_server);
 }
 
@@ -54,18 +56,22 @@ const std::string CmdTest::receive(size_t id)
 		exit(1);
 	}
 	id--;
-	char _buf[1024 + 1] = {0};
-	usleep(10000); // To be sure the server have time to send the message
-	ssize_t num_bytes = recv(_clients_fd[id], _buf, sizeof(_buf), 0);
+	char _buf[BUFF_LEN + 1] = {0};
+	usleep(5000); // To be sure the server have time to send the message
+	ssize_t num_bytes = recv(_clients_fd[id], _buf, BUFF_LEN, 0);
 	if (num_bytes <= 0 && errno != EAGAIN) {
 		ERROR(std::string("Cannot read from server: ") + strerror(errno));
 		exit(1);
 	} else if (errno == EAGAIN) {
 		DEBUG("read from server timout");
 	}
-	_buf[num_bytes] = '\0';
-	if (_buf[num_bytes - 1] == '\n')
-		_buf[num_bytes - 1] = '\0';
+	if (num_bytes >= 0) {
+		_buf[num_bytes] = '\0';
+		if (num_bytes > 0 && _buf[num_bytes - 1] == '\n')
+			_buf[num_bytes - 1] = '\0';
+	}
+	else
+		_buf[0] = 0;
 	return std::string(_buf);
 }
 

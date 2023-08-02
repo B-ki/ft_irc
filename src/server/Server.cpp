@@ -9,7 +9,8 @@
 Server::Server(const std::string& port, const std::string& password) :
 	_sockfd(-1), _nb_clients(0), _started(false), _created_at(time(NULL)), _port(port),
 	_password(password), _name(SERVER_NAME), _version(SERVER_VERSION),
-	_hints(), _servinfo(NULL), _client_pfd_list(), _client_list(), _channels(), _bots()
+	_hints(), _servinfo(NULL), _client_pfd_list(), _client_list(), _channels(), _bots(),
+	_send_welcome_msg(true)
 {
 	INFO((std::string)"using the given port " + _port);
 	INFO((std::string)"using the given password '" + _password + "'");
@@ -355,3 +356,7 @@ void 	Server::write_logo() const
 		std::cout << line << std::endl;
 	}	
 }
+
+void 	Server::send_welcome_msg(bool value) { _send_welcome_msg = value; }
+
+bool 	Server::is_sending_welcome_msg() const { return _send_welcome_msg; }
