@@ -20,7 +20,6 @@ void    welcome_message()
 	expected += "372 rmorel :Nothing important for now ;(\n";
 	expected += "376 rmorel :End of /MOTD command";
 	assert_str(s.receive(1), expected);
-	s.stop();
 }
 
 void    not_authenticated()
@@ -217,7 +216,12 @@ void    join_with_topic()
 	s.receive(2);
 	s.send(2, "JOIN #linux");
 	usleep(100000);
-	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 JOIN :#linux\n332 rmorel #linux :Hello world\n353 rmorel = #linux :@apigeon rmorel\n366 rmorel #linux :End of /NAMES list");
+	std::string expected = ":rmorel!romain@127.0.0.1 JOIN :#linux\n";
+	expected += "332 rmorel #linux :Hello world\n";
+	expected += "333 rmorel #linux apigeon " + s.get_server().get_channel("#linux")->get_topic_set_time() + "\n";
+	expected += "353 rmorel = #linux :@apigeon rmorel\n";
+	expected += "366 rmorel #linux :End of /NAMES list";
+	assert_str(s.receive(2), expected);
 }
 
 void    topic_not_enough_params()
@@ -280,7 +284,8 @@ void    topic_get_info()
 	s.send(1, "TOPIC #linux :Boom le topic de fou");
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 TOPIC #linux :Boom le topic de fou");
 	s.send(1, "TOPIC #linux");
-	assert_str(s.receive(1), "332 apigeon #linux :Boom le topic de fou");
+	usleep(100000);
+	assert_str(s.receive(1), "332 apigeon #linux :Boom le topic de fou\n333 apigeon #linux apigeon " + s.get_server().get_channel("#linux")->get_topic_set_time());
 	s.send(1, "TOPIC #linux :");
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 TOPIC #linux :");
 	s.send(1, "TOPIC #linux");
