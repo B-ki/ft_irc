@@ -3,32 +3,26 @@
 #include <netdb.h>
 
 
-Client::Client() : _nick("*"), _user("*"), _buffer(), _authenticated(false),
-	_name_given(false), _pwd_ok(false)
+Client::Client() : _fd(-1), _sock_addr(), _ip("0.0.0.0"), _addrlen(),
+	_nick("*"), _user("*"), _real_name("*"), _buffer(),
+	_authenticated(false), _name_given(false), _pwd_ok(false), _channels()
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);
 }
 
-Client::Client(int fd) : _fd(fd), _nick("*"), _user("*"), _buffer(),
-	_authenticated(false), _name_given(false), _pwd_ok(false)
+Client::Client(int fd) : _fd(fd), _sock_addr(), _ip("0.0.0.0"), _addrlen(),
+	_nick("*"), _user("*"), _real_name("*"), _buffer(),
+	_authenticated(false), _name_given(false), _pwd_ok(false), _channels()
 {
 	memset(&_sock_addr, 0, sizeof(_sock_addr));
 	_addrlen = sizeof(struct sockaddr_storage);
 }
 
-/*
-Client::Client(const Client &other)
-{
-	*this = other;
-}
-*/
+Client::Client(const Client &other) { *this = other; }
 
-Client::~Client()
-{
-}
+Client::~Client() {}
 
-/*
 Client& Client::operator=(const Client& other)
 {
 	if (this != &other) {
@@ -41,11 +35,13 @@ Client& Client::operator=(const Client& other)
 		_real_name = other._real_name;
 		_buffer = other._buffer;
 		_authenticated = other._authenticated;
+		_name_given = other._name_given;
+		_pwd_ok = other._pwd_ok;
 		_last_message = other._last_message;
+		_channels = other._channels;
 	}
 	return *this;
 }
-*/
 
 int Client::get_fd() const { return _fd; }
 
@@ -149,15 +145,9 @@ int Client::reply(const std::string& message, int code) const
 	return code;
 }
 
-bool Client::has_message() const
-{
-	return _buffer.has_message() != -1;
-}
+bool Client::has_message() const { return _buffer.has_message() != -1; }
 
-std::string Client::extract_message()
-{
-	return _buffer.extract_message();
-}
+std::string Client::extract_message() { return _buffer.extract_message(); }
 
 int Client::send(const std::string& message) const
 {

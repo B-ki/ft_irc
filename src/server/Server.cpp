@@ -6,28 +6,10 @@
 #include <utility>
 #include <ctime>
 
-//Server::Server() : _started(false), _sockfd(-1), _nb_clients(0),
-//	_port(DEFAULT_PORT), _password(DEFAULT_PASSWORD), _ip_version(), _hints(),
-//	_servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
-//{
-//	INFO((std::string)"no port provided, using default port " + DEFAULT_PORT);
-//	INFO((std::string)"setting password to the default '" + DEFAULT_PASSWORD + "'");
-//	memset(&_hints, 0, sizeof(_hints));
-//	_hints.ai_family = AF_INET;
-//	_hints.ai_socktype = SOCK_STREAM;
-//	_hints.ai_flags = AI_PASSIVE;
-//	if (getaddrinfo(NULL, _port.c_str(), &_hints, &_servinfo) != 0) {
-//		ERROR("could not get the server connection details");
-//		exit(1);
-//	}
-//	Bot* bot = new RockPaperScissorsBot("rpsbot");
-//	_bots.insert(std::make_pair(bot->get_name(), bot));
-//}
-
 Server::Server(const std::string& port, const std::string& password) :
 	_sockfd(-1), _nb_clients(0), _started(false), _created_at(time(NULL)), _port(port),
-	_password(password), _ip_version(""), _name(SERVER_NAME), _version(SERVER_VERSION),
-	_hints(), _servinfo(NULL), _client_pfd_list(), _hostname(SERVER_HOSTNAME)
+	_password(password), _name(SERVER_NAME), _version(SERVER_VERSION),
+	_hints(), _servinfo(NULL), _client_pfd_list(), _client_list(), _channels(), _bots()
 {
 	INFO((std::string)"using the given port " + _port);
 	INFO((std::string)"using the given password '" + _password + "'");
@@ -40,30 +22,15 @@ Server::Server(const std::string& port, const std::string& password) :
 		exit(1);
 	}
 	Bot* bot = new RockPaperScissorsBot("rpsbot");
-	_bots.insert(std::make_pair(bot->get_name(), bot));
+	_bots.push_back(bot);
 }
-
-//Server::Server(const Server& server)
-//{
-//	*this = server;
-//}
-
-//Server&	Server::operator=(const Server& server)
-//{
-//	if (this != &server) {
-//		_port = server._port;
-//		_hints = server._hints;
-//		_servinfo = server._servinfo;
-//		_sockfd = server._sockfd;
-//		_started = server._started;
-//	}
-//	return *this;
-//}
 
 Server::~Server()
 {
 	this->stop();
 	freeaddrinfo(_servinfo);
+	for (std::vector<Bot*>::iterator it = _bots.begin(); it != _bots.end(); ++it)
+		delete *it;
 	INFO("destroying server");
 }
 
@@ -202,11 +169,38 @@ int Server::create_client()
 	return 0;
 }
 
-Client* Server::get_client(int const fd)
+const Client*   Server::get_client(int fd) const
 {
 	for (int i=0; i < _nb_clients; i++) {
 		if (_client_pfd_list[i].fd == fd)
-			return &_client_list[fd];
+			return &_client_list.at(fd);
+	}
+	return NULL;
+}
+
+Client*   Server::get_client(int fd)
+{
+	for (int i=0; i < _nb_clients; i++) {
+		if (_client_pfd_list[i].fd == fd)
+			return &_client_list.at(fd);
+	}
+	return NULL;
+}
+
+const Client* Server::get_client(const std::string& nick) const
+{
+	for (std::map<int, Client>::const_iterator it = _client_list.begin(); it != _client_list.end(); it++) {
+		if (it->second.get_nick() == nick)
+			return &it->second;
+	}
+	return NULL;
+}
+
+Client* Server::get_client(const std::string& nick)
+{
+	for (std::map<int, Client>::iterator it = _client_list.begin(); it != _client_list.end(); it++) {
+		if (it->second.get_nick() == nick)
+			return &it->second;
 	}
 	return NULL;
 }
@@ -262,21 +256,9 @@ void    Server::print_clients()
 	std::cout << std::endl;
 }
 
-Client* Server::get_client(std::string const nick)
-{
-	for (std::map<int, Client>::iterator it = _client_list.begin(); it != _client_list.end(); it++)
-	{
-		if ((*it).second.get_nick() == nick)
-			return &(*it).second;
-	}
-	return NULL;
-}
-
 std::map<int, Client>& 	Server::get_client_list() { return _client_list; }
 
 const std::string& Server::get_password() const { return _password; }
-
-const std::string& Server::get_hostname() const { return _hostname; }
 
 bool    Server::is_valid_port(const std::string& port)
 {
@@ -302,10 +284,7 @@ bool    Server::is_valid_password(const std::string& password)
 	return true;
 }
 
-bool    Server::channel_exists(std::string name)
-{
-	return _channels.find(name) != _channels.end();
-}
+bool    Server::channel_exists(std::string name) { return _channels.find(name) != _channels.end(); }
 
 int Server::create_channel(Client* client, const std::string& name)
 {
@@ -327,21 +306,18 @@ Channel*    Server::get_channel(const std::string& name)
 }
 
 const Bot*    Server::get_bot(const std::string &name) const {
-	try {
-		return _bots.at(name);
-	} catch (std::out_of_range& e) {
-		return NULL;
+	for (size_t i = 0; i < _bots.size(); i++) {
+		if (_bots[i]->get_name() == name)
+			return _bots[i];
 	}
+	return NULL;
 }
 
-bool Server::nick_already_used(const std::string& nick) const
+bool    Server::nick_already_used(const std::string& nick) const
 {
 	if (!_client_list.empty()) {
-		std::map<int, Client>::const_iterator it = _client_list.begin();
-		for (; it != _client_list.end(); it++) {
-			if ((*it).second.get_nick() == nick)
-				return true;
-		}
+		if (get_client(nick) != NULL)
+			return true;
 	}
 	if (!_bots.empty()) {
 		if (get_bot(nick) != NULL)
@@ -352,7 +328,7 @@ bool Server::nick_already_used(const std::string& nick) const
 
 bool    Server::running() const { return _started; }
 
-void Server::delete_channel(const std::string& name) { _channels.erase(name); }
+void    Server::delete_channel(const std::string& name) { _channels.erase(name); }
 
 std::string  Server::get_date_time() const {
 	struct tm  tstruct = {};

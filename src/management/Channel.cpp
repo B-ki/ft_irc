@@ -1,8 +1,9 @@
 #include "management/Channel.h"
 
 Channel::Channel(Client* user, const std::string& name)
-: _name(name), _admins(), _members(), _invite_only(false), _topic_restriction(true),
-_password_restriction(false), _max_users(10), _capacity_restriction(false)
+: _name(name), _admins(), _members(), _invited(), _invite_only(false),
+_topic_restriction(true), _password_restriction(false), _max_users(10),
+_capacity_restriction(false)
 {
 	add_admin(user);
 	add_user(user);
@@ -111,15 +112,9 @@ void 	Channel::remove_admin(const Client* user)
 		WARNING("User is not administrator of channel");
 }
 
-bool    Channel::is_admin(const Client* user) const
-{
-	return find_user(_admins, user) != _admins.end();
-}
+bool    Channel::is_admin(const Client* user) const { return find_user(_admins, user) != _admins.end(); }
 
-bool    Channel::is_in_channel(const Client* user) const
-{
-	return find_user(_members, user) != _members.end();
-}
+bool    Channel::is_in_channel(const Client* user) const { return find_user(_members, user) != _members.end(); }
 
 void    Channel::send_message(const Client* user, const std::string& message)
 {
@@ -145,10 +140,7 @@ bool    Channel::is_full() const
 	return _members.size() >= _max_users;
 }
 
-bool	Channel::is_invited(const Client* user) const
-{
-	return find_user(_invited, user) != _invited.end();
-}
+bool	Channel::is_invited(const Client* user) const { return find_user(_invited, user) != _invited.end(); }
 
 bool    Channel::validate_password(const std::string& password) const { return _password == password; }
 

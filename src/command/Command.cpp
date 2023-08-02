@@ -2,13 +2,9 @@
 #include "command/reply_command.h"
 #include "constant.h"
 
-Command::Command() : _server(), _client(), _message()
-{
-}
+Command::Command() : _server(), _client(), _message() {}
 
-Command::~Command()
-{
-}
+Command::~Command() {}
 
 Command::Command(Server* serv, Client* client, std::string raw_message)
 {

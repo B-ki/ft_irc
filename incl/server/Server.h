@@ -22,10 +22,6 @@
 # include "RockPaperScissorsBot.h"
 # include <fstream>
 
-
-# define DEFAULT_PORT "6667"
-# define DEFAULT_PASSWORD "password"
-# define SERVER_HOSTNAME "ft_irc.42.fr"
 # define SERVER_NAME "ft_irc"
 # define SERVER_VERSION "v1.0"
 # define MAX_CONNEXIONS 10
@@ -33,20 +29,18 @@
 class	Server {
 	public:
 		// -- Constructors --
-		// Server();
 		Server(const std::string& port, const std::string& password);
-//		Server(const Server& server);
-//		Server&	operator=(const Server& server);
 
 		// -- Destructor --
 		~Server();
 
 		// -- Getter --
-		Client* 				get_client(const int fd);
-		Client* 				get_client(std::string nick);
+		Client* 			    get_client(int fd);
+		const Client* 			get_client(int fd) const;
+		Client* 			    get_client(const std::string& nick);
+		const Client* 			get_client(const std::string& nick) const;
 		const std::string& 		get_password() const;
 		std::map<int, Client>& 	get_client_list();
-		const std::string&      get_hostname() const;
 		const std::string&      get_name() const;
 		const std::string&      get_version() const;
 
@@ -72,9 +66,6 @@ class	Server {
 		static bool		is_valid_port(const std::string& port);
 		static bool		is_valid_password(const std::string& password);
 
-		// --- Public attributes ---
-
-
 	private:
 		// -- Private attributes --
 		int						        _sockfd;
@@ -83,16 +74,14 @@ class	Server {
 		time_t                          _created_at;
 		std::string				        _port;
 		std::string				        _password;
-		std::string				        _ip_version;
 		std::string 				    _name;
 		std::string 				    _version;
 		struct addrinfo			        _hints;
 		struct addrinfo*		        _servinfo;
 		pollfd 	                        _client_pfd_list[MAX_CONNEXIONS];
 		std::map<int, Client> 	        _client_list;
-		std::string			            _hostname;
 		std::map<std::string, Channel>  _channels;
-		std::map<std::string, Bot*>     _bots;
+		std::vector<Bot*>               _bots;
 
 		// -- Private functions --
 		int						handle_recv(int fd, int i);

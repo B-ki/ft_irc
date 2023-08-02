@@ -13,7 +13,7 @@ int	main(void)
     std::vector<Test*>	tests;
 
     config.setStopOnFail(true);
-	config.setTimeout(2000);
+	config.setTimeout(3000);
 	parsing_test(tests);
 	command_test_all(tests);
 	// TODO fix test

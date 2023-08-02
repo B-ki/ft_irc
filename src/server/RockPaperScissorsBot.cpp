@@ -6,9 +6,8 @@ RockPaperScissorsBot::RockPaperScissorsBot(const RockPaperScissorsBot& bot) { *t
 
 RockPaperScissorsBot& RockPaperScissorsBot::operator=(const RockPaperScissorsBot& bot)
 {
-	if (this != &bot) {
+	if (this != &bot)
 		_name = bot._name;
-	}
 	return *this;
 }
 

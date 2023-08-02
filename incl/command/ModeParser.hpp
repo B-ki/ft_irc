@@ -1,30 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Mode.hpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/01 18:38:03 by rmorel            #+#    #+#             */
-/*   Updated: 2023/08/01 21:34:45 by rmorel           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
-#ifndef MODE_H
-# define MODE_H
+#ifndef MODE_PARSER_H
+# define MODE_PARSER_H
 
 # include "server/Server.h"
 
-class Mode
+class ModeParser
 {
 	public:
 
 		// -- Constructors, Destructors && Operator --
 
-		Mode(std::string modestring, Channel* target, Server* server,
-				Client* client);
-		~Mode(void);
+		ModeParser(std::string modestring, Channel* target, Server* server, Client* client);
+		~ModeParser(void);
 
 		// -- Getters --
 		bool 					t_is_set() const;
@@ -55,7 +41,7 @@ class Mode
 		Channel* 									_target;
 		std::string 								_modestring;
 		std::vector<std::string>::const_iterator 	_arg;
-		std::vector<std::string>::const_iterator 	_end_of_args;;
+		std::vector<std::string>::const_iterator 	_end_of_args;
 		bool 										_operand;
 		bool 										_t_is_set;
 		bool 										_i_is_set;
