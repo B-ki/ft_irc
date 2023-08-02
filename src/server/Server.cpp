@@ -84,7 +84,6 @@ int Server::start()
 	server_pfd.revents = 0;
 
 	_client_pfd_list[_nb_clients++] = server_pfd;
-	std::cout << "Server socket " << _sockfd << " added to _client_pfd_list\n";
 
 	std::cout << "Server in now waiting for connections on: ";
 	std::cout << ipstr << ":" << _port << std::endl;
@@ -126,7 +125,6 @@ int Server::loop()
 	{
 		if (_client_pfd_list[i].revents & POLLIN) {
 			int fd = _client_pfd_list[i].fd;
-			std::cout << "POLLIN from fd = " << fd << std::endl;
 			if (fd == listener) {
 				if (create_client() != 0) {
 					ERROR("Can't add client");
