@@ -6,7 +6,7 @@
 /*   By: rmorel <rmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:12:26 by rmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 00:38:14 by rmorel           ###   ########.fr       */
+/*   Updated: 2023/08/02 16:25:03 by rmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ Message::Message(void) : _raw(), _tags(), _prefix(), _cmd(UNKNOWN), _parameters(
 Message::Message(std::string str_to_parse) : _raw(), _tags(), _prefix(), _cmd(UNKNOWN), _parameters()
 {	
 	parse_message(str_to_parse);
-	print_message();
 }
 
 Message::Message(Message const & src)
