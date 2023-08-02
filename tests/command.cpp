@@ -423,7 +423,7 @@ void 	mode_operator()
 	s.send(2, "MODE #linux -o apigeon");
 	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 MODE #linux -o apigeon");
 	s.send(1, "MODE #linux -o rmorel");
-	assert_str(s.receive(1), "482 apigeon #linux :You're not channel operator");
+	assert_str(s.receive(1), "482 apigeon #linux :You're not channel operator\n353 apigeon = #linux :@apigeon\n366 apigeon #linux :End of /NAMES list");
 }
 
 void command_test_all(std::vector<Test*>& tests)

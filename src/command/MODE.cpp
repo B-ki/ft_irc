@@ -53,7 +53,12 @@ int Command::execute_MODE()
 	if (_message.get_parameters().size() == 1)
 		return reply(RPL_CHANNELMODEIS(target->get_mode_list()), 324); 
 	ModeParser mode(_message.get_parameters()[1], target, _server, _client);
-	mode.set_arg(_message.get_parameters().begin());
+	_message.print_message();
+	for (std::vector<std::string>::const_iterator it = _message.get_parameters().begin();
+			it != _message.get_parameters().end(); it++)
+		std::cout << "[" << *it << "], ";
+	std::cout << std::endl;
+	mode.set_arg(_message.get_parameters().begin() + 2);
 	mode.set_end_of_arg(_message.get_parameters().end());
 	return mode.execute();
 }

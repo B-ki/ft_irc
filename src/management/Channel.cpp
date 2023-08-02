@@ -46,13 +46,13 @@ bool    Channel::is_topic_restricted() const { return _topic_restriction; }
 
 bool    Channel::is_password_restricted() const { return _password_restriction; }
 
-void    Channel::set_invite_only(bool invite_only) { _invite_only = invite_only; }
+void    Channel::set_invite_only(bool invite_only) { INFO(_name << " invite_only = " << invite_only); _invite_only = invite_only; }
 
-void    Channel::set_topic_restriction(bool topic_restriction) { _topic_restriction = topic_restriction; }
+void    Channel::set_topic_restriction(bool topic_restriction) { INFO(_name << " topic_restriction = " << topic_restriction); _topic_restriction = topic_restriction; }
 
-void    Channel::set_password_activation(bool password_activation) { _password_restriction = password_activation; }
+void    Channel::set_password_activation(bool password_activation) { INFO(_name << " password = " << password_activation); _password_restriction = password_activation; }
 
-void    Channel::set_password(const std::string& password) { _password = password; }
+void    Channel::set_password(const std::string& password) { INFO("password = "<< password); _password = password; }
 
 void    Channel::set_topic(const Client& user, const std::string& topic)
 {

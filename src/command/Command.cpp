@@ -61,6 +61,8 @@ int Command::welcome()
 int Command::execute_command()
 {
 	cmd_type cmd = _message.get_cmd();
+	std::cout << "Client " << _client->get_nick() << " sent : [" 
+		<< _message.get_raw() << "]" << std::endl;
 	if (cmd == UNKNOWN)
 		return reply(ERR_UNKNOWNCOMMAND(_message.get_command()), 421);
 	if (cmd != CAP && cmd != PASS && cmd != NICK && cmd != USER
