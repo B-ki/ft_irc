@@ -11,8 +11,9 @@ int     Command::execute_TOPIC() {
 	if (_message.get_parameters().size() == 1) {
 		if (channel->get_topic().empty())
 			return reply(RPL_NOTOPIC(channel->get_name()), 331);
-		return reply(RPL_TOPIC(channel->get_name(), channel->get_topic()), 332);
-		// TODO send RPL_WHOTIME
+		reply(RPL_TOPIC(channel->get_name(), channel->get_topic()), 332);
+		reply(RPL_TOPICWHOTIME(channel->get_name(), channel->get_topic_setter_nick(), channel->get_topic_set_time()), 333);
+		return 0;
 	}
 	if (channel->is_topic_restricted() && !channel->is_admin(_client))
 		return reply(ERR_CHANOPRIVSNEEDED(channel->get_name()), 482);

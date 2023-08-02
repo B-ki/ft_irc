@@ -3,7 +3,7 @@
 Channel::Channel(Client* user, const std::string& name)
 : _name(name), _admins(), _members(), _invited(), _invite_only(false),
 _topic_restriction(true), _password_restriction(false), _max_users(10),
-_capacity_restriction(false)
+_capacity_restriction(false), _topic_info()
 {
 	add_admin(user);
 	add_user(user);
@@ -58,7 +58,8 @@ void    Channel::set_topic(const Client& user, const std::string& topic)
 {
 	if (!is_topic_restricted() || is_admin(&user)) {
 		_topic = topic;
-		send_all(&user, CMD_TOPIC(_name, topic));
+		_topic_info = std::make_pair(user.get_nick(), utils::itoa(std::time(NULL)));
+		send_all(&user, CMD_TOPIC(_name, _topic));
 	}
 }
 
@@ -70,9 +71,10 @@ void    Channel::add_user(Client* user)
 		_members.push_back(user);
 		user->add_channel(_name);
 		send_all(user,  CMD_JOIN(_name));
-		if (!_topic.empty())
+		if (!_topic.empty()) {
 			user->reply(RPL_TOPIC(_name, _topic), 332);
-		// TODO send RPL_WHOTIME
+			user->reply(RPL_TOPICWHOTIME(_name, _topic_info.first, _topic_info.second), 333);
+		}
 		user->reply(RPL_NAMREPLY(_name, get_nicks_list()), 353);
 		user->reply(RPL_ENDOFNAMES(_name), 366);
 	}
@@ -215,7 +217,7 @@ void    Channel::quit_user(Client *user, const std::string &reason) {
 
 bool    Channel::is_empty() const { return _members.empty(); }
 
-const std::string Channel::get_mode_list() const
+std::string Channel::get_mode_list() const
 {
 	std::string mode_list = _name + " +";
 	std::vector<std::string> args;
@@ -239,3 +241,7 @@ const std::string Channel::get_mode_list() const
 		mode_list += " " + *it;
 	return mode_list;
 }
+
+const std::string&  Channel::get_topic_setter_nick() const { return _topic_info.first; }
+
+const std::string&  Channel::get_topic_set_time() const { return _topic_info.second; }

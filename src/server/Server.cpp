@@ -115,7 +115,7 @@ int Server::loop()
 		ERROR("can't loop, server not started");
 		return -1;
 	}
-	int ret_poll = poll(_client_pfd_list, _nb_clients, -1);
+	int ret_poll = poll(_client_pfd_list, _nb_clients, 200);
 	if (ret_poll < 0) {
 		ERROR("poll error");
 		return 0;

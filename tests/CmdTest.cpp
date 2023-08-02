@@ -5,8 +5,12 @@
 static void*    start_server_loop(void* ptr)
 {
 	Server* server = (Server*)ptr;
-	while (server->running())
+	while (server->running()) {
+		DEBUG("OUI");
 		server->loop();
+		DEBUG("NON");
+	}
+	DEBUG("OVER");
 	return NULL;
 }
 
@@ -51,11 +55,13 @@ const std::string CmdTest::receive(size_t id)
 	}
 	id--;
 	char _buf[1024 + 1] = {0};
-	usleep(5000); // To be sure the server have time to send the message
+	usleep(10000); // To be sure the server have time to send the message
 	ssize_t num_bytes = recv(_clients_fd[id], _buf, sizeof(_buf), 0);
 	if (num_bytes <= 0 && errno != EAGAIN) {
 		ERROR(std::string("Cannot read from server: ") + strerror(errno));
 		exit(1);
+	} else if (errno == EAGAIN) {
+		DEBUG("read from server timout");
 	}
 	_buf[num_bytes] = '\0';
 	if (_buf[num_bytes - 1] == '\n')

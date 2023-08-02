@@ -2,11 +2,12 @@
 #define CHANNEL_HPP 
 
 # include <vector>
+# include <stdlib.h>
+# include <ctime>
 # include "server/Client.h"
 # include "command/reply_command.h"
 # include "command/error_command.h"
 # include "error.h"
-# include <stdlib.h>
 # include "utils.h"
 
 class Channel
@@ -27,6 +28,8 @@ class Channel
 		bool                              is_password_restricted() const;
 		const std::string&                get_password() const;
 		const std::string&                get_topic() const;
+		const std::string&                get_topic_setter_nick() const;
+		const std::string&                get_topic_set_time() const;
 
 		// -- Setters
 		void    set_invite_only(bool invite_only);
@@ -51,7 +54,7 @@ class Channel
 		void    invite_user(const Client* user, const Client* target);
 		bool    is_empty() const;
 
-		const std::string get_mode_list() const;
+		std::string get_mode_list() const;
 
 
 		void    send_message(const Client* user, const std::string& message);
@@ -60,17 +63,18 @@ class Channel
 
 	private:
 		// -- Private Variables --
-		std::string 			    _name;
-		std::vector<const Client*>  _admins;
-		std::vector<const Client*>  _members;
-		std::vector<const Client*>  _invited;
-		bool                        _invite_only;
-		bool                        _topic_restriction;
-		bool                        _password_restriction;
-		std::string                 _password;
-		std::string                 _topic;
-		size_t                      _max_users;
-		bool                        _capacity_restriction;
+		std::string 			            _name;
+		std::vector<const Client*>          _admins;
+		std::vector<const Client*>          _members;
+		std::vector<const Client*>          _invited;
+		bool                                _invite_only;
+		bool                                _topic_restriction;
+		bool                                _password_restriction;
+		std::string                         _password;
+		std::string                         _topic;
+		size_t                              _max_users;
+		bool                                _capacity_restriction;
+		std::pair<std::string, std::string> _topic_info;
 
 		// -- Private Functions --
 		std::vector<const Client*>::const_iterator  find_user(const std::vector<const Client*>& list, const Client* elem) const;
