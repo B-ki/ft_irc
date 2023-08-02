@@ -8,6 +8,7 @@
 # include <string>
 # include <vector>
 # include "server/Buffer.h"
+# include <arpa/inet.h>
 
 class Client
 {
@@ -61,7 +62,7 @@ class Client
 		// -- Private attributes --
 		int 				        _fd;
 		sockaddr_storage 	        _sock_addr;
-		char 				        _ip[NI_MAXHOST];
+		char 				        _ip[INET6_ADDRSTRLEN];
 		socklen_t 			        _addrlen;
 		std::string 		        _nick;
 		std::string 		        _user;

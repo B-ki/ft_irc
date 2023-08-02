@@ -43,6 +43,7 @@ class	Server {
 		std::map<int, Client>& 	get_client_list();
 		const std::string&      get_name() const;
 		const std::string&      get_version() const;
+		bool 					is_sending_welcome_msg() const;
 
 		// -- Public Functions --
 		int		    start();
@@ -61,6 +62,7 @@ class	Server {
 		std::string get_user_modes() const;
 		std::string get_channel_modes() const;
 		void 		write_logo() const;
+		void 		send_welcome_msg(bool value);
 
 		// -- Public static functions --
 		static bool		is_valid_port(const std::string& port);
@@ -82,6 +84,7 @@ class	Server {
 		std::map<int, Client> 	        _client_list;
 		std::map<std::string, Channel>  _channels;
 		std::vector<Bot*>               _bots;
+		bool 							_send_welcome_msg;
 
 		// -- Private functions --
 		int						handle_recv(int fd, int i);

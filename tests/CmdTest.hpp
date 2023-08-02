@@ -3,6 +3,8 @@
 
 #include "tests.h"
 
+#define BUFF_LEN 5000
+
 class CmdTest
 {
 	public:

@@ -27,11 +27,12 @@ void  Command::join_channel(const std::string& channel_name, const std::string& 
 				channel->add_user(_client);
 			else if (channel->is_invite_only())
 				reply(ERR_INVITEONLYCHAN(channel_name), 473);
-			if (channel->is_full())
+			else if (channel->is_full())
 				reply(ERR_CHANNELISFULL(channel_name), 471);
-			if (channel->is_password_restricted() && channel->validate_password(password))
+			else if (channel->is_password_restricted() && !channel->validate_password(password))
 				reply(ERR_PASSWDMISMATCH(), 464);
-			channel->add_user(_client);
+			else
+				channel->add_user(_client);
 		}
 	}
 }

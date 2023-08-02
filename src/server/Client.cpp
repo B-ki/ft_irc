@@ -1,6 +1,7 @@
 #include "server/Client.h"
 #include "error.h"
 #include <netdb.h>
+#include <netinet/in.h>
 
 
 Client::Client() : _fd(-1), _sock_addr(), _ip("0.0.0.0"), _addrlen(),
@@ -28,7 +29,7 @@ Client& Client::operator=(const Client& other)
 	if (this != &other) {
 		_fd = other._fd;
 		_sock_addr = other._sock_addr;
-		memcpy(_ip, other._ip, NI_MAXHOST);
+		memcpy(_ip, other._ip, INET6_ADDRSTRLEN);
 		_addrlen = other._addrlen;
 		_nick = other._nick;
 		_user = other._user;
@@ -78,8 +79,13 @@ void Client::set_fd(int fd) { _fd = fd; }
 
 void Client::set_IP()
 {
-	getnameinfo((struct sockaddr *)&_sock_addr, _addrlen, _ip,
-			sizeof(_ip), NULL, 0, NI_NUMERICHOST);
+	void *addr;
+
+	struct sockaddr_in*	ipv4 = (struct sockaddr_in *)&_sock_addr;
+	addr = &(ipv4->sin_addr);
+	inet_ntop(AF_INET, addr, _ip, sizeof(_ip));
+	//getnameinfo((struct sockaddr *)&_sock_addr, _addrlen, _ip,
+	//		sizeof(_ip), NULL, 0, NI_NUMERICHOST);
 }
 
 void Client::set_nick(const std::string& new_nick) { _nick = new_nick; }

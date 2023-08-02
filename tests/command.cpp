@@ -1,4 +1,5 @@
 #include <cstring>
+#include <unistd.h>
 #include "tests.h"
 #include "CmdTest.hpp"
 #include "utils.h"
@@ -129,6 +130,7 @@ void    user_already_registered()
 	s.send(1, "PASS password");
 	s.send(1, "NICK apigeon");
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
+	usleep(50000);
 	s.receive(1);
 	s.send(1, "USER rmorel 0 * :Romain Morel");
 	assert_str(s.receive(1), "462 apigeon :You may not reregister");
@@ -141,7 +143,8 @@ void    join_not_enough_params()
 	s.send(1, "PASS password");
 	s.send(1, "NICK apigeon");
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
-	s.receive(1);
+	while (s.receive(1).size() != 0)
+		;
 	s.send(1, "JOIN");
 	assert_str(s.receive(1), "461 apigeon JOIN :Not enough parameters");
 }
@@ -153,9 +156,9 @@ void    join_channel()
 	s.send(1, "PASS password");
 	s.send(1, "NICK apigeon");
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
+	usleep(50000);
 	s.receive(1);
 	s.send(1, "JOIN #linux");
-	usleep(100000);
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 JOIN :#linux\n353 apigeon = #linux :@apigeon\n366 apigeon #linux :End of /NAMES list");
 	s.create_client();
 	s.send(2, "PASS password");
@@ -174,6 +177,7 @@ void    join_invalid_channel() {
 	s.send(1, "PASS password");
 	s.send(1, "NICK apigeon");
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
+	usleep(50000);
 	s.receive(1);
 	s.send(1, "JOIN linux");
 	assert_str(s.receive(1), "476 apigeon linux :Invalid channel name");
@@ -323,6 +327,15 @@ void 	mode_invite()
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +i");
 	s.send(1, "MODE #linux -i");
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux -i");
+	s.send(1, "MODE #linux +i");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +i");
+	s.create_client();
+	s.send(2, "PASS password");
+	s.send(2, "NICK rmorel");
+	s.send(2, "USER romain 0 * :Romain Morel");
+	s.receive(2);
+	s.send(2, "JOIN #linux");
+	assert_str(s.receive(2), "473 rmorel #linux :Cannot join channel (+i)");
 }
 
 void 	mode_topic()
@@ -338,6 +351,79 @@ void 	mode_topic()
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +t");
 	s.send(1, "MODE #linux -t");
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux -t");
+}
+
+void 	mode_max_user()
+{
+	CmdTest s("5878", "password");
+	s.create_client();
+	s.send(1, "PASS password");
+	s.send(1, "NICK apigeon");
+	s.send(1, "USER arthur 0 * :Arthur Pigeon");
+	s.send(1, "JOIN #linux");
+	s.receive(1);
+	s.send(1, "MODE #linux +l 1");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +l 1");
+	s.create_client();
+	s.send(2, "PASS password");
+	s.send(2, "NICK rmorel");
+	s.send(2, "USER romain 0 * :Romain Morel");
+	s.receive(2);
+	s.send(2, "JOIN #linux");
+	assert_str(s.receive(2), "471 rmorel #linux :Cannot join channel (+l)");
+}
+
+void 	mode_key()
+{
+	CmdTest s("5878", "password");
+	s.create_client();
+	s.send(1, "PASS password");
+	s.send(1, "NICK apigeon");
+	s.send(1, "USER arthur 0 * :Arthur Pigeon");
+	s.send(1, "JOIN #linux");
+	s.receive(1);
+	s.send(1, "MODE #linux +k 123");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +k 123");
+	s.create_client();
+	s.send(2, "PASS password");
+	s.send(2, "NICK rmorel");
+	s.send(2, "USER romain 0 * :Romain Morel");
+	s.receive(2);
+	s.send(2, "JOIN #linux");
+	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	s.send(2, "JOIN #linux 456");
+	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	s.send(2, "JOIN #linux 123");
+	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 JOIN :#linux");
+	usleep(50000);
+}
+
+void 	mode_operator()
+{
+	CmdTest s("5878", "password");
+	s.create_client();
+	s.send(1, "PASS password");
+	s.send(1, "NICK apigeon");
+	s.send(1, "USER arthur 0 * :Arthur Pigeon");
+	s.send(1, "JOIN #linux");
+	s.receive(1);
+	s.send(1, "MODE #linux +o johny");
+	assert_str(s.receive(1), "441 apigeon johny #linux :They aren't on that channel");
+	s.create_client();
+	s.send(2, "PASS password");
+	s.send(2, "NICK rmorel");
+	s.send(2, "USER romain 0 * :Romain Morel");
+	s.receive(2);
+	s.send(2, "JOIN #linux");
+	s.receive(1);
+	usleep(50000);
+	s.receive(2);
+	s.send(1, "MODE #linux +o rmorel");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +o rmorel");
+	s.send(2, "MODE #linux -o apigeon");
+	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 MODE #linux -o apigeon");
+	s.send(1, "MODE #linux -o rmorel");
+	assert_str(s.receive(1), "482 apigeon #linux :You're not channel operator");
 }
 
 void command_test_all(std::vector<Test*>& tests)
@@ -366,5 +452,8 @@ void command_test_all(std::vector<Test*>& tests)
 	tests.push_back(new Test("command::TOPIC::change_no_privileges", &topic_change_no_privileges));
 	tests.push_back(new Test("command::MODE::invite", &mode_invite));
 	tests.push_back(new Test("command::MODE::topic", &mode_topic));
+	tests.push_back(new Test("command::MODE::max_user", &mode_max_user));
+	tests.push_back(new Test("command::MODE::mode_key", &mode_key));
+	tests.push_back(new Test("command::MODE::mode_operator", &mode_operator));
 	// TODO tests for INVITE, PART, KICK
 }
