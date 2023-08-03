@@ -178,7 +178,6 @@ int Message::parse_message(std::string str_to_parse)
 
 	if (this->add_cmd(std::string(position, str_to_parse.begin() + space_pos)) 
 			== PARSING_GRAMMAR_ERROR) {
-		ERROR("adding cmd");
 		return (PARSING_GRAMMAR_ERROR);
 	}
 	while (position != str_to_parse.end() && *position != ' ')

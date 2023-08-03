@@ -7,11 +7,8 @@ static void*    start_server_loop(void* ptr)
 {
 	Server* server = (Server*)ptr;
 	while (server->running()) {
-		DEBUG("OUI");
 		server->loop();
-		DEBUG("NON");
 	}
-	DEBUG("OVER");
 	return NULL;
 }
 

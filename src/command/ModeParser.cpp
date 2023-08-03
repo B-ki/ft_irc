@@ -12,8 +12,10 @@ ModeParser::ModeParser(const std::string& modestring, Channel* target, Server* s
 ModeParser::~ModeParser() {}
 
 void 	ModeParser::add_to_modestring_reply(const std::string& mode) {
-	if (_modestring_reply.empty() || _operand != _last_operand)
+	if (_modestring_reply.empty() || _operand != _last_operand) {
 		_modestring_reply += (_operand ? "+" : "-");
+		_last_operand = _operand;
+	}
 	_modestring_reply += mode;
 }
 
@@ -165,11 +167,8 @@ int ModeParser::execute()
 		return reply(ERR_CHANOPRIVSNEEDED(_target->get_name()), 482);
 	_index = 2;
 	for (std::string::const_iterator it = _modestring.begin(); it != _modestring.end(); it++) {
-		if (*it == '+' || *it == '-') {
-			_last_operand = _operand;
+		if (*it == '+' || *it == '-')
 			_operand = (*it == '+');
-			if (_args_reply.empty()) _last_operand = _operand;
-		}
 		else if (*it == 't')
 			protected_topic_mode();
 		else if (*it == 'i')
