@@ -23,16 +23,15 @@ void  Command::join_channel(const std::string& channel_name, const std::string& 
 			_server->create_channel(_client, channel_name);
 		} else if (!channel->is_in_channel(_client)){
 			if (channel->is_in_channel(_client)) return;
-			if (channel->is_invited(_client))
-				channel->add_user(_client);
-			else if (channel->is_invite_only())
-				reply(ERR_INVITEONLYCHAN(channel_name), 473);
-			else if (channel->is_full())
-				reply(ERR_CHANNELISFULL(channel_name), 471);
-			else if (channel->is_password_restricted() && !channel->validate_password(password))
-				reply(ERR_PASSWDMISMATCH(), 464);
-			else
-				channel->add_user(_client);
+			if (!channel->is_invited(_client)) {
+				if (channel->is_invite_only())
+					reply(ERR_INVITEONLYCHAN(channel_name), 473);
+				else if (channel->is_full())
+					reply(ERR_CHANNELISFULL(channel_name), 471);
+				else if (channel->is_password_restricted() && !channel->validate_password(password))
+					reply(ERR_BADCHANNELKEY(channel_name), 475);
+				else channel->add_user(_client);
+			} else channel->add_user(_client);
 		}
 	}
 }

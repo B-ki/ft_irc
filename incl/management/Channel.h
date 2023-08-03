@@ -30,6 +30,7 @@ class Channel
 		const std::string&                get_topic() const;
 		const std::string&                get_topic_setter_nick() const;
 		const std::string&                get_topic_set_time() const;
+		int                               get_max_users() const;
 
 		// -- Setters
 		void    set_invite_only(bool invite_only);
