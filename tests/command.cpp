@@ -390,9 +390,9 @@ void 	mode_key()
 	s.send(2, "USER romain 0 * :Romain Morel");
 	s.receive(2);
 	s.send(2, "JOIN #linux");
-	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	assert_str(s.receive(2), "475 rmorel #linux :Cannot join channel (+k)");
 	s.send(2, "JOIN #linux 456");
-	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	assert_str(s.receive(2), "475 rmorel #linux :Cannot join channel (+k)");
 	s.send(2, "JOIN #linux 123");
 	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 JOIN :#linux");
 	usleep(50000);
