@@ -58,7 +58,6 @@ static bool is_valid_modestring(const std::string& modestring)
 void 	ModeParser::set_arg(std::vector<std::string>::const_iterator arg)
 {
 	_arg = arg;
-	_arg += 2;
 }
 
 void 	ModeParser::set_end_of_arg(std::vector<std::string>::const_iterator end)
@@ -95,7 +94,9 @@ void ModeParser::client_limit_mode()
 {
 	if (!_l_is_set)
 	{
-		if (_operand && !no_more_args() && std::atoi((*_arg).c_str())) {
+		if (no_more_args())
+			return ;
+		else if (_operand && std::atoi((*_arg).c_str())) {
 			_target->set_max_users(std::atoi((*_arg).c_str()));
 			add_to_modestring_reply("+l");
 			add_to_args_reply(*_arg);
@@ -104,8 +105,9 @@ void ModeParser::client_limit_mode()
 			_target->set_max_users(0);
 			add_to_modestring_reply("-l");
 		}
+		DEBUG("args++");
+		_arg++;
 	}
-	_arg++;
 }
 
 void ModeParser::key_channel_mode()
@@ -113,7 +115,9 @@ void ModeParser::key_channel_mode()
 	if (!_k_is_set) // ie no password set yet
 	{
 		_k_is_set = true;
-		if (_operand && !no_more_args()) {
+		if (no_more_args())
+			return;
+		if (_operand) {
 			if (is_valid_password(*_arg)) {
 				_target->set_password_activation(true);
 				_target->set_password(*_arg);
@@ -127,14 +131,17 @@ void ModeParser::key_channel_mode()
 			add_to_modestring_reply("-k");
 			_target->set_password_activation(false);
 		}
+		DEBUG("args++");
+		_arg++;
 	}
-	_arg++;
 }
 
 void ModeParser::oper_user_mode()
 {
-	if (!_o_is_set && !no_more_args()) {
+	if (!_o_is_set) {
 		_o_is_set = true;
+		if (no_more_args())
+			return;
 		Client* client = _server->get_client(*_arg);
 		if (!client)
 			reply(ERR_USERNOTINCHANNEL(*_arg, get_target_name()), 441);
@@ -150,6 +157,8 @@ void ModeParser::oper_user_mode()
 			add_to_modestring_reply("-o");
 			add_to_args_reply(*_arg);
 		}
+		DEBUG("args++");
+		_arg++;
 	}
 }
 

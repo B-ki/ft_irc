@@ -38,7 +38,7 @@ ifeq ($(FEXTRA),true)
 endif
 
 ifeq ($(FDEBUG),true)
-	CFLAGS += -g3
+	CFLAGS += -gdwarf-3
 	VFLAGS += -D DEBUG_MODE
 endif
 

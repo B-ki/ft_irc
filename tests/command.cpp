@@ -381,6 +381,7 @@ void 	mode_key()
 	s.send(1, "NICK apigeon");
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
 	s.send(1, "JOIN #linux");
+	usleep(50000);
 	s.receive(1);
 	s.send(1, "MODE #linux +k 123");
 	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +k 123");
@@ -388,11 +389,12 @@ void 	mode_key()
 	s.send(2, "PASS password");
 	s.send(2, "NICK rmorel");
 	s.send(2, "USER romain 0 * :Romain Morel");
+	usleep(50000);
 	s.receive(2);
 	s.send(2, "JOIN #linux");
-	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	assert_str(s.receive(2), "475 rmorel #linux :Cannot join channel (+k)");
 	s.send(2, "JOIN #linux 456");
-	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	assert_str(s.receive(2), "475 rmorel #linux :Cannot join channel (+k)");
 	s.send(2, "JOIN #linux 123");
 	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 JOIN :#linux");
 	usleep(50000);
@@ -406,6 +408,7 @@ void 	mode_operator()
 	s.send(1, "NICK apigeon");
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
 	s.send(1, "JOIN #linux");
+	usleep(50000);
 	s.receive(1);
 	s.send(1, "MODE #linux +o johny");
 	assert_str(s.receive(1), "441 apigeon johny #linux :They aren't on that channel");
@@ -413,8 +416,10 @@ void 	mode_operator()
 	s.send(2, "PASS password");
 	s.send(2, "NICK rmorel");
 	s.send(2, "USER romain 0 * :Romain Morel");
+	usleep(50000);
 	s.receive(2);
 	s.send(2, "JOIN #linux");
+	usleep(50000);
 	s.receive(1);
 	usleep(50000);
 	s.receive(2);
