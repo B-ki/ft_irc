@@ -11,7 +11,7 @@ std::string RPL_ISUPPORT(const std::string& tokens);
 std::string RPL_MOTDSTART(const std::string& server_name);
 std::string RPL_MOTD(const std::string& message);
 std::string RPL_ENDOFMOTD();
-std::string RPL_CHANNELMODEIS(const std::string& mode_list);
+std::string RPL_CHANNELMODEIS(const std::string& channel, const std::string& mode_list);
 std::string RPL_AWAY(const std::string& nick);
 std::string RPL_TOPIC(const std::string& channel, const std::string& topic);
 std::string RPL_NOTOPIC(const std::string& channel);

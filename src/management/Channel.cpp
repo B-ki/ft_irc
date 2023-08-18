@@ -2,7 +2,7 @@
 
 Channel::Channel(Client* user, const std::string& name)
 : _name(name), _admins(), _members(), _invited(), _invite_only(false),
-_topic_restriction(true), _password_restriction(false), _max_users(10),
+_topic_restriction(true), _password_restriction(false), _max_users(0),
 _capacity_restriction(false), _topic_info()
 {
 	add_admin(user);
@@ -219,29 +219,34 @@ bool    Channel::is_empty() const { return _members.empty(); }
 
 std::string Channel::get_mode_list() const
 {
-	std::string mode_list = _name + " +";
+	std::string mode_list = "+";
 	std::vector<std::string> args;
-	
-	if (_topic_restriction)
-		mode_list += "t";
-	if (_invite_only)
-		mode_list += "i";
-	if (_capacity_restriction) {
-		mode_list += "l";
-		args.push_back(utils::itoa(_max_users));
-	}
+
 	if (_password_restriction) {
 		mode_list += "k";
 		args.push_back(_password);
 	}
-	if (args.empty())
-		return mode_list;
-	for (std::vector<std::string>::const_iterator it = args.begin();
-			it != args.end(); it++)
-		mode_list += " " + *it;
+	if (_invite_only)
+		mode_list += "i";
+	if (_max_users > 0) {
+		mode_list += "l";
+		args.push_back(utils::itoa(_max_users));
+	}
+	if (_topic_restriction)
+		mode_list += "t";
+	if (!args.empty()) {
+		mode_list += " :";
+		for (std::vector<std::string>::const_iterator it = args.begin(); it != args.end(); it++)
+			mode_list += *it + " ";
+		mode_list.erase(mode_list.end() - 1);
+	} else {
+		mode_list = ":" + mode_list;
+	}
 	return mode_list;
 }
 
 const std::string&  Channel::get_topic_setter_nick() const { return _topic_info.first; }
 
 const std::string&  Channel::get_topic_set_time() const { return _topic_info.second; }
+
+int Channel::get_max_users() const { return _max_users; }

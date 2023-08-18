@@ -45,7 +45,7 @@ int Command::welcome()
 	reply(RPL_YOURHOST(_server->get_name(), _server->get_version()), 002);
 	reply(RPL_CREATED(_server->get_date_time()), 003);
 	reply(RPL_MYINFO(_server->get_name(), _server->get_version(), _server->get_user_modes(), _server->get_channel_modes()), 004);
-	reply(RPL_ISUPPORT("CHANMODES=" + _server->get_channel_modes() + " CHANTYPES=#"), 005);
+	reply(RPL_ISUPPORT("CHANMODES=" + _server->get_channel_modes() + " CHANTYPES=#" + " MODES=10"), 005);
 	reply(RPL_MOTDSTART(_server->get_name()), 375);
 	std::string line;
 	std::ifstream infile("assets/logo.txt");

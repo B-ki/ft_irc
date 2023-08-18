@@ -16,7 +16,7 @@ void    welcome_message()
 	expected += "002 rmorel :Your host is ft_irc, running version v1.0\n";
 	expected += "003 rmorel :This server was created " + s.get_server().get_date_time() + "\n";
 	expected += "004 rmorel ft_irc v1.0 n kilot\n";
-	expected += "005 rmorel CHANMODES=kilot CHANTYPES=# :are supported by this server\n";
+	expected += "005 rmorel CHANMODES=kilot CHANTYPES=# MODES=10 :are supported by this server\n";
 	expected += "375 rmorel :- ft_irc Message of the day -\n";
 	expected += "372 rmorel :Nothing important for now ;(\n";
 	expected += "376 rmorel :End of /MOTD command";
@@ -236,6 +236,7 @@ void    topic_not_enough_params()
 	s.send(1, "NICK apigeon");
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
 	s.send(1, "JOIN #linux");
+	usleep(10000);
 	s.receive(1);
 	s.send(1, "TOPIC");
 	assert_str(s.receive(1), "461 apigeon TOPIC :Not enough parameters");
@@ -324,11 +325,11 @@ void 	mode_invite()
 	s.send(1, "JOIN #linux");
 	s.receive(1);
 	s.send(1, "MODE #linux +i");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +i");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux :+i");
 	s.send(1, "MODE #linux -i");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux -i");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux :-i");
 	s.send(1, "MODE #linux +i");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +i");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux :+i");
 	s.create_client();
 	s.send(2, "PASS password");
 	s.send(2, "NICK rmorel");
@@ -347,10 +348,10 @@ void 	mode_topic()
 	s.send(1, "USER arthur 0 * :Arthur Pigeon");
 	s.send(1, "JOIN #linux");
 	s.receive(1);
-	s.send(1, "MODE #linux +t");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +t");
 	s.send(1, "MODE #linux -t");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux -t");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux :-t");
+	s.send(1, "MODE #linux +t");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux :+t");
 }
 
 void 	mode_max_user()
@@ -363,7 +364,7 @@ void 	mode_max_user()
 	s.send(1, "JOIN #linux");
 	s.receive(1);
 	s.send(1, "MODE #linux +l 1");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +l 1");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +l :1");
 	s.create_client();
 	s.send(2, "PASS password");
 	s.send(2, "NICK rmorel");
@@ -383,19 +384,19 @@ void 	mode_key()
 	s.send(1, "JOIN #linux");
 	s.receive(1);
 	s.send(1, "MODE #linux +k 123");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +k 123");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +k :123");
 	s.create_client();
 	s.send(2, "PASS password");
 	s.send(2, "NICK rmorel");
 	s.send(2, "USER romain 0 * :Romain Morel");
 	s.receive(2);
 	s.send(2, "JOIN #linux");
-	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	assert_str(s.receive(2), "475 rmorel #linux :Cannot join channel (+k)");
 	s.send(2, "JOIN #linux 456");
-	assert_str(s.receive(2), "464 rmorel :Password incorrect");
+	assert_str(s.receive(2), "475 rmorel #linux :Cannot join channel (+k)");
 	s.send(2, "JOIN #linux 123");
-	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 JOIN :#linux");
-	usleep(50000);
+	usleep(100000);
+	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 JOIN :#linux\n353 rmorel = #linux :@apigeon rmorel\n366 rmorel #linux :End of /NAMES list");
 }
 
 void 	mode_operator()
@@ -419,9 +420,11 @@ void 	mode_operator()
 	usleep(50000);
 	s.receive(2);
 	s.send(1, "MODE #linux +o rmorel");
-	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +o rmorel");
+	assert_str(s.receive(1), ":apigeon!arthur@127.0.0.1 MODE #linux +o :rmorel");
+	s.receive(2);
 	s.send(2, "MODE #linux -o apigeon");
-	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 MODE #linux -o apigeon");
+	assert_str(s.receive(2), ":rmorel!romain@127.0.0.1 MODE #linux -o :apigeon");
+	s.receive(1);
 	s.send(1, "MODE #linux -o rmorel");
 	assert_str(s.receive(1), "482 apigeon #linux :You're not channel operator");
 }

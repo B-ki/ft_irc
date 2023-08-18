@@ -9,7 +9,7 @@ std::string RPL_ISUPPORT(const std::string& tokens) { return tokens + " :are sup
 std::string RPL_MOTDSTART(const std::string& server_name) { return ":- " + server_name + " Message of the day -"; }
 std::string RPL_MOTD(const std::string& message) { return ":" + message; }
 std::string RPL_ENDOFMOTD() { return ":End of /MOTD command"; }
-std::string RPL_CHANNELMODEIS(const std::string& mode_list) { return mode_list; }
+std::string RPL_CHANNELMODEIS(const std::string& channel, const std::string& mode_list) { return channel + " " + mode_list; }
 std::string RPL_AWAY(const std::string& nick) { return nick + " :User is away"; }
 std::string RPL_TOPIC(const std::string& channel, const std::string& topic) { return channel + " :" + topic; }
 std::string RPL_NOTOPIC(const std::string& channel) { return channel + " :No topic is set"; }
@@ -31,3 +31,4 @@ std::string CMD_TOPIC(const std::string& channel, const std::string& topic) { re
 std::string CMD_PRIVMSG(const std::string& channel, const std::string& message) { return "PRIVMSG " + channel + " :" + message; }
 std::string CMD_NOTICE(const std::string& channel, const std::string& message) { return "NOTICE " + channel + " :" + message; }
 std::string CMD_NICK(const std::string& nick) { return "NICK :" + nick; }
+std::string CMD_MODE(const std::string& target, const std::string& mode) { return "MODE " + target + " " + mode; }
